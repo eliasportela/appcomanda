@@ -20,7 +20,7 @@
 			</div>
 		</container>
 		<bottom-bar></bottom-bar>
-		<div class="w3-modal">
+		<div class="w3-modal ">
 			<div class="w3-modal-content w3-animate-opacity">
 				<div class="w3-container w3-text-white w3-padding-16 title-modal">
 					<span class="w3-large"> 

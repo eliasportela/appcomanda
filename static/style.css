@@ -20,7 +20,7 @@
 	height: 100%;
 	width: 100%!important;
 	margin: 0;
-	overflow: hidden;
+	overflow: auto;
 }
 .show{
 	display: block;
@@ -203,16 +203,72 @@
 	padding: 16px;
 	height: 70vh;
 	overflow: auto;
-	font-weight: 900
+	font-weight: 900;
+	color: #444;
 }
 .title-garcom{
-	padding: 11vh 0 1.5vh 0;
+	padding: 70px 0 1.5vh 0;
 	color: #aaa;
 	font-weight: 900!important;
 	font-size: 1.2em;
 	text-align: center;
+	margin: 0 16px 
+}
+.container-btn-garcom{
+	padding: 16px
 }
 .btn-garcom{
 	padding: 12px;
 	font-weight: 900
+}
+
+/*Mesa*/
+.mesa-title{
+	margin: 0 24px;
+	text-align: left;
+	font-size: 1em
+}
+.container-garcom{
+	height: 65vh
+}
+.garcom-produto{
+	height: 69vh
+}
+.garcom-tipo-produto{
+	height: 37vh
+}
+.comanda-tipo{
+	padding: 16px 0 16px 16px;
+	border-bottom: 1px solid #bbb;
+	font-size: 1.2em;
+}
+.comanda-tipo:first-child{
+	padding-top: 4px
+}
+.comanda-tipo:last-child{
+	border: none;
+	padding-bottom: 4px
+}
+.garcom-label{
+	text-align: center;
+	font-size: 1em;
+	font-weight: bold;
+	margin-bottom: 4px;
+	color: #444
+}
+.garcom-tipo-container{
+	margin: 16px;
+	text-align: center;
+	color: #444;
+	font-weight: 600
+}
+.cell-garcom-tipo{
+	width: 33%;
+}
+.btn-garcom-tipo{
+	width: 95%;
+	text-align: center;
+}
+.garcom-hr{
+	margin: 10px 0
 }

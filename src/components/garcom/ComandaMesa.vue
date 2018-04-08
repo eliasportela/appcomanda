@@ -33,38 +33,125 @@
 				</div>
 			</div>
 		</div>
-		<div class="w3-margin">
+		<div class="w3-bottom container-btn-garcom">
 			<button class="w3-button w3-round w3-block w3-red btn-garcom">
 				ADICIONAR
 			</button>
 		</div>
+
 		<div class="w3-modal">
 			<div class="w3-modal-content w3-animate-opacity">
 				<top-bar></top-bar>
 				<div class="title-garcom">
-					<span>Selecione o número da mesa</span>
+					<button class="w3-button w3-round w3-block w3-red">
+						<i class="fa fa-trash"></i>
+						DELETAR ITEM
+					</button>
 				</div>
-				<div class="container-garcom">
-					<div class="w3-border w3-padding comanda-input-mesa">
-						<span>Mesa:</span>
-						<span>12</span>
+				<div class="container-garcom garcom-produto">
+					<div class="w3-center w3-border-bottom w3-padding">
+						PRODUTO
 					</div>
-					<div class="w3-container">
-
+					<ul class="w3-ul comanda-ul">
+						<li>1/2 - Pizza Lombo Catupiry</li>
+						<li>1/2 - Pizza Lombo Catupiry</li>
+					</ul>
+					<div class="w3-margin-top w3-center w3-border-bottom w3-padding">
+						ADICIONAIS E OBSERVAÇÕES
 					</div>
-					<div class="w3-margin comanda-add-obs">
-						<label>Observações</label>
-						<textarea class="w3-input w3-text w3-border" placeholder="Observações da comanda">
-						</textarea>
-					</div>
+					<ul class="w3-ul comanda-ul">
+						<li>- S/ Cebola</li>
+						<li>- C/ Bacon</li>
+						<li>- C/ Borda Catupiry</li>
+					</ul>
 				</div>
-				<div class="w3-margin">
-					<button class="w3-button w3-round w3-block w3-red btn-garcom">
-						CONFIRMAR
+				<div class="w3-bottom container-btn-garcom w3-center">
+					<button class="w3-button w3-round w3-red btn-garcom" style="width:49%">
+						<i class="fa fa-chevron-left"></i>
+						VOLTAR
+					</button>
+					<button class="w3-button w3-round w3-red btn-garcom" style="width:49%">
+						<i class="fa fa-edit"></i>
+						EDITAR
 					</button>
 				</div>
 			</div>
 		</div>
+
+		<div class="w3-modal show">
+			<div class="w3-modal-content w3-animate-opacity">
+				<top-bar></top-bar>
+				<div class="title-garcom">
+					<button class="w3-button w3-round w3-block w3-red">
+						CANCELAR
+						<i class="fa fa-times"></i>
+					</button>
+				</div>
+				<div class="garcom-label">
+					SELECIONE O TIPO DO PRODUTO
+				</div>
+				<div class="container-garcom garcom-tipo-produto">
+					<div class="w3-cell-row comanda-tipo" v-for="i in 3">
+						<div class="w3-cell list-text">
+							Pizzas
+						</div>
+						<div class="w3-cell list-icon">
+							<i class="fa fa-check"></i>
+						</div>
+					</div>
+				</div>
+				<div class="garcom-tipo-container w3-margin-top">	
+					<div class="w3-cell-row">
+						<div class="w3-cell cell-garcom-tipo">
+							<button class="w3-button w3-border btn-garcom-tipo">
+								<i class="far fa-circle"></i><br>
+								ESFIHA
+							</button>
+						</div>
+						<div class="w3-cell cell-garcom-tipo">
+							<button class="w3-button w3-border btn-garcom-tipo">
+								<i class="far fa-circle"></i><br>
+								BROTO
+							</button>
+						</div>
+						<div class="w3-cell cell-garcom-tipo">
+							<button class="w3-button w3-border w3-round btn-garcom-tipo">
+								<i class="far fa-circle"></i><br>
+								GRANDE
+							</button>
+						</div>
+					</div>
+					<hr class="garcom-hr">
+					<div class="w3-cell-row">
+						<div class="w3-cell cell-garcom-tipo">
+							<button class="w3-button w3-border btn-garcom-tipo">
+								<i class="far fa-circle"></i><br>
+								1/3
+							</button>
+						</div>
+						<div class="w3-cell cell-garcom-tipo">
+							<button class="w3-button w3-border btn-garcom-tipo">
+								<i class="far fa-circle"></i><br>
+								1/2
+							</button>
+						</div>
+						<div class="w3-cell cell-garcom-tipo">
+							<button class="w3-button w3-border w3-round btn-garcom-tipo">
+								<i class="far fa-circle"></i><br>
+								INTEIRA
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="w3-bottom container-btn-garcom">
+					<button class="w3-button w3-round w3-red w3-block btn-garcom">
+						PRÓXIMO
+						<i class="fa fa-chevron-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </template>
 
@@ -87,16 +174,8 @@ import ModalProduto from "../commons/Modal.vue"
 
 <style scoped>
 .list-icon{
-	width: 25%;
+	width: 20%;
 	text-align: center;
-	padding-left: 10px
 }
-.mesa-title{
-	margin: 0 24px;
-	text-align: left;
-	font-size: 1em
-}
-.container-garcom{
-	height: 66vh
-}
+
 </style>
