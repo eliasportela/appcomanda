@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Lista CCB</title>
     <link rel="stylesheet" href="/static/elias.css">
+    <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
   </head>
   
@@ -16,14 +17,29 @@
       background-color: #fcfcfc
     }
     .login-cliente{
-      background-image: url("static/imgs/bg1.jpg");
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: auto 100%;
+      background: url("static/imgs/bg1.jpg") no-repeat center top fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+    .login-cliente > #site{
+      background-color: rgba(0,0,0,0.3);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
     }
   </style>
-  <body class="gray">
-    <div id="app"></div>
+  <body>
+    <div id="site">
+      <div id="app"></div>
+    </div>
     <!-- built files will be auto injected -->
   </body>
 </html>

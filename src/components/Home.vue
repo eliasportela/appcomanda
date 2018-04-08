@@ -1,34 +1,32 @@
 <template>
 	<div>
 		<top-bar></top-bar>
-		<container style="margin-top:80px">
-			<div class="w3-center boas-vindas">
-				<div>
-					<img src="../assets/logo3.png" class="img-logo">	
-				</div>
-				<span class="title">Le CARD</span><br>
-				</span>
-				<div class="form">
-					<form class="">
-						<div class="">
-							<label class="label">Número da comanda</label>
-							<input type="text" class="w3-input input" placeholder="Exemplo: ca12">
-							<button type="button" class="w3-button w3-border w3-round w3-margin-top btn" @click="selComanda">
-								<i class="fa fa-search"></i>
-								BUSCAR
-							</button>
-						</div>
-						<div class="qr-code">
-							<label class="w3-large">Ler QR CODE</label><br>
-							<button class="w3-button w3-border w3-round w3-margin-top btn">
-								<i class="fa fa-camera"></i>
-								QR CODE
-							</button>
-						</div>
-					</form>	
-				</div>
+		<div class="w3-center w3-display-middle home-container">
+			<div class="home-img-container">
+				<img src="../assets/logo3.png" class="home-img">
 			</div>
-		</container>
+			<span class="home-title">Le CARD</span><br>
+			</span>
+			<div class="home-form">
+				<form class="">
+					<div class="">
+						<label class="home-label">Número da comanda</label>
+						<input type="text" class="w3-input home-input" placeholder="Exemplo: ca12">
+						<button type="button" class="w3-button w3-border w3-round home-btn" @click="selComanda">
+							<i class="fa fa-search"></i>
+							BUSCAR
+						</button>
+					</div>
+					<div class="home-qr-code">
+						<label class="w3-large">Ler QR CODE</label><br>
+						<button class="w3-button w3-border w3-round home-btn">
+							<i class="fa fa-camera"></i>
+							QR CODE
+						</button>
+					</div>
+				</form>	
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -48,51 +46,12 @@ export default {
 	},
 	methods:{
 		selComanda(){
-			this.$router.push("comanda-cliente/"+123)
+			this.$router.push("comanda")
 		}
 	}
 }
 </script>
 
 <style scoped>
-
-.boas-vindas{
-	font-weight: bold;
-}
-.title{
-	font-size: 2em;
-	font-family: sans-serif;
-}
-.subtitle{
-	font-size: 1.1em;
-	font-family: sans-serif;
-}
-.img-logo{
-	width: 96px;
-	height: 96px;
-}
-.form{
-	margin-top: 10%;
-}
-.input{
-	background-color: rgba(255,255,255,0.0);
-	color: #fff;
-	text-align: center;
-	font-size: 1.2em;
-	display: initial;
-	width: 80%;
-	border-bottom: 2px solid #fff;
-	margin-bottom: 5%
-
-}
-.qr-code{
-	margin-top: 20%
-}
-.btn {
-	width: 80%
-}
-.label{
-	font-size: 1.1em;
-}
 </style>
 

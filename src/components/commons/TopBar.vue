@@ -1,17 +1,14 @@
 <template>
 	<div class="w3-top">
-		<div class="w3-bar w3-text-white w3-padding w3-red">
-			<router-link to="/" class="w3-bar-item w3-button title">Le CARD</router-link>
-			<button class="w3-bar-item w3-red w3-right icon" @click="abrirMenu">
+		<div class="w3-bar w3-red top-bar">
+			<router-link to="/" class="w3-bar-item w3-button top-bar-title">Le CARD</router-link>
+			<button class="w3-bar-item w3-red w3-right top-bar-icon" @click="abrirMenu">
 				<i class="fa" :class="fa"></i>
 			</button>
 		</div>
-		<div class="w3-sidebar w3-card w3-bar-block w3-red w3-padding w3-round sidebar" v-show="menu">
-		  <router-link :to="'/voluntarios'" class="w3-bar-item w3-button w3-border-bottom w3-padding-16 link" @click.native="abrirMenu">
+		<div class="w3-sidebar w3-card w3-bar-block w3-red w3-round top-bar-sidebar" v-show="menu">
+		  <router-link :to="'/login'" class="w3-bar-item top-bar-link" @click.native="abrirMenu">
 		  	Garçom
-		  </router-link>
-		  <router-link :to="'/login'" class="w3-bar-item w3-button w3-padding-16 link" @click.native="abrirMenu">
-		  	Login
 		  </router-link>
 		</div>
 	</div>
@@ -39,23 +36,30 @@
 
 
 <style>
-i{
-	font-size: 1.5em;
+.top-bar{
+	padding: 4px 4px
 }
-.title {
+.top-bar-title {
 	font-weight: bold;
 	font-size: 1.5em
 }
-.icon {
-	margin-top: 0.3em
+.top-bar-icon {
+	margin: 6px 1px;
 }
-.sidebar {
-	width:50%;
+.top-bar-sidebar {
+	width:40%;
 	right:1%;
 	height:inherit;
+	padding: 6px 8px;
 }
-.link {
-	font-size: 1.2em;
+.top-bar-link {
+	font-size: 1em;
 	font-weight: bold;
+	text-decoration: none;
+	border-color: #fff!important;
+	padding: 12px!important;
+}
+.top-bar-link:last-child {
+	border-color: none;
 }
 </style>

@@ -1,0 +1,218 @@
+/*Style commons*/
+.title{
+	margin-bottom: 16px;
+	font-size: 1.2em
+}
+.title-client{
+	margin-top: 1.2%;
+	margin-bottom: -3%;
+	color: #aaa;
+	font-weight: 900!important;
+	font-size: 1.2em;
+	padding: 2% 8%;
+}
+
+/*Style modal*/
+.w3-modal{
+	padding: 0;
+}
+.w3-modal-content{
+	height: 100%;
+	width: 100%!important;
+	margin: 0;
+	overflow: hidden;
+}
+.show{
+	display: block;
+}
+.modal-voltar{
+	margin-bottom: -3%;
+	color: #aaa;
+	font-weight: 900!important;
+	font-size: 1.4em;
+	padding: 4% 8% 2% 8%;
+}
+.w3-container h4{
+	padding: 0;
+	margin: 0
+}
+.w3-container i{
+	font-size: 1.1em
+}
+.title-modal{
+	padding-top: 12px;
+}
+
+/*listas*/
+.list{
+	padding: 8px;
+	border: 1.5px solid #bbb;
+	border-radius: 4px;
+	margin-top: 12px
+}
+.list:first-child{
+	margin-top: 0
+}
+.list-icon{
+	vertical-align: middle;
+}
+.list-text{
+	vertical-align: middle;
+}
+.list-img{
+	width: 33%
+}
+.list-img > img{
+	height: 64px;
+	width: auto;
+}
+
+/*Container*/
+.container {
+	height: 79vh;
+	border: 1.5px solid #aaa;
+	overflow: auto;
+	color: #34373d;
+	font-weight: bold;
+	margin: 10px 16px;
+	padding:16px;
+}
+
+/*Cardapio Cliente Modal*/
+.cardapio{
+	margin: 8px 24px;
+	font-weight: 700;
+}
+.container-cardapio{
+	height: 68vh;
+	overflow: auto;
+	padding: 0 12px;
+}
+.cardapio-item{
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+.cardapio-item:first-child{
+	padding-top: 0
+}
+.cardapio-image{
+	border: 2px solid #f44336;
+	border-radius: 10px;
+	width: 100%;
+	height: 80px;
+	object-fit: cover;
+}
+.cardapio-preco{
+	width: 25%;
+	text-align: center;
+	padding-left: 4px
+}
+.cardapio-ingredientes{
+	font-size: 0.9em;
+	font-weight: 400
+}
+.info-list{
+	margin-top: 5%;
+	padding: 4px;
+}
+.info-list > ul > li {
+	border: none;
+}
+.info-icon{
+	color: #ffff00;
+	font-size: 1.3em
+}
+
+/*Pedido*/
+.pedido-item{
+	padding: 18px!important;
+}
+
+/*Comanda-cliente*/
+.obs-comanda{
+	font-size: 0.9em;
+	font-weight: normal;
+	margin-top: 8px;
+}
+.comanda-produto{
+	border-bottom: 0.8px solid #ccc;
+	padding-bottom: 8px
+
+}
+.comanda-ul {
+	line-height: 15px;
+	margin-top: 12px
+}
+.comanda-ul > li {
+	border: inherit;
+	font-size: 0.9em
+}
+
+/*Home e Login*/
+.home-container{
+	font-weight: 900;
+	color: #fff;
+	width: 80%
+}
+.home-img-container{
+	margin-top: 8%
+}
+.home-title{
+	font-size: 2em;
+	font-family: sans-serif;
+}
+.home-img{
+	width: 96px;
+	height: 96px;
+}
+.home-form{
+	margin-top: 10%;
+}
+.home-input{
+	background-color: rgba(255,255,255,0.0);
+	color: #fff;
+	text-align: center;
+	font-size: 1.2em;
+	display: initial;
+	width: 80%;
+	border-bottom: 3px solid #fff;
+	margin-bottom: 5%
+}
+.home-qr-code{
+	margin-top: 15%
+}
+.home-btn {
+	width: 80%;
+	border: 2px solid #fff!important;
+	margin-top: 16px
+}
+.home-label{
+	font-size: 1.1em;
+}
+.login-icon{
+	width: 10%;
+	text-align: right;
+	font-size: 2em;
+	padding-left: 16px
+}
+
+/*GARCOM*/
+.container-garcom{
+	margin: 0 16px;
+	border: 2px solid #bbb;
+	padding: 16px;
+	height: 70vh;
+	overflow: auto;
+	font-weight: 900
+}
+.title-garcom{
+	padding: 11vh 0 1.5vh 0;
+	color: #aaa;
+	font-weight: 900!important;
+	font-size: 1.2em;
+	text-align: center;
+}
+.btn-garcom{
+	padding: 12px;
+	font-weight: 900
+}

@@ -1,23 +1,30 @@
 <template>
-	<div class="w3-bottom w3-center">
-		<div class="w3-red w3-cell-row">
-			<div class="w3-cell col active">
-				<div class="w3-button">
-					<i class="fa fa-th-list"></i><br>
-					<span class="w3-small">COMANDA</span>
-				</div>
+	<div>
+		<div class="w3-bottom w3-center">
+			<div class="w3-red w3-cell-row">
+				<router-link class="w3-cell col" to="comanda" activeClass="active">
+					<div class="w3-button">
+						<i class="fa fa-th-list"></i><br>
+						<span class="w3-small">COMANDA</span>
+					</div>
+				</router-link>
+				<router-link class="w3-cell col" to="cardapio" activeClass="active">
+					<div class="w3-button">
+						<i class="fa fa-th"></i><br>
+						<span class="w3-small">CARDÁPIO</span>
+					</div>
+				</router-link>
+				<router-link class="w3-cell col" to="pedidos" activeClass="active">
+					<div class="w3-button">
+						<i class="fa fa-bell"></i><br>
+						<span class="w3-small">PEDIDOS</span>
+					</div>
+				</router-link>
 			</div>
-			<div class="w3-cell col">
-				<div class="w3-button">
-					<i class="fa fa-th"></i><br>
-					<span class="w3-small">CARDÁPIO</span>
-				</div>
-			</div>
-			<div class="w3-cell col">
-				<div class="w3-button">
-					<i class="fa fa-sign-out-alt"></i><br>
-					<span class="w3-small">SAIR</span>
-				</div>
+		</div>
+		<div class="w3-top">
+			<div class="w3-right menu">
+				<i class="fa fa-ellipsis-v"></i>	
 			</div>
 		</div>
 	</div>
@@ -60,5 +67,15 @@ i{
 }
 .active > .w3-button > i{
 	color: #fff!important;
+}
+.w3-button:hover{
+	background-color: #f44336!important
+}
+.menu{
+	padding: 15px 24px;
+}
+.menu i {
+	color: #aaa;
+	font-size: 1.2em
 }
 </style>

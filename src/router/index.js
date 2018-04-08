@@ -1,15 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-//pages
 import Home from '@/components/Home'
-import ComandaCliente from '@/components/ComandaCliente'
 
-import About from '@/components/About'
-import Voluntarios from '@/components/Voluntarios'
-import Estados from '@/components/Estados'
-import Listas from '@/components/Listas'
-import ListaConteudo from '@/components/ListaConteudo'
+//cliente
+import ComandaCliente from '@/components/cliente/ComandaCliente'
+import CardapioCliente from '@/components/cliente/CardapioCliente'
+import PedidosCliente from '@/components/cliente/PedidosCliente'
+
+//cliente
+import LoginGarcom from '@/components/garcom/Login'
+import ComandaGarcom from '@/components/garcom/ComandaGarcom'
+import ComandaMesa from '@/components/garcom/ComandaMesa'
 
 Vue.use(Router)
 
@@ -22,34 +24,34 @@ export default new Router({
       component: Home
     },
     {
-      path: '/comanda-cliente/:ref',
+      path: '/comanda',
       name: 'ComandaCliente',
       component: ComandaCliente
     },
     {
-      path: '/estados',
-      name: 'Estados',
-      component: Estados
+      path: '/cardapio',
+      name: 'CardapioCliente',
+      component: CardapioCliente
     },
     {
-      path: '/sobre-nos',
-      name: 'About',
-      component: About
+      path: '/pedidos',
+      name: 'PedidosCliente',
+      component: PedidosCliente
     },
     {
-      path: '/voluntarios',
-      name: 'Voluntarios',
-      component: Voluntarios
+      path: '/login',
+      name: 'LoginGarcom',
+      component: LoginGarcom
     },
     {
-      path: '/:estado',
-      name: 'Listas',
-      component: Listas
+      path: '/comanda-garcom',
+      name: 'ComandaGarcom',
+      component: ComandaGarcom
     },
     {
-      path: '/:reflista/:dslista',
-      name: 'ListaConteudo',
-      component: ListaConteudo
+      path: '/comanda-mesa',
+      name: 'ComandaMesa',
+      component: ComandaMesa
     }
   ]
 })
