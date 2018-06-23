@@ -2,9 +2,6 @@
 	<div>
 		<top-bar></top-bar>
 		<div class="w3-center w3-display-middle home-container">
-			<div class="home-img-container">
-				<img src="../assets/logo3.png" class="home-img">
-			</div>
 			<span class="home-title">Le CARD</span><br>
 			</span>
 			<div class="home-form">
@@ -34,9 +31,6 @@
 import TopBar from "./commons/TopBar.vue"
 import Container from "./commons/Container.vue"
 export default {
-	beforeCreate: function() {
-		document.body.className = 'login-cliente';
-	},
 	components:{Container,TopBar},
 	name: 'Home',
 	data () {
@@ -53,5 +47,13 @@ export default {
 </script>
 
 <style scoped>
+.home-container{
+	border: 1px solid rgba(255,255,255,0.8);
+	border-radius: 4px;
+	padding: 10% 0 15% 0;
+	margin-top: 4%;
+	background-color: rgba(0,0,0,0.5);
+
+}
 </style>
 

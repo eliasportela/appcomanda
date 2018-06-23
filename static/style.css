@@ -1,7 +1,13 @@
 /*Style commons*/
+.text-primary{
+	color: #aaa!important
+}
 .title{
-	margin-bottom: 16px;
-	font-size: 1.2em
+	margin-bottom: 10px;
+	font-size: 1em;
+	font-weight: 700;
+	color: #aaa;
+	text-align: center;
 }
 .title-client{
 	margin-top: 1.2%;
@@ -11,7 +17,18 @@
 	font-size: 1.2em;
 	padding: 2% 8%;
 }
-
+.container-bottom{
+	margin: 67px 16px 80px 16px;
+	font-weight: 700;
+	color:#444
+}
+.top-bar{
+	box-shadow: 0px 2px 6px -1px rgba(0,0,0,0.75);
+	background-color: #f44336;
+	color: #fff;
+	font-weight: 900;
+	padding: 16px
+}
 /*Style modal*/
 .w3-modal{
 	padding: 0;
@@ -21,6 +38,9 @@
 	width: 100%!important;
 	margin: 0;
 	overflow: auto;
+}
+.w3-modal-content::-webkit-scrollbar {
+  display: none;
 }
 .show{
 	display: block;
@@ -48,23 +68,29 @@
 	padding: 8px;
 	border: 1.5px solid #bbb;
 	border-radius: 4px;
-	margin-top: 12px
+	margin-top: 12px;
+	color: #aaa;
+	font-weight: bold;
 }
 .list:first-child{
 	margin-top: 0
 }
 .list-icon{
 	vertical-align: middle;
+    padding-right: 8px;
+	text-align: right;
 }
 .list-text{
 	vertical-align: middle;
 }
 .list-img{
-	width: 33%
+	width: 33%;
+	text-align: left;
 }
 .list-img > img{
 	height: 64px;
 	width: auto;
+	text-align: left;
 }
 
 /*Container*/
@@ -80,13 +106,8 @@
 
 /*Cardapio Cliente Modal*/
 .cardapio{
-	margin: 8px 24px;
+	margin: 70px 16px 16px 16px;
 	font-weight: 700;
-}
-.container-cardapio{
-	height: 68vh;
-	overflow: auto;
-	padding: 0 12px;
 }
 .cardapio-item{
 	padding-top: 4px;
@@ -127,17 +148,14 @@
 .pedido-item{
 	padding: 18px!important;
 }
+.pedido-obs{
+	font-size: 0.8em
+}
 
 /*Comanda-cliente*/
 .obs-comanda{
 	font-size: 0.9em;
 	font-weight: normal;
-	margin-top: 8px;
-}
-.comanda-produto{
-	border-bottom: 0.8px solid #ccc;
-	padding-bottom: 8px
-
 }
 .comanda-ul {
 	line-height: 15px;
@@ -219,7 +237,7 @@
 }
 .btn-garcom{
 	padding: 12px;
-	font-weight: 900
+	font-weight: 900;
 }
 
 /*Mesa*/

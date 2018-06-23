@@ -3,7 +3,7 @@
 		<top-bar></top-bar>
 		<div class="w3-center w3-display-middle home-container">
 			<div class="home-title">
-				<span>Garçom</span>
+				<span>Login</span>
 			</div>
 			</span>
 			<div class="login-form">
@@ -24,8 +24,8 @@
 							<input type="text" class="w3-input home-input" placeholder="Senha">
 						</div>
 					</div>
-					<div>
-						<button type="button" class="w3-button w3-round home-btn w3-red" @click="selComanda">
+					<div class="login-btn">
+						<button type="button" class="w3-button w3-round w3-block w3-red" @click="selComanda">
 							ENTRAR
 						</button>
 					</div>
@@ -38,9 +38,6 @@
 <script>
 import TopBar from "../commons/TopBar.vue"
 export default {
-	beforeCreate: function() {
-		document.body.className = 'login-cliente';
-	},
 	components:{TopBar},
 	name: 'Home',
 	data () {
@@ -58,17 +55,17 @@ export default {
 
 <style scoped>
 .home-container{
-	border: 2px solid #fff;
+	border: 1px solid rgba(255,255,255,0.5);
 	border-radius: 4px;
 	padding: 10% 0 15% 0;
 	margin-top: 4%;
-	background-color: rgba(0,0,0,0.7);
+	background-color: rgba(0,0,0,0.4);
 }
 .home-input{
 	text-align: left;
 }
-.home-btn{
-	margin-top: 42px
+.login-btn{
+	margin: 32px 16px 0 16px
 }
 .home-title{
 	margin-bottom: 32px

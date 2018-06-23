@@ -1,12 +1,12 @@
 <template>
 	<div class="w3-top">
-		<div class="w3-bar w3-red top-bar">
+		<div class="w3-bar w3-red top-bar top-bar-home">
 			<router-link to="/" class="w3-bar-item w3-button top-bar-title">Le CARD</router-link>
 			<button class="w3-bar-item w3-red w3-right top-bar-icon" @click="abrirMenu">
 				<i class="fa" :class="fa"></i>
 			</button>
 		</div>
-		<div class="w3-sidebar w3-card w3-bar-block w3-red w3-round top-bar-sidebar" v-show="menu">
+		<div class="w3-sidebar w3-card w3-bar-block w3-round top-bar-home-sidebar" v-show="menu">
 		  <router-link :to="'/login'" class="w3-bar-item top-bar-link" @click.native="abrirMenu">
 		  	Garçom
 		  </router-link>
@@ -36,30 +36,30 @@
 
 
 <style>
-.top-bar{
-	padding: 4px 4px
+.top-bar-home{
+	padding: 6px 4px
 }
-.top-bar-title {
+.top-bar-home-title {
 	font-weight: bold;
 	font-size: 1.5em
 }
-.top-bar-icon {
+.top-bar-home-icon {
 	margin: 6px 1px;
 }
-.top-bar-sidebar {
+.top-bar-home-sidebar {
 	width:40%;
 	right:1%;
 	height:inherit;
 	padding: 6px 8px;
 }
-.top-bar-link {
+.top-bar-home-link {
 	font-size: 1em;
 	font-weight: bold;
 	text-decoration: none;
 	border-color: #fff!important;
 	padding: 12px!important;
 }
-.top-bar-link:last-child {
+.top-bar-home-link:last-child {
 	border-color: none;
 }
 </style>

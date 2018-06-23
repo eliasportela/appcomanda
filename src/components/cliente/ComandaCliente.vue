@@ -1,10 +1,13 @@
 <template>
 	<div>
-		<div class="w3-container title-client">
+		<div class="w3-top top-bar">
 			<span>COMANDA: CA404</span>
 		</div>
-		<div class="w3-margin-top container">
-			<div class="w3-cell-row list" v-for="item in 5">
+		<div class="container-bottom">
+			<div class="title">
+				PRODUTOS
+			</div>
+			<div class="w3-cell-row list w3-padding-16" v-for="item in 10" @click="toogleProduto">
 				<div class="w3-cell">
 					<div class="comanda-produto"> 
 						<span>Pizza Lombinho Catupiry</span>
@@ -20,23 +23,36 @@
 			</div>
 		</div>
 		
-		<modal-produto>
-			<div class="w3-center w3-border-bottom w3-padding">
-				PRODUTO
+		<div class="w3-modal" :class="{'show':modalProduto}">
+			<div class="w3-modal-content">
+				<div class="w3-top top-bar">
+					<span class="w3-right" @click="toogleProduto">
+						FECHAR 
+						<i class="fa fa-times"></i>
+					</span>
+					<span>
+						<i class="fa fa-th"></i>
+					</span>
+				</div>
+				<div class="container-bottom">
+					<div class="w3-center w3-border-bottom w3-padding title">
+						PRODUTO
+					</div>
+					<ul class="w3-ul comanda-ul">
+						<li>1/2 - Pizza Lombo Catupiry</li>
+						<li>1/2 - Pizza Lombo Catupiry</li>
+					</ul>
+					<div class="w3-margin-top w3-center w3-border-bottom w3-padding title">
+						ADICIONAIS E OBSERVAÇÕES
+					</div>
+					<ul class="w3-ul comanda-ul">
+						<li>- S/ Cebola</li>
+						<li>- C/ Bacon</li>
+						<li>- C/ Borda Catupiry</li>
+					</ul>
+				</div>
 			</div>
-			<ul class="w3-ul comanda-ul">
-				<li>1/2 - Pizza Lombo Catupiry</li>
-				<li>1/2 - Pizza Lombo Catupiry</li>
-			</ul>
-			<div class="w3-margin-top w3-center w3-border-bottom w3-padding">
-				ADICIONAIS E OBSERVAÇÕES
-			</div>
-			<ul class="w3-ul comanda-ul">
-				<li>- S/ Cebola</li>
-				<li>- C/ Bacon</li>
-				<li>- C/ Borda Catupiry</li>
-			</ul>
-		</modal-produto>
+		</div>
 		
 		<bottom-bar></bottom-bar>
 
@@ -53,16 +69,21 @@ import ModalProduto from "../commons/Modal.vue"
 		},
 		components:{BottomBar,ModalProduto},
 		data(){
-	    return{
-	      produtos:4
-	    }
-	  }
+		    return{
+		      modalProduto:false
+		    }
+	  	},
+	  	methods:{
+	  		toogleProduto(){
+	  			this.modalProduto = !this.modalProduto
+	  		}
+	  	}
 	}
 </script>
 
 <style scoped>
 	.list-icon{
-		width: 20%;
+		width: 15%;
 		text-align: center;
 	}
 </style>

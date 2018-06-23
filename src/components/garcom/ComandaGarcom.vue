@@ -1,11 +1,11 @@
 <template>
 	<div>
 		<top-bar></top-bar>
-		<div class="title-garcom">
-			<span>COMANDAS ABERTAS</span>
-		</div>
-		<div class="container-garcom">
-			<div class="w3-cell-row list" v-for="item in 5">
+		<div class="container-bottom">
+			<div class="title">
+				<span>COMANDAS ABERTAS</span>
+			</div>
+			<div class="w3-cell-row w3-padding-16 list" v-for="item in 10">
 				<div class="w3-cell">
 					<div class="comanda-produto">
 						MESA 1
@@ -19,18 +19,25 @@
 				</div>
 			</div>
 		</div>
-		<div class="w3-margin">
-			<button class="w3-button w3-round w3-block w3-red btn-garcom">
-				NOVA COMANDA
-			</button>
+		<div class="w3-bottom w3-white">
+			<div class="w3-margin">
+				<button class="w3-button w3-round w3-red w3-block btn-garcom" @click="toogleComanda">
+					NOVA COMANDA
+				</button>	
+			</div>
 		</div>
-		<div class="w3-modal">
+		<div class="w3-modal" :class="{'show':modalComanda}">
 			<div class="w3-modal-content w3-animate-opacity">
-				<top-bar></top-bar>
+				<div class="w3-top top-bar">
+					<span @click="toogleComanda">
+						<i class="fa fa-chevron-left"></i>
+						Voltar
+					</span>
+				</div>
 				<div class="title-garcom">
 					<span>Selecione o número da mesa</span>
 				</div>
-				<div class="container-garcom">
+				<div class="comanda-garcom">
 					<div class="w3-border w3-padding comanda-input-mesa">
 						<span>Mesa:</span>
 						<span>12</span>
@@ -91,10 +98,12 @@
 						</textarea>
 					</div>
 				</div>
-				<div class="w3-margin">
-					<button class="w3-button w3-round w3-block w3-red btn-garcom">
-						CONFIRMAR
-					</button>
+				<div class="w3-bottom w3-white garcom-container-btn">
+					<div class="w3-margin">
+						<button class="w3-button w3-round w3-red w3-block btn-garcom" @click="novaComanda">
+							CONFIRMAR
+						</button>	
+					</div>
 				</div>
 			</div>
 		</div>
@@ -111,10 +120,19 @@ import ModalProduto from "../commons/Modal.vue"
 		},
 		components:{TopBar,ModalProduto},
 		data(){
-	    return{
-	      produtos:4
+		    return{
+		      produtos:'',
+		      modalComanda: false
+		    }
+		},
+	    methods:{
+	    	toogleComanda(){
+	    		this.modalComanda = !this.modalComanda;
+	    	},
+	    	novaComanda(){
+	    		this.$router.push("comanda-mesa")
+	    	}
 	    }
-	  }
 	}
 </script>
 
@@ -131,13 +149,25 @@ import ModalProduto from "../commons/Modal.vue"
 	height: 50px
 }
 .comanda-input-mesa{
-	margin: 0 16px
+	margin: 0 20px;
+	color: #aaa;
+	font-weight: 900
 }
 .comanda-add-obs{
 
 }
 .w3-text{
 	resize: none;
+}
+.garcom-bottom{
+	margin: 16px
+}
+.w3-modal-content{
+	height: 110%
+}
+
+.w3-text:focus + div{
+    background-color: red
 }
 
 </style>
