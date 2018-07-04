@@ -1,0 +1,44 @@
+#Colocar os botoes de criação da comanda em cima
+
+#Melhorar o cardapio (Desprender a Header e colcar o "sair X" como fixed)
+
+
+==========================
+#BD
+
+#Cliente
+#Comanda
+
+getComandaByReferencia
+-ReferenciaComanda
+
+getProdutosComandaByComandaReferencia
+-nomeProdutosComanda
+-qtdProdutosComanda
+-idProdutosComanda
+
+getDetalhesProdutoComanda
+-nomeProduto
+-obsProduto
+
+#Cliente
+#Cardapio
+
+GetCategoriasProdutos
+-nomeCategoria
+-idCategoria
+-fotoCategoria
+
+getProdutosCategoria
+-nomeProduto
+-nomesItensProdutos
+-tabelaPreçosProduto
+-valorTabelaPreçoProduto
+
+getPedidosByComandaReferencia
+(Apenas produtos que geram pedidos)
+-statusComandaProduto
+-nomeComandaProduto
+-DataPedidoComandaProduto
+-obsComandaProduto
+

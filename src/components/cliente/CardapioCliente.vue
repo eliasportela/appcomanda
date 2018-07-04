@@ -7,12 +7,12 @@
 			<div class="title">
 				ESCOLHA UMA CATEGORIA
 			</div>
-			<div class="w3-cell-row list w3-center" v-for="i in 2" @click="toogleCardapio">
+			<div class="w3-cell-row list w3-center" v-for="c in categoria" :key="c.id_categoria" @click="toogleCardapio">
 				<div class="w3-cell list-img">
 					<img src="../../assets/pizzas.jpg" class="w3-image">
 				</div>
 				<div class="w3-cell list-text" style="width:33%">
-					<span>PIZZAS</span>
+					<span>{{c.nome_categoria}}</span>
 				</div>
 				<div class="w3-cell list-icon" style="width:33%">
 					<i class="fa fa-angle-right"></i>
@@ -24,7 +24,7 @@
 			<div class="w3-modal-content w3-animate-opacity">
 				<div class="w3-container w3-top cardapio-top">
 					<div class="w3-text-white w3-padding-16 title-modal">
-						<span class="w3-large"> 
+						<span class="w3-large">
 							<b>PIZZAS</b>
 						</span>
 						<i class="fa fa-times w3-right w3-xlarge" @click="toogleCardapio"></i>
@@ -35,10 +35,16 @@
 						<img src="../../assets/pizzas.jpg" class="cardapio-image">
 					</div>
 					<hr>
-					<div class="w3-cell-row cardapio-item" v-for="iten in 12">
+					<div class="w3-cell-row cardapio-item">
 						<div class="w3-cell">
-							<span class="cardapio-produto">01 - Lombinho com Catupiry</span><br>
-							<span class="cardapio-ingredientes">(Lombinho, mussarela, catupiry, molho de tomate)</span>
+							<span class="cardapio-produto">
+                <!-- {{ l.ref_produto }} - {{ l.nome_produto }} -->
+                </span><br>
+							<span class="cardapio-ingredientes">
+							  <span>
+                  <!-- {{te.}} -->
+                </span>
+              </span>
 						</div>
 						<div class="w3-cell cardapio-preco">
 							<div class="w3-red w3-round">
@@ -70,7 +76,7 @@
 								Pizzas 1/2 a 1/2 será cobrado pelo valor maior
 							</li>
 							<li>
-								<i class="fa fa-asterisk w3-small info-icon"></i> 
+								<i class="fa fa-asterisk w3-small info-icon"></i>
 								Todas as pizzas levam molho de tomate e azeitonas
 							</li>
 						</ul>
@@ -91,15 +97,43 @@ export default {
 	components:{BottomBar},
 	data(){
 		return{
-			categoria: '',
-			cardapio: false
+      resource: this.$resource('http://localhost/comanda/api/item-produto/1'),
+			categoria: [],
+			cardapio: false,
+      listas: [],
 		}
 	},
 	methods:{
+    initialize (){
+      console.log("tete");
+      this.resource.get({}).then((response) => {
+          this.listas = response.data
+          //this.load = false
+          //this.loadlista = true;
+        },response => {
+          console.log(this.listas);
+            //this.load = false;
+            //this.loadBad = true;
+        });
+    },
 		toogleCardapio(){
 			this.cardapio = !this.cardapio;
 		}
-	}
+	},
+  created: function () {
+    this.$http.get('http://localhost/comanda/api/categorias/')
+      .then(response => {
+        this.categoria = response.data;
+        console.log(this.categoria)
+      });
+
+    this.$http.get('http://localhost/comanda/api/item-produto/2')
+      .then(response => {
+        this.listas = response.data;
+        console.log(this.listas)
+      });
+
+  }
 }
 </script>
 

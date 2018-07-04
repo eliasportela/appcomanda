@@ -7,13 +7,13 @@
 			<div class="title">
 				PRODUTOS
 			</div>
-			<div class="w3-cell-row list w3-padding-16" v-for="item in 10" @click="toogleProduto">
+			<div class="w3-cell-row list w3-padding-16" v-for="p in produtos" :key="p.id" @click="toogleProduto">
 				<div class="w3-cell">
-					<div class="comanda-produto"> 
-						<span>Pizza Lombinho Catupiry</span>
+					<div class="comanda-produto">
+						<span>{{p.nome_produto}}</span>
 					</div>
 					<div class="obs-comanda">
-						<span><b>QTD:</b> 1/2</span>
+						<span><b>QTD:</b> {{p.quantidade}}</span>
 					</div>
 				</div>
 				<div class="w3-cell list-icon">
@@ -22,12 +22,12 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="w3-modal" :class="{'show':modalProduto}">
 			<div class="w3-modal-content">
 				<div class="w3-top top-bar">
 					<span class="w3-right" @click="toogleProduto">
-						FECHAR 
+						FECHAR
 						<i class="fa fa-times"></i>
 					</span>
 					<span>
@@ -53,7 +53,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<bottom-bar></bottom-bar>
 
 	</div>
@@ -70,6 +70,8 @@ import ModalProduto from "../commons/Modal.vue"
 		components:{BottomBar,ModalProduto},
 		data(){
 		    return{
+          idComanda: "",
+          produtos: [],
 		      modalProduto:false
 		    }
 	  	},
@@ -77,7 +79,14 @@ import ModalProduto from "../commons/Modal.vue"
 	  		toogleProduto(){
 	  			this.modalProduto = !this.modalProduto
 	  		}
-	  	}
+	  	},
+      created: function () {
+        this.$http.get('http://localhost/comanda/api/comanda/produtos/1')
+          .then(response => {
+            this.produtos = response.data;
+            console.log(this.produtos)
+          });
+      }
 	}
 </script>
 

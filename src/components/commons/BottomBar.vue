@@ -22,9 +22,9 @@
 				</router-link>
 			</div>
 		</div>
-		<div class="w3-top">
+		<div class="w3-top w3-hide">
 			<div class="w3-right menu">
-				<i class="fa fa-ellipsis-v"></i>	
+				<i class="fa fa-ellipsis-v"></i>
 			</div>
 			<div class="w3-sidebar w3-card w3-bar-block w3-round top-bar-cliente-sidebar" >
 			  <router-link :to="'/'" class="w3-bar-item top-bar-link" @click.native="abrirMenu">
@@ -71,7 +71,7 @@
 .col > i{
 	font-size: 1.2em;
 }
-.active{	
+.active{
 	color: #fff;
 	border-top: 3px solid #fff;
 }
