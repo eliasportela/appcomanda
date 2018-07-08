@@ -5,10 +5,10 @@
 			<div class="w3-cell-row">
 			<div class="w3-cell w3-cell-middle">
 				<div>
-					<span>COMANDAS: C0123</span>	
+					<span>COMANDA: {{comanda.ref_comanda}}</span>	
 				</div>
 				<div>
-					<span>OBS: Elias Portela</span>	
+					<span>OBS: {{comanda.observacao}}</span>	
 				</div>	
 			</div>
 			<div class="w3-cell w3-center w3-cell-middle">
@@ -18,13 +18,13 @@
 			</div>
 		</div>
 		<div class="container-garcom">
-			<div class="w3-cell-row list">
+			<div class="w3-cell-row list" v-for="p in produtos">
 				<div class="w3-cell">
 					<div class="comanda-produto"> 
-						<span>Lombinho Catupiry</span>
+						<span>{{p.nome_produto}}</span>
 					</div>
 					<div class="obs-comanda">
-						<span><b>QTD:</b> 1/2</span>
+						<span><b>QTD:</b> {{p.quantidade}}</span>
 					</div>
 				</div>
 				<div class="w3-cell list-icon">
@@ -82,12 +82,6 @@
 			<div class="w3-modal-content w3-animate-opacity">
 				<top-bar></top-bar>
 				<div class="title-garcom">
-					<button class="w3-button w3-round w3-block w3-red">
-						CANCELAR
-						<i class="fa fa-times"></i>
-					</button>
-				</div>
-				<div class="garcom-label">
 					SELECIONE O TIPO DO PRODUTO
 				</div>
 				<div class="container-garcom garcom-tipo-produto">
@@ -158,17 +152,33 @@
 <script>
 
 import TopBar from "../commons/TopBar.vue"
-import ModalProduto from "../commons/Modal.vue"
+//import ModalProduto from "../commons/Modal.vue"
 	export default {
 		beforeCreate: function() {
 			document.body.className = 'cliente';
 		},
-		components:{TopBar,ModalProduto},
+		components:{TopBar/*,ModalProduto*/},
 		data(){
-	    return{
-	      produtos:4
-	    }
-	  }
+		    return{
+		      comanda:"",
+		      produtos:[]
+		    }
+	  },
+	  methods:{
+	  	buscarProdutos(id){
+	  		this.$http.get('http://localhost/comanda-server/admin/api/comanda-prudutos/' + id)
+		      .then(response => {
+		        this.produtos = response.data;
+		      });
+	  	}
+	  },
+	  created: function () {
+	        this.$http.get('http://localhost/comanda-server/admin/api/comanda/id/' + this.$route.params.id)
+		      .then(response => {
+		        this.comanda = response.data;
+		        this.buscarProdutos(this.comanda.id_comanda);
+		      });
+      }
 	}
 </script>
 

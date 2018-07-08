@@ -11,7 +11,7 @@ import PedidosCliente from '@/components/cliente/PedidosCliente'
 //cliente
 import LoginGarcom from '@/components/garcom/Login'
 import ComandaGarcom from '@/components/garcom/ComandaGarcom'
-import ComandaMesa from '@/components/garcom/ComandaMesa'
+import ComandaDetalhes from '@/components/garcom/ComandaDetalhes'
 
 Vue.use(Router)
 
@@ -49,9 +49,9 @@ export default new Router({
       component: ComandaGarcom
     },
     {
-      path: '/comanda-mesa',
-      name: 'ComandaMesa',
-      component: ComandaMesa
+      path: '/comanda-detalhes/:id',
+      name: 'ComandaDetalhes',
+      component: ComandaDetalhes
     }
   ]
 })

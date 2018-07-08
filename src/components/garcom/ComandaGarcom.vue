@@ -5,17 +5,17 @@
 			<div class="title">
 				<span>COMANDAS ABERTAS</span>
 			</div>
-			<div class="w3-cell-row w3-padding-16 list" v-for="item in 10">
+			<div class="w3-cell-row w3-padding-16 list" v-for="c in comandas" @click="abrirComanda(c.id_comanda)">
 				<div class="w3-cell">
 					<div class="comanda-produto">
-						MESA 1
+						{{c.nome_mesa}}
 					</div>
 					<div class="obs-comanda">
-						Obs: Elias Portela
+						Obs: {{c.observacao}}
 					</div>
 				</div>
 				<div class="w3-cell list-icon">
-					REF<br>C0121
+					REF<br>{{c.ref_comanda}}
 				</div>
 			</div>
 		</div>
@@ -121,7 +121,7 @@ import ModalProduto from "../commons/Modal.vue"
 		components:{TopBar,ModalProduto},
 		data(){
 		    return{
-		      produtos:'',
+		      comandas:'',
 		      modalComanda: false
 		    }
 		},
@@ -131,8 +131,17 @@ import ModalProduto from "../commons/Modal.vue"
 	    	},
 	    	novaComanda(){
 	    		this.$router.push("comanda-mesa")
+	    	},
+	    	abrirComanda(id){
+	    		this.$router.push("comanda-detalhes/"+id)	
 	    	}
-	    }
+	    },
+	    created: function () {
+	        this.$http.get('http://localhost/comanda-server/admin/api/comandas/')
+		      .then(response => {
+		        this.comandas = response.data;
+		      });
+      }
 	}
 </script>
 
