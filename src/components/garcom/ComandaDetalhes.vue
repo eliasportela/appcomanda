@@ -3,22 +3,22 @@
 		<top-bar></top-bar>
 		<div class="title-garcom mesa-title">
 			<div class="w3-cell-row">
-			<div class="w3-cell w3-cell-middle">
-				<div>
-					<span>COMANDA: {{comanda.ref_comanda}}</span>	
+				<div class="w3-cell w3-cell-middle">
+					<div>
+						<span>COMANDA: {{comanda.ref_comanda}}</span>	
+					</div>
+					<div>
+						<span>OBS: {{comanda.observacao}}</span>	
+					</div>	
 				</div>
-				<div>
-					<span>OBS: {{comanda.observacao}}</span>	
-				</div>	
-			</div>
-			<div class="w3-cell w3-center w3-cell-middle">
-				<i class="fa fa-edit fa-2x"></i><br>
-				<span class="w3-small">EDITAR</span>
-			</div>
+				<div class="w3-cell w3-center w3-cell-middle">
+					<i class="fa fa-edit fa-2x"></i><br>
+					<span class="w3-small">EDITAR</span>
+				</div>
 			</div>
 		</div>
 		<div class="container-garcom">
-			<div class="w3-cell-row list" v-for="p in produtos">
+			<div class="w3-cell-row list" v-for="p in produtosComanda">
 				<div class="w3-cell">
 					<div class="comanda-produto"> 
 						<span>{{p.nome_produto}}</span>
@@ -83,16 +83,16 @@
 					SELECIONE O TIPO DO PRODUTO
 				</div>
 				<div class="container-garcom garcom-tipo-produto">
-					<div class="w3-cell-row comanda-tipo" v-for="i in 3" @click="selCategoria(i)">
+					<div class="w3-cell-row comanda-tipo" v-for="c in categorias" @click="selCategoria(c.id_categoria,c.pizza)">
 						<div class="w3-cell list-text">
-							Pizzas
+							{{c.nome_categoria}}
 						</div>
 						<div class="w3-cell list-icon">
-							<i class="fa fa-check" v-show="categoriaSelecionada == i"></i>
+							<i class="fa fa-check" v-show="categoriaSelecionada == c.id_categoria"></i>
 						</div>
 					</div>
 				</div>
-				<div class="garcom-tipo-container w3-margin-top" v-show="categoriaSelecionada == 1">	
+				<div class="garcom-tipo-container w3-margin-top" v-show="showPizza">	
 					<hr class="garcom-hr">
 					<div class="w3-cell-row">
 						<div class="w3-cell cell-garcom-tipo">
@@ -109,35 +109,67 @@
 						</div>
 					</div>
 				</div>
-				<div class="w3-bottom container-btn-garcom">
-					<button class="w3-button w3-round w3-red w3-block btn-garcom" :disabled="!avancar" @click="avancarModal(2)">
-						PRÓXIMO
-						<i class="fa fa-chevron-right"></i>
-					</button>
-				</div>
 			</div>
 		</div>
 		<div class="w3-modal" :class="{'show':modalProduto}">
 			<div class="w3-modal-content">
 				<top-bar></top-bar>
 				<div class="title-garcom">
-					SELECIONE O PRODUTO
-				</div>
-				<div class="container-garcom garcom-tipo-produto">
-					<div class="w3-cell-row comanda-tipo" v-for="i in 10" @click="selProduto(i)">
-						<div class="w3-cell list-text">
-							{{i}} - Mozzarela
+					<div class="w3-cell-row">
+						<div class="w3-cell" style="width:50%;padding-right:4px">
+							<button class="w3-button w3-border w3-block">
+								<i class="fa fa-chevron-left"></i>
+								Voltar
+							</button>
 						</div>
-						<div class="w3-cell list-icon">
-							<i class="fa fa-check" v-show="produtoSelecionado == i"></i>
+						<div class="w3-cell" style="width:50%;padding-left:4px">
+							<button class="w3-button w3-border w3-block">
+								<i class="fa fa-times"></i>
+								Cancelar
+							</button>
 						</div>
 					</div>
 				</div>
-				<div class="w3-bottom container-btn-garcom">
-					<button class="w3-button w3-round w3-red w3-block btn-garcom" :disabled="!avancar">
-						PRÓXIMO
-						<i class="fa fa-chevron-right"></i>
-					</button>
+				<div class="container-garcom">
+					<div class="w3-cell-row comanda-tipo" v-for="p in produtos" @click="selProduto(p.id_produto, p.id_tabela)">
+						<div class="w3-cell list-text">
+							{{p.ref_produto}} - ({{p.nome_tabela}}) {{p.nome_produto}}
+						</div>
+						<div class="w3-cell list-icon">
+							<i class="fa fa-check" v-show="(produtoSelecionado == p.id_produto) && (tabelaSelecionada == p.id_tabela)"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="w3-modal" :class="{'show':modalAdicionais}">
+			<div class="w3-modal-content">
+				<top-bar></top-bar>
+				<div class="title-garcom">
+					<div class="w3-cell-row">
+						<div class="w3-cell" style="width:50%;padding-right:4px">
+							<button class="w3-button w3-border w3-block">
+								<i class="fa fa-chevron-left"></i>
+								Voltar
+							</button>
+						</div>
+						<div class="w3-cell" style="width:50%;padding-left:4px">
+							<button class="w3-button w3-border w3-block">
+								<i class="fa fa-times"></i>
+								Cancelar
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="container-garcom">
+					<div class="w3-cell-row comanda-tipo" v-for="a in adicionais" @click="selAdicionais(a.id_produto)">
+						<div class="w3-cell list-text">
+							{{a.nome_produto}}
+						</div>
+						<div class="w3-cell list-icon">
+							<i class="fa fa-check" v-show="adicionaisSelecionados.includes(a.id_produto)"></i>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -148,71 +180,135 @@
 
 import TopBar from "../commons/TopBar.vue"
 //import ModalProduto from "../commons/Modal.vue"
-	export default {
-		beforeCreate: function() {
-			document.body.className = 'cliente';
-		},
-		components:{TopBar/*,ModalProduto*/},
-		data(){
-		    return{
-		    	modalComanda:false,
-		    	modalInsercao:false,
-		    	categoriaSelecionada:0,
-		    	produtoSelecionado:0,
-		    	tipoPizza:0,
-		      	comanda:"",
-		      	produtos:[],
-		      	avancar:false,
-		      	modalProduto:false
-		    }
-	  },
-	  methods:{
-	  	buscarProdutos(id){
-	  		this.$http.get('http://localhost/comanda-server/admin/api/comanda-prudutos/' + id)
-		      .then(response => {
-		        this.produtos = response.data;
-		      });
-	  	},
-	  	toogleModalInsercao(){
-	  		this.modalInsercao = !this.modalInsercao
-	  	},
-	  	selCategoria(id){
-	  		this.categoriaSelecionada = id;
-	  		if (this.categoriaSelecionada != 1) {
-	  			this.avancar = true;
-	  		}else{
-	  			this.avancar = false;
-	  			if (this.tipoPizza > 0) {
-	  				this.avancar = true;	
-	  			}
-	  		}
-	  	},
-	  	selTipoPizza(id){
-	  		this.tipoPizza = id;
-	  		this.avancar = true;
-	  	},
-	  	selProduto(id){
-	  		this.produtoSelecionado = id;
-	  		this.avancar = true;
-	  	},
-	  	avancarModal(modal){
-	  		if (modal == 1) {
-	  			this.modalInsercao = true;
-	  			this.modalProduto = false;
-	  		} else if (modal == 2){
-	  			this.modalInsercao = false;
-	  			this.modalProduto = true;
-	  		}
-	  	}
-	  },
-	  created: function () {
-	        this.$http.get('http://localhost/comanda-server/admin/api/comanda/id/' + this.$route.params.id)
-		      .then(response => {
-		        this.comanda = response.data;
-		        this.buscarProdutos(this.comanda.id_comanda);
-		      });
-      }
+export default {
+	beforeCreate: function() {
+		document.body.className = 'cliente';
+	},
+components:{TopBar/*,ModalProduto*/},
+data(){
+	return{
+		url: 'http://192.168.1.7/',
+		modalComanda:false,
+		modalInsercao:false,
+		modalProduto:false,
+		modalAdicionais:false,
+		comanda:"",
+
+		produtosComanda:[],
+		categorias: [],
+		produtos:[],
+		itens:[],
+		tabelas:[],
+		adicionais:[],
+
+		categoriaSelecionada:0,
+		produtoSelecionado:0,
+		tabelaSelecionada:0,
+		adicionaisSelecionados:[],
+		tipoPizza:0,
+		showPizza: false,
+
 	}
+},
+methods:{
+	buscarProdutos(id){
+		this.$http.get(this.url + 'comanda-server/admin/api/comanda-prudutos/' + id)
+		.then(response => {
+			this.produtosComanda = response.data;
+		});
+	},
+	buscarTabelas(id){
+		this.$http.get(this.url + 'comanda-server/admin/api/tabela-categoria/' + id)
+		.then(response => {
+			this.tabelas = response.data;
+		});
+	},
+	buscarProdutosByCategoriaTabela(id){
+		this.$http.get(this.url + 'comanda-server/admin/api/produtos-categoria-tabela/' + id)
+		.then(response => {
+			this.produtos = response.data;
+		});
+	},
+	buscarProdutosByCategoria(id){
+		this.$http.get(this.url + 'comanda-server/admin/api/produtos-categoria/' + id)
+		.then(response => {
+			this.adicionais = response.data;
+		});
+	},
+	buscarItens(id){
+		this.$http.get(this.url + 'comanda-server/admin/api/produto/id/' + id)
+		.then(response => {
+			this.itens = response.data.itens;
+		});
+	},
+	selAdicionais(id){
+		if (!this.adicionaisSelecionados.includes(id)) {
+			this.adicionaisSelecionados.push(id);
+		}else{
+			var index = this.adicionaisSelecionados.indexOf(id);
+			if (index !== -1) this.adicionaisSelecionados.splice(index, 1);
+		}
+		console.log(this.adicionaisSelecionados);	
+	},
+
+
+	toogleModalInsercao(){
+		this.modalInsercao = !this.modalInsercao
+	},
+	selCategoria(id,tipo){
+		this.categoriaSelecionada = id;
+
+		this.buscarTabelas(this.categoriaSelecionada);
+		if (tipo == 1) {
+			this.showPizza = true;
+		}
+	},
+	selTipoPizza(id){
+		this.tipoPizza = id;
+		this.avancarModal(2);
+	},
+	selProduto(id,tabela){
+		this.produtoSelecionado = id;
+		this.tabelaSelecionada = tabela;
+		this.avancarModal(3);
+		console.log(id);
+		
+	},
+	avancarModal(modal){
+		if (modal == 1) {
+			this.modalInsercao = true;
+			this.modalProduto = false;
+			this.modalAdicionais = false;
+		} else if (modal == 2){
+			this.buscarProdutosByCategoriaTabela(this.categoriaSelecionada);
+			this.modalInsercao = false;
+			this.modalProduto = true;
+			this.modalAdicionais = false;
+		} else if (modal == 3){
+			this.buscarProdutosByCategoria(1);
+			this.modalInsercao = false;
+			this.modalProduto = false;
+			this.modalAdicionais = true;
+		}
+	}
+},
+created: function () {
+
+	//getComanda
+	this.$http.get(this.url + 'comanda-server/admin/api/comanda/id/' + this.$route.params.id)
+	.then(response => {
+		this.comanda = response.data;
+		this.buscarProdutos(this.comanda.id_comanda);
+	});
+
+	//getCategoria
+	this.$http.get(this.url + 'comanda-server/admin/api/categoria-produtos')
+	.then(response => {
+		this.categorias = response.data;
+	});
+	}
+
+}
 </script>
 
 <style scoped>
@@ -222,7 +318,7 @@ import TopBar from "../commons/TopBar.vue"
 }
 .w3-button:hover{
 	background-color: #fff!important;
-    color: #000!important;
+	color: #000!important;
 }
 
 </style>
