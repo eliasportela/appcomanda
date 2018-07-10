@@ -38,6 +38,7 @@
 				ADICIONAR
 			</button>
 		</div>
+
 		<div class="w3-modal" :class="{'show':modalComanda}">
 			<div class="w3-modal-content w3-animate-opacity">
 				<top-bar></top-bar>
@@ -76,6 +77,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="w3-modal" :class="{'show':modalInsercao}">
 			<div class="w3-modal-content w3-animate-opacity">
 				<top-bar></top-bar>
@@ -111,6 +113,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="w3-modal" :class="{'show':modalProduto}">
 			<div class="w3-modal-content">
 				<top-bar></top-bar>
@@ -123,7 +126,7 @@
 							</button>
 						</div>
 						<div class="w3-cell" style="width:50%;padding-left:4px">
-							<button class="w3-button w3-border w3-block">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(0)">
 								<i class="fa fa-times"></i>
 								Cancelar
 							</button>
@@ -142,19 +145,20 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="w3-modal" :class="{'show':modalAdicionais}">
 			<div class="w3-modal-content">
 				<top-bar></top-bar>
 				<div class="title-garcom">
 					<div class="w3-cell-row">
 						<div class="w3-cell" style="width:50%;padding-right:4px">
-							<button class="w3-button w3-border w3-block">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(6)">
 								<i class="fa fa-chevron-left"></i>
 								Voltar
 							</button>
 						</div>
 						<div class="w3-cell" style="width:50%;padding-left:4px">
-							<button class="w3-button w3-border w3-block">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(0)">
 								<i class="fa fa-times"></i>
 								Cancelar
 							</button>
@@ -173,6 +177,118 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="w3-modal" :class="{'show':modalRemocoes}">
+			<div class="w3-modal-content">
+				<top-bar></top-bar>
+				<div class="title-garcom">
+					<div class="w3-cell-row">
+						<div class="w3-cell" style="width:50%;padding-right:4px">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(6)">
+								<i class="fa fa-chevron-left"></i>
+								Voltar
+							</button>
+						</div>
+						<div class="w3-cell" style="width:50%;padding-left:4px">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(0)">
+								<i class="fa fa-times"></i>
+								Cancelar
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="container-garcom">
+					<div class="w3-cell-row comanda-tipo" v-for="i in itens" @click="selAdicionais(a.id_produto)">
+						<div class="w3-cell list-text">
+							{{i.nome_produto}}
+						</div>
+						<div class="w3-cell list-icon">
+							<i class="fa fa-check" v-show=""></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="w3-modal" :class="{'show':modalObservacoes}">
+			<div class="w3-modal-content">
+				<top-bar></top-bar>
+				<div class="title-garcom">
+					<div class="w3-cell-row">
+						<div class="w3-cell" style="width:50%;padding-right:4px">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(6)">
+								<i class="fa fa-chevron-left"></i>
+								Voltar
+							</button>
+						</div>
+						<div class="w3-cell" style="width:50%;padding-left:4px">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(0)">
+								<i class="fa fa-times"></i>
+								Cancelar
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="container-garcom">
+					<textarea class="w3-input w3-border" rows="10"></textarea>
+				</div>
+			</div>
+		</div>
+
+		<div class="w3-modal" :class="{'show':modalFinalizar}">
+			<div class="w3-modal-content">
+				<top-bar></top-bar>
+				<div class="title-garcom">
+					<div class="w3-cell-row">
+						<div class="w3-cell" style="width:50%;padding-right:4px">
+							<button class="w3-button w3-border w3-block">
+								<i class="fa fa-chevron-left"></i>
+								Voltar
+							</button>
+						</div>
+						<div class="w3-cell" style="width:50%;padding-left:4px">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(0)">
+								<i class="fa fa-times"></i>
+								Cancelar
+							</button>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="w3-container">
+					Informe a Quantidade
+					<div class="w3-cell-row">
+						<div class="w3-cel w3-margin-right">
+							<input type="number" class="w3-input w3-border" placeholder="Quantidade" v-model="quantidade">
+						</div>
+						<div class="w3-cell" style="width:15%">
+							<button class="w3-button w3-red" @click="minusQtd()">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+						<div class="w3-cell" style="width:15%">
+							<button class="w3-button w3-red" @click="plusQtd()">
+								<i class="fa fa-plus"></i>
+							</button>
+						</div>
+					</div>
+					<hr>
+					<button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(3)">
+						Adicionais
+					</button>
+					<button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(4)">
+						Remoções
+					</button>
+					<button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(5)">
+						Observações
+					</button>
+					<button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(0)">
+						Finalizar
+					</button>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </template>
 
@@ -187,11 +303,14 @@ export default {
 components:{TopBar/*,ModalProduto*/},
 data(){
 	return{
-		url: 'http://192.168.1.7/',
+		url: 'http://localhost/',
 		modalComanda:false,
 		modalInsercao:false,
 		modalProduto:false,
 		modalAdicionais:false,
+		modalFinalizar:false,
+		modalRemocoes:false,
+		modalObservacoes:false,
 		comanda:"",
 
 		produtosComanda:[],
@@ -206,8 +325,8 @@ data(){
 		tabelaSelecionada:0,
 		adicionaisSelecionados:[],
 		tipoPizza:0,
+		quantidade:1,
 		showPizza: false,
-
 	}
 },
 methods:{
@@ -250,8 +369,6 @@ methods:{
 		}
 		console.log(this.adicionaisSelecionados);	
 	},
-
-
 	toogleModalInsercao(){
 		this.modalInsercao = !this.modalInsercao
 	},
@@ -270,27 +387,81 @@ methods:{
 	selProduto(id,tabela){
 		this.produtoSelecionado = id;
 		this.tabelaSelecionada = tabela;
-		this.avancarModal(3);
+		this.avancarModal(6);
 		console.log(id);
 		
 	},
+	plusQtd(){
+		this.quantidade++;
+	},
+	minusQtd(){
+		if (this.quantidade > 1) {
+			this.quantidade--;
+		}
+	},
 	avancarModal(modal){
-		if (modal == 1) {
+		if (modal == 0) {
+			//tela incial
+			this.modalInsercao = false;
+			this.modalProduto = false;
+			this.modalAdicionais = false;
+			this.modalRemocoes = false;
+			this.modalObservacoes = false;
+			this.modalFinalizar = false;
+			//modal de Insercao
+		} else if (modal == 1) {
 			this.modalInsercao = true;
 			this.modalProduto = false;
 			this.modalAdicionais = false;
+			this.modalRemocoes = false;
+			this.modalObservacoes = false;
+			this.modalFinalizar = false;
 		} else if (modal == 2){
+			//modal de Produtos
 			this.buscarProdutosByCategoriaTabela(this.categoriaSelecionada);
 			this.modalInsercao = false;
 			this.modalProduto = true;
 			this.modalAdicionais = false;
+			this.modalRemocoes = false;
+			this.modalObservacoes = false;
+			this.modalFinalizar = false;
 		} else if (modal == 3){
+			//modal de Adcionais
 			this.buscarProdutosByCategoria(1);
 			this.modalInsercao = false;
 			this.modalProduto = false;
 			this.modalAdicionais = true;
+			this.modalRemocoes = false;
+			this.modalObservacoes = false;
+			this.modalFinalizar = false;
+		} else if (modal == 4){
+			//modal de Remocao
+			this.buscarItens(this.produtoSelecionado);
+			this.modalInsercao = false;
+			this.modalProduto = false;
+			this.modalAdicionais = false;
+			this.modalRemocoes = true;
+			this.modalObservacoes = false;
+			this.modalFinalizar = false;
+		} else if (modal == 5){
+			//modal de Observacoes
+			this.modalInsercao = false;
+			this.modalProduto = false;
+			this.modalAdicionais = false;
+			this.modalRemocoes = false;
+			this.modalObservacoes = true;
+			this.modalFinalizar = false;
+		} else if (modal == 6){
+			//modal Finalizar
+			this.modalInsercao = false;
+			this.modalProduto = false;
+			this.modalAdicionais = false;
+			this.modalRemocoes = false;
+			this.modalObservacoes = false;
+			this.modalFinalizar = true;
 		}
 	}
+
 },
 created: function () {
 
