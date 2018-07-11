@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		<div class="w3-bottom container-btn-garcom">
-			<button class="w3-button w3-round w3-block w3-red btn-garcom" @click="toogleModalInsercao">
+			<button class="w3-button w3-round w3-block w3-red btn-garcom" @click="avancarModal(1)">
 				ADICIONAR
 			</button>
 		</div>
@@ -82,7 +82,20 @@
 			<div class="w3-modal-content w3-animate-opacity">
 				<top-bar></top-bar>
 				<div class="title-garcom">
-					SELECIONE O TIPO DO PRODUTO
+					<div class="w3-cell-row">
+						<div class="w3-cell" style="width:50%;padding-right:4px">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(0)">
+								<i class="fa fa-times"></i>
+								Cancelar
+							</button>
+						</div>
+						<div class="w3-cell" style="width:50%;padding-left:4px">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(0)">
+								<i class="fa fa-times"></i>
+								Avançar
+							</button>
+						</div>
+					</div>
 				</div>
 				<div class="container-garcom garcom-tipo-produto">
 					<div class="w3-cell-row comanda-tipo" v-for="c in categorias" @click="selCategoria(c.id_categoria,c.pizza)">
@@ -120,7 +133,7 @@
 				<div class="title-garcom">
 					<div class="w3-cell-row">
 						<div class="w3-cell" style="width:50%;padding-right:4px">
-							<button class="w3-button w3-border w3-block">
+							<button class="w3-button w3-border w3-block" @click="avancarModal(1)">
 								<i class="fa fa-chevron-left"></i>
 								Voltar
 							</button>
@@ -134,12 +147,12 @@
 					</div>
 				</div>
 				<div class="container-garcom">
-					<div class="w3-cell-row comanda-tipo" v-for="p in produtos" @click="selProduto(p.id_produto, p.id_tabela)">
+					<div class="w3-cell-row comanda-tipo" v-for="p in produtos" @click="selProduto(p.id_produto, p.id_tabela, p.gerar_pedido)">
 						<div class="w3-cell list-text">
 							{{p.ref_produto}} - ({{p.nome_tabela}}) {{p.nome_produto}}
 						</div>
 						<div class="w3-cell list-icon">
-							<i class="fa fa-check" v-show="(produtoSelecionado == p.id_produto) && (tabelaSelecionada == p.id_tabela)"></i>
+							<i class="fa fa-check" v-show="(dados.id_produto == p.id_produto) && (dados.id_tabela == p.id_tabela)"></i>
 						</div>
 					</div>
 				</div>
@@ -240,13 +253,7 @@
 				<top-bar></top-bar>
 				<div class="title-garcom">
 					<div class="w3-cell-row">
-						<div class="w3-cell" style="width:50%;padding-right:4px">
-							<button class="w3-button w3-border w3-block">
-								<i class="fa fa-chevron-left"></i>
-								Voltar
-							</button>
-						</div>
-						<div class="w3-cell" style="width:50%;padding-left:4px">
+						<div class="w3-cell">
 							<button class="w3-button w3-border w3-block" @click="avancarModal(0)">
 								<i class="fa fa-times"></i>
 								Cancelar
@@ -259,7 +266,7 @@
 					Informe a Quantidade
 					<div class="w3-cell-row">
 						<div class="w3-cel w3-margin-right">
-							<input type="number" class="w3-input w3-border" placeholder="Quantidade" v-model="quantidade">
+							<input type="number" class="w3-input w3-border" placeholder="Quantidade" v-model="dados.quantidade">
 						</div>
 						<div class="w3-cell" style="width:15%">
 							<button class="w3-button w3-red" @click="minusQtd()">
@@ -273,6 +280,9 @@
 						</div>
 					</div>
 					<hr>
+					<button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(1)">
+						Produtos
+					</button>
 					<button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(3)">
 						Adicionais
 					</button>
@@ -282,7 +292,9 @@
 					<button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(5)">
 						Observações
 					</button>
-					<button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(0)">
+				</div>
+				<div class="w3-bottom container-btn-garcom">
+					<button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="inserirProduto()">
 						Finalizar
 					</button>
 				</div>
@@ -321,12 +333,18 @@ data(){
 		adicionais:[],
 
 		categoriaSelecionada:0,
-		produtoSelecionado:0,
-		tabelaSelecionada:0,
 		adicionaisSelecionados:[],
 		tipoPizza:0,
-		quantidade:1,
 		showPizza: false,
+		
+		dados: {
+			id_comanda:0,
+			id_produto:0,
+			id_tabela:0,
+			quantidade:1,
+			gerar_pedido:0,
+			observacao:""
+		}
 	}
 },
 methods:{
@@ -360,6 +378,18 @@ methods:{
 			this.itens = response.data.itens;
 		});
 	},
+	inserirProduto(){
+
+		console.log(this.dados);
+		if (this.dados.quantidade > 0 && this.dados.id_produto > 0 && this.dados.id_tabela > 0 && this.dados.id_comanda > 0) {
+			this.$http.post(this.url + 'admin/api/comanda/inserir-produto', this.dados).then(response => {
+			    
+			  }, response => {
+			    
+			  });
+		}
+	},
+
 	selAdicionais(id){
 		if (!this.adicionaisSelecionados.includes(id)) {
 			this.adicionaisSelecionados.push(id);
@@ -384,19 +414,18 @@ methods:{
 		this.tipoPizza = id;
 		this.avancarModal(2);
 	},
-	selProduto(id,tabela){
-		this.produtoSelecionado = id;
-		this.tabelaSelecionada = tabela;
+	selProduto(id,tabela,pedido){
+		this.dados.id_produto = id;
+		this.dados.id_tabela = tabela;
+		this.dados.gerar_pedido = pedido;
 		this.avancarModal(6);
-		console.log(id);
-		
 	},
 	plusQtd(){
-		this.quantidade++;
+		this.dados.quantidade++;
 	},
 	minusQtd(){
-		if (this.quantidade > 1) {
-			this.quantidade--;
+		if (this.dados.quantidade > 1) {
+			this.dados.quantidade--;
 		}
 	},
 	avancarModal(modal){
@@ -436,7 +465,7 @@ methods:{
 			this.modalFinalizar = false;
 		} else if (modal == 4){
 			//modal de Remocao
-			this.buscarItens(this.produtoSelecionado);
+			this.buscarItens(this.dados.id_produto);
 			this.modalInsercao = false;
 			this.modalProduto = false;
 			this.modalAdicionais = false;
@@ -469,6 +498,7 @@ created: function () {
 	this.$http.get(this.url + 'comanda-server/admin/api/comanda/id/' + this.$route.params.id)
 	.then(response => {
 		this.comanda = response.data;
+		this.dados.id_comanda = this.comanda.id_comanda;
 		this.buscarProdutos(this.comanda.id_comanda);
 	});
 
