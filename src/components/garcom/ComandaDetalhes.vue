@@ -18,10 +18,11 @@
 			</div>
 		</div>
 		<div class="container-garcom">
-			<div class="w3-cell-row list" v-for="p in produtosComanda">
+			<div class="w3-cell-row list" v-for="p in produtosComanda" @click="selProdutoDetalhes(p.id_comanda_produto)" v-show="p.id_categoria != 1">
 				<div class="w3-cell">
 					<div class="comanda-produto"> 
-						<span>{{p.nome_produto}}</span>
+						<span>{{p.nome_produto}}</span><br>
+						<span>{{p.nome_categoria}} {{p.nome_tabela}}</span>
 					</div>
 					<div class="obs-comanda">
 						<span><b>QTD:</b> {{p.quantidade}}</span>
@@ -53,20 +54,20 @@
 						PRODUTO
 					</div>
 					<ul class="w3-ul comanda-ul">
-						<li>1/2 - Pizza Lombo Catupiry</li>
-						<li>1/2 - Pizza Lombo Catupiry</li>
+						<li>{{produtoDetalhes.quantidade}} - {{produtoDetalhes.nome_produto}}</li>
 					</ul>
 					<div class="w3-margin-top w3-center w3-border-bottom w3-padding">
 						ADICIONAIS E OBSERVAÇÕES
 					</div>
-					<ul class="w3-ul comanda-ul">
+					{{produtoDetalhes.observacao}}
+					<ul class="w3-ul comanda-ul w3-hide">
 						<li>- S/ Cebola</li>
 						<li>- C/ Bacon</li>
 						<li>- C/ Borda Catupiry</li>
 					</ul>
 				</div>
 				<div class="w3-bottom container-btn-garcom w3-center">
-					<button class="w3-button w3-round w3-red btn-garcom" style="width:49%">
+					<button class="w3-button w3-round w3-red btn-garcom" style="width:49%" @click="avancarModal(0)">
 						<i class="fa fa-chevron-left"></i>
 						VOLTAR
 					</button>
@@ -147,12 +148,12 @@
 					</div>
 				</div>
 				<div class="container-garcom">
-					<div class="w3-cell-row comanda-tipo" v-for="p in produtos" @click="selProduto(p.id_produto, p.id_tabela, p.gerar_pedido)">
+					<div class="w3-cell-row comanda-tipo" v-for="p in produtos" @click="selProduto(p.id_produto, p.id_tabela_produto, p.gerar_pedido)">
 						<div class="w3-cell list-text">
 							{{p.ref_produto}} - ({{p.nome_tabela}}) {{p.nome_produto}}
 						</div>
 						<div class="w3-cell list-icon">
-							<i class="fa fa-check" v-show="(dados.id_produto == p.id_produto) && (dados.id_tabela == p.id_tabela)"></i>
+							<i class="fa fa-check" v-show="(dados.id_produto == p.id_produto) && (dados.id_tabela_produto == p.id_tabela_produto)"></i>
 						</div>
 					</div>
 				</div>
@@ -179,12 +180,12 @@
 					</div>
 				</div>
 				<div class="container-garcom">
-					<div class="w3-cell-row comanda-tipo" v-for="a in adicionais" @click="selAdicionais(a.id_produto)">
+					<div class="w3-cell-row comanda-tipo" v-for="a in adicionais" @click="selAdicionais(a.id_produto,a.id_tabela_produto)">
 						<div class="w3-cell list-text">
 							{{a.nome_produto}}
 						</div>
 						<div class="w3-cell list-icon">
-							<i class="fa fa-check" v-show="adicionaisSelecionados.includes(a.id_produto)"></i>
+							<i class="fa fa-check" v-show="dados.adicionais.includes(a.id_produto+'||'+a.id_tabela_produto)"></i>
 						</div>
 					</div>
 				</div>
@@ -211,12 +212,12 @@
 					</div>
 				</div>
 				<div class="container-garcom">
-					<div class="w3-cell-row comanda-tipo" v-for="i in itens" @click="selAdicionais(a.id_produto)">
+					<div class="w3-cell-row comanda-tipo" v-for="i in itens" @click="selRemocoes(i.id_produto,i.nome_produto)">
 						<div class="w3-cell list-text">
 							{{i.nome_produto}}
 						</div>
 						<div class="w3-cell list-icon">
-							<i class="fa fa-check" v-show=""></i>
+							<i class="fa fa-check" v-show="dados.remocoes.includes('S/ '+i.nome_produto)"></i>
 						</div>
 					</div>
 				</div>
@@ -243,7 +244,7 @@
 					</div>
 				</div>
 				<div class="container-garcom">
-					<textarea class="w3-input w3-border" rows="10"></textarea>
+					<textarea class="w3-input w3-border" rows="10" v-model="dados.observacao" ></textarea>
 				</div>
 			</div>
 		</div>
@@ -323,89 +324,99 @@ data(){
 		modalFinalizar:false,
 		modalRemocoes:false,
 		modalObservacoes:false,
+		
 		comanda:"",
-
 		produtosComanda:[],
+		produtoDetalhes:"",
 		categorias: [],
 		produtos:[],
-		itens:[],
-		tabelas:[],
 		adicionais:[],
-
+		itens:[],
 		categoriaSelecionada:0,
-		adicionaisSelecionados:[],
+		remocoes:[],
 		tipoPizza:0,
 		showPizza: false,
 		
 		dados: {
 			id_comanda:0,
 			id_produto:0,
-			id_tabela:0,
+			id_tabela_produto:0,
 			quantidade:1,
 			gerar_pedido:0,
-			observacao:""
+			observacao:"",
+			adicionais:[],
+			remocoes:[]
 		}
 	}
 },
 methods:{
-	buscarProdutos(id){
+	buscarProdutosComanda(id){
 		this.$http.get(this.url + 'comanda-server/admin/api/comanda-prudutos/' + id)
 		.then(response => {
 			this.produtosComanda = response.data;
 		});
 	},
-	buscarTabelas(id){
-		this.$http.get(this.url + 'comanda-server/admin/api/tabela-categoria/' + id)
+	buscarDetalhesProdutoComanda(id){
+		this.$http.get(this.url + 'comanda-server/admin/api/comanda-pruduto/' + id)
 		.then(response => {
-			this.tabelas = response.data;
+			this.produtoDetalhes = response.data;
 		});
 	},
-	buscarProdutosByCategoriaTabela(id){
+	buscarProdutos(id){
 		this.$http.get(this.url + 'comanda-server/admin/api/produtos-categoria-tabela/' + id)
 		.then(response => {
 			this.produtos = response.data;
 		});
 	},
-	buscarProdutosByCategoria(id){
-		this.$http.get(this.url + 'comanda-server/admin/api/produtos-categoria/' + id)
+	buscarAdicionais(id){
+		this.$http.get(this.url + 'comanda-server/admin/api/produtos-categoria-tabela/' + id)
 		.then(response => {
 			this.adicionais = response.data;
 		});
 	},
-	buscarItens(id){
+	buscarItensRemocoes(id){
 		this.$http.get(this.url + 'comanda-server/admin/api/produto/id/' + id)
 		.then(response => {
 			this.itens = response.data.itens;
 		});
 	},
 	inserirProduto(){
-
-		console.log(this.dados);
-		if (this.dados.quantidade > 0 && this.dados.id_produto > 0 && this.dados.id_tabela > 0 && this.dados.id_comanda > 0) {
-			this.$http.post(this.url + 'admin/api/comanda/inserir-produto', this.dados).then(response => {
-			    
-			  }, response => {
-			    
-			  });
-		}
+		$.ajax({
+        	type: "POST",
+        	url: this.url + 'comanda-server/admin/api/comanda/inserir-produto',
+        	data: this.dados,
+	        success: function(result){
+	          console.log(result);
+	        },
+	        error: function(result)
+	        { 
+	          console.log(result);
+	        }
+      	});
+      	this.avancarModal(0);
 	},
 
-	selAdicionais(id){
-		if (!this.adicionaisSelecionados.includes(id)) {
-			this.adicionaisSelecionados.push(id);
+	selAdicionais(id,tabela){
+		var ads = id+'||'+tabela;
+		if (!this.dados.adicionais.includes(ads)) {
+			this.dados.adicionais.push(ads);
 		}else{
-			var index = this.adicionaisSelecionados.indexOf(id);
-			if (index !== -1) this.adicionaisSelecionados.splice(index, 1);
+			var index = this.dados.adicionais.indexOf(ads);
+			if (index !== -1) this.dados.adicionais.splice(index, 1);
 		}
-		console.log(this.adicionaisSelecionados);	
+		console.log(this.dados.adicionais);	
 	},
-	toogleModalInsercao(){
-		this.modalInsercao = !this.modalInsercao
+	selRemocoes(id,nome){
+		if (!this.dados.remocoes.includes('S/ '+nome)) {
+			this.dados.remocoes.push('S/ '+nome);
+		}else{
+			var index = this.dados.remocoes.indexOf('S/ '+nome);
+			if (index !== -1) this.dados.remocoes.splice(index, 1);
+		}
+		console.log(this.dados.remocoes);
 	},
 	selCategoria(id,tipo){
 		this.categoriaSelecionada = id;
-
-		this.buscarTabelas(this.categoriaSelecionada);
 		if (tipo == 1) {
 			this.showPizza = true;
 		}
@@ -416,10 +427,15 @@ methods:{
 	},
 	selProduto(id,tabela,pedido){
 		this.dados.id_produto = id;
-		this.dados.id_tabela = tabela;
+		this.dados.id_tabela_produto = tabela;
 		this.dados.gerar_pedido = pedido;
 		this.avancarModal(6);
 	},
+	selProdutoDetalhes(id){
+		this.modalComanda = true;
+		this.buscarDetalhesProdutoComanda(id);
+	},
+
 	plusQtd(){
 		this.dados.quantidade++;
 	},
@@ -431,6 +447,8 @@ methods:{
 	avancarModal(modal){
 		if (modal == 0) {
 			//tela incial
+			this.buscarProdutosComanda(this.comanda.id_comanda);
+			this.modalComanda = false;
 			this.modalInsercao = false;
 			this.modalProduto = false;
 			this.modalAdicionais = false;
@@ -447,7 +465,7 @@ methods:{
 			this.modalFinalizar = false;
 		} else if (modal == 2){
 			//modal de Produtos
-			this.buscarProdutosByCategoriaTabela(this.categoriaSelecionada);
+			this.buscarProdutos(this.categoriaSelecionada);
 			this.modalInsercao = false;
 			this.modalProduto = true;
 			this.modalAdicionais = false;
@@ -456,7 +474,7 @@ methods:{
 			this.modalFinalizar = false;
 		} else if (modal == 3){
 			//modal de Adcionais
-			this.buscarProdutosByCategoria(1);
+			this.buscarAdicionais(1);
 			this.modalInsercao = false;
 			this.modalProduto = false;
 			this.modalAdicionais = true;
@@ -465,7 +483,7 @@ methods:{
 			this.modalFinalizar = false;
 		} else if (modal == 4){
 			//modal de Remocao
-			this.buscarItens(this.dados.id_produto);
+			this.buscarItensRemocoes(this.dados.id_produto);
 			this.modalInsercao = false;
 			this.modalProduto = false;
 			this.modalAdicionais = false;
@@ -499,7 +517,7 @@ created: function () {
 	.then(response => {
 		this.comanda = response.data;
 		this.dados.id_comanda = this.comanda.id_comanda;
-		this.buscarProdutos(this.comanda.id_comanda);
+		this.buscarProdutosComanda(this.comanda.id_comanda);
 	});
 
 	//getCategoria
