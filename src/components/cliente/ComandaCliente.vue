@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<div class="w3-top top-bar">
-			<span>COMANDA: CA404</span>
+			<span>COMANDA: {{comanda.ref_comanda}}</span>
 		</div>
 		<div class="container-bottom">
 			<div class="title">
 				PRODUTOS
 			</div>
-			<div class="w3-cell-row list w3-padding-16" v-for="p in produtos" :key="p.id" @click="toogleProduto">
+			<div class="w3-cell-row list w3-padding-16" v-for="p in produtos" :key="p.id" @click="toogleProduto(p.id_comanda_produto)">
 				<div class="w3-cell">
 					<div class="comanda-produto">
 						<span>{{p.nome_produto}}</span>
@@ -24,31 +24,28 @@
 		</div>
 
 		<div class="w3-modal" :class="{'show':modalProduto}">
-			<div class="w3-modal-content">
+			<div class="w3-modal-content w3-animate-opacity">
 				<div class="w3-top top-bar">
-					<span class="w3-right" @click="toogleProduto">
-						FECHAR
-						<i class="fa fa-times"></i>
-					</span>
-					<span>
-						<i class="fa fa-th"></i>
+					<span @click="toogleProduto">
+						<i class="fa fa-chevron-left"></i>
+						Voltar
 					</span>
 				</div>
-				<div class="container-bottom">
-					<div class="w3-center w3-border-bottom w3-padding title">
+				<div class="title-garcom">
+					<span>Informações do Produto</span>
+				</div>
+				<div class="container-garcom garcom-produto">
+					<div class="w3-center w3-border-bottom w3-padding">
 						PRODUTO
 					</div>
 					<ul class="w3-ul comanda-ul">
-						<li>1/2 - Pizza Lombo Catupiry</li>
-						<li>1/2 - Pizza Lombo Catupiry</li>
+						<li>{{produtoDetalhes.quantidade}} - {{produtoDetalhes.nome_produto}}</li>
 					</ul>
-					<div class="w3-margin-top w3-center w3-border-bottom w3-padding title">
+					<div class="w3-margin-top w3-center w3-border-bottom w3-padding">
 						ADICIONAIS E OBSERVAÇÕES
 					</div>
 					<ul class="w3-ul comanda-ul">
-						<li>- S/ Cebola</li>
-						<li>- C/ Bacon</li>
-						<li>- C/ Borda Catupiry</li>
+						<li v-for="obs in observacoes" :key="obs">- {{obs}}</li>
 					</ul>
 				</div>
 			</div>
@@ -62,30 +59,61 @@
 <script>
 
 import BottomBar from "../commons/BottomBar.vue"
-import ModalProduto from "../commons/Modal.vue"
+import TopBar from "../commons/TopBar.vue"
 	export default {
 		beforeCreate: function() {
 			document.body.className = 'cliente';
 		},
-		components:{BottomBar,ModalProduto},
+		components:{BottomBar,TopBar},
 		data(){
 		    return{
-          idComanda: "",
-          produtos: [],
-		      modalProduto:false
+          		url: 'http://localhost/',
+		    	    modalProduto:false,
+
+          		comanda:"",
+          		produtoDetalhes:"",
+          		observacoes:"",
+          		produtos:[],
+
 		    }
 	  	},
 	  	methods:{
-	  		toogleProduto(){
-	  			this.modalProduto = !this.modalProduto
+	  		buscarComanda(id){
+	  			//getComanda
+				this.$http.get(this.url + 'comanda-server/admin/api/comanda/id/' + id)
+				.then(response => {
+					this.comanda = response.data;
+					this.buscarProdutosComanda();
+				});
+	  		},
+	  		buscarProdutosComanda(){
+	  			this.$http.get(this.url + 'comanda-server/admin/api/comanda-prudutos/' + this.comanda.id_comanda)
+				.then(response => {
+					this.produtos = response.data;
+				});
+	  		},
+	  		buscarDetalhesProdutoComanda(id){
+				this.$http.get(this.url + 'comanda-server/admin/api/comanda-pruduto/' + id)
+				.then(response => {
+					this.produtoDetalhes = response.data;
+					this.observacoes = this.produtoDetalhes.observacao.split("||");
+				});
+			},
+	  		toogleProduto(id){
+	  			this.modalProduto = !this.modalProduto;
+	  			if (id) {
+	  				this.buscarDetalhesProdutoComanda(id);
+	  			}
 	  		}
 	  	},
+
       created: function () {
-        this.$http.get('http://localhost/comanda/api/comanda/produtos/1')
-          .then(response => {
-            this.produtos = response.data;
-            console.log(this.produtos)
-          });
+        var id = localStorage.getItem("comanda");
+        if(id != undefined){
+          this.buscarComanda(id);
+        }else{
+          this.$router.push("/");
+        }
       }
 	}
 </script>

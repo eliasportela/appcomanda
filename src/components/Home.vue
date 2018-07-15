@@ -7,7 +7,7 @@
 				<form class="">
 					<div class="">
 						<label class="home-label">Número da comanda</label>
-						<input type="text" class="w3-input home-input" v-model="referencia" placeholder="Exemplo: ca12">
+						<input type="text" class="w3-input home-input" v-model="referencia" placeholder="Exemplo: C02">
 						<button type="button" class="w3-button w3-border w3-round home-btn" @click="selComanda" :disabled="referencia == ''">
 							<i class="fa fa-search"></i>
 							BUSCAR
@@ -34,17 +34,19 @@ export default {
 	name: 'Home',
 	data () {
 		return {
-      referencia: ""
-    }
+      		referencia: "",
+      		url: 'http://localhost/'
+    	}
 	},
 	methods:{
 		selComanda(){
       if(this.referencia != ""){
-        this.$http.get('http://localhost/comanda/api/comanda/' + this.referencia)
+
+        this.$http.get(this.url + 'comanda-server/admin/api/comanda/ref/' + this.referencia)
           .then(response => {
             if(response.data != ""){
-              localStorage.setItem("idComanda",this.referencia)
-              this.$router.push("comanda")
+              localStorage.setItem("comanda",response.data);
+            	this.$router.push("comanda");
             }else{
               alert("Nao encontrado")
             }

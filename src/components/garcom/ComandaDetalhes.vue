@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<top-bar></top-bar>
+		<top-bar voltar="comanda-garcom"></top-bar>
 		<div class="title-garcom mesa-title">
 			<div class="w3-cell-row">
 				<div class="w3-cell w3-cell-middle">
@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="container-garcom">
-			<div class="w3-cell-row list" v-for="p in produtosComanda" @click="selProdutoDetalhes(p.id_comanda_produto)" v-show="p.id_categoria != 1">
+			<div class="w3-cell-row list" v-for="p in produtosComanda" @click="selProdutoDetalhes(p.id_comanda_produto)">
 				<div class="w3-cell">
 					<div class="comanda-produto"> 
 						<span>{{p.nome_produto}}</span><br>
@@ -59,11 +59,8 @@
 					<div class="w3-margin-top w3-center w3-border-bottom w3-padding">
 						ADICIONAIS E OBSERVAÇÕES
 					</div>
-					{{produtoDetalhes.observacao}}
-					<ul class="w3-ul comanda-ul w3-hide">
-						<li>- S/ Cebola</li>
-						<li>- C/ Bacon</li>
-						<li>- C/ Borda Catupiry</li>
+					<ul class="w3-ul comanda-ul">
+						<li v-for="obs in observacoes">- {{obs}}</li>
 					</ul>
 				</div>
 				<div class="w3-bottom container-btn-garcom w3-center">
@@ -336,6 +333,7 @@ data(){
 		remocoes:[],
 		tipoPizza:0,
 		showPizza: false,
+		observacoes:[],
 		
 		dados: {
 			id_comanda:0,
@@ -350,16 +348,19 @@ data(){
 	}
 },
 methods:{
-	buscarProdutosComanda(id){
-		this.$http.get(this.url + 'comanda-server/admin/api/comanda-prudutos/' + id)
+	buscarProdutosComanda(){
+		this.$http.get(this.url + 'comanda-server/admin/api/comanda-prudutos/' + this.comanda.id_comanda)
 		.then(response => {
 			this.produtosComanda = response.data;
+			this.avancarModal(0);
 		});
 	},
 	buscarDetalhesProdutoComanda(id){
 		this.$http.get(this.url + 'comanda-server/admin/api/comanda-pruduto/' + id)
 		.then(response => {
 			this.produtoDetalhes = response.data;
+			this.observacoes = this.produtoDetalhes.observacao.split("||");
+			console.log(this.observacoes);
 		});
 	},
 	buscarProdutos(id){
@@ -381,19 +382,11 @@ methods:{
 		});
 	},
 	inserirProduto(){
-		$.ajax({
-        	type: "POST",
-        	url: this.url + 'comanda-server/admin/api/comanda/inserir-produto',
-        	data: this.dados,
-	        success: function(result){
-	          console.log(result);
-	        },
-	        error: function(result)
-	        { 
-	          console.log(result);
-	        }
-      	});
-      	this.avancarModal(0);
+      	let options = {emulateJSON: true};
+		this.$http.post(this.url + 'comanda-server/admin/api/comanda/inserir-produto', this.dados, options)
+		.then(response => {
+			this.buscarProdutosComanda();
+		});
 	},
 
 	selAdicionais(id,tabela){
@@ -447,7 +440,6 @@ methods:{
 	avancarModal(modal){
 		if (modal == 0) {
 			//tela incial
-			this.buscarProdutosComanda(this.comanda.id_comanda);
 			this.modalComanda = false;
 			this.modalInsercao = false;
 			this.modalProduto = false;
@@ -517,7 +509,7 @@ created: function () {
 	.then(response => {
 		this.comanda = response.data;
 		this.dados.id_comanda = this.comanda.id_comanda;
-		this.buscarProdutosComanda(this.comanda.id_comanda);
+		this.buscarProdutosComanda();
 	});
 
 	//getCategoria
@@ -525,7 +517,7 @@ created: function () {
 	.then(response => {
 		this.categorias = response.data;
 	});
-	}
+}
 
 }
 </script>

@@ -7,7 +7,7 @@
 			<div class="title">
 				ESCOLHA UMA CATEGORIA
 			</div>
-			<div class="w3-cell-row list w3-center" v-for="c in categoria" :key="c.id_categoria" @click="toogleCardapio">
+			<div class="w3-cell-row list w3-center" v-for="c in categorias" :key="c.id_categoria" @click="toogleCardapio(c.id_categoria)">
 				<div class="w3-cell list-img">
 					<img src="../../assets/pizzas.jpg" class="w3-image">
 				</div>
@@ -27,7 +27,7 @@
 						<span class="w3-large">
 							<b>PIZZAS</b>
 						</span>
-						<i class="fa fa-times w3-right w3-xlarge" @click="toogleCardapio"></i>
+						<i class="fa fa-times w3-right w3-xlarge" @click="toogleCardapio(false)"></i>
 					</div>
 				</div>
 				<div class="cardapio">
@@ -35,30 +35,20 @@
 						<img src="../../assets/pizzas.jpg" class="cardapio-image">
 					</div>
 					<hr>
-					<div class="w3-cell-row cardapio-item">
+					<div class="w3-cell-row cardapio-item" v-for="p in produtos" v-show="p.valores != ''">
 						<div class="w3-cell">
 							<span class="cardapio-produto">
-                <!-- {{ l.ref_produto }} - {{ l.nome_produto }} -->
-                </span><br>
+                				{{p.ref_produto}} - {{p.nome_produto}}
+                			</span><br>
 							<span class="cardapio-ingredientes">
-							  <span>
-                  <!-- {{te.}} -->
-                </span>
-              </span>
+								({{p.ingredientes}})
+              				</span>
 						</div>
 						<div class="w3-cell cardapio-preco">
 							<div class="w3-red w3-round">
-								<div class="">
-									<span class="info-icon">E</span>
-									<span>54,99</span>
-								</div>
-								<div class="">
-									<span class="info-icon">B</span>
-									<span>54,99</span>
-								</div>
-								<div class="">
-									<span class="info-icon">G</span>
-									<span>54,99</span>
+								<div v-for="v in p.valores">
+									<span class="info-icon">{{v.nome_tabela.substring(0, 1)}}:</span>
+									<span>{{v.valor}}</span>
 								</div>
 							</div>
 						</div>
@@ -97,43 +87,38 @@ export default {
 	components:{BottomBar},
 	data(){
 		return{
-      resource: this.$resource('http://localhost/comanda/api/item-produto/1'),
-			categoria: [],
+      		url: 'http://localhost/',
+			categorias: [],
 			cardapio: false,
-      listas: [],
+      		produtos: [],
 		}
 	},
 	methods:{
-    initialize (){
-      console.log("tete");
-      this.resource.get({}).then((response) => {
-          this.listas = response.data
-          //this.load = false
-          //this.loadlista = true;
-        },response => {
-          console.log(this.listas);
-            //this.load = false;
-            //this.loadBad = true;
-        });
-    },
-		toogleCardapio(){
+		buscarCategorias(){
+			this.$http.get(this.url + 'comanda-server/admin/api/categoria-produtos')
+			.then(response => {
+				this.categorias = response.data;
+			});
+		},
+		buscarProdutosCategoria(id){
+			this.produtos = [];
+			console.log(id);
+			this.$http.get(this.url + 'comanda-server/admin/api/cardapio/' + id)
+			.then(response => {
+				this.produtos = response.data;
+			});
+		},
+		toogleCardapio(id){
 			this.cardapio = !this.cardapio;
-		}
+			if (id) {
+				this.buscarProdutosCategoria(id);
+			}
+		},
+
 	},
-  created: function () {
-    this.$http.get('http://localhost/comanda/api/categorias/')
-      .then(response => {
-        this.categoria = response.data;
-        console.log(this.categoria)
-      });
-
-    this.$http.get('http://localhost/comanda/api/item-produto/2')
-      .then(response => {
-        this.listas = response.data;
-        console.log(this.listas)
-      });
-
-  }
+	created: function () {
+	    this.buscarCategorias();
+	}
 }
 </script>
 

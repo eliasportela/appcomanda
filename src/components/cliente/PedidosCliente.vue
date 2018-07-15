@@ -9,25 +9,18 @@
 			<div class="title">
 				PEDIDOS
 			</div>
-			<div class="list pedido-item" v-for="i in 4">
+			<div class="list pedido-item" v-for="(p, index) in produtos" :key="p.id_produto_comanda">
 				<div class="w3-border-bottom header">
-					Pedido 1 - <i class="fa fa-check w3-text-green"></i>
-					<span class="w3-right"><i class="fa fa-clock" style="font-size:1em"></i> 11:23</span>
+					<i class="fa fa-utensils w3-text-red" v-show="p.status_pedido == 1"></i>
+					<i class="fa fa-check w3-text-green" v-show="p.status_pedido == 2"></i>
+					Pedido {{index + 1}} - {{p.nome_categoria}}
+					<span class="w3-right"><i class="fa fa-clock" style="font-size:1em"></i> {{p.horas}}</span>
 				</div>
 				<div class="pedido-body">
-					<span>- 1/2 Lombinho Catupiry</span><br>
-					<span>- 1/2 Frangueto</span><br>
-					<span class="pedido-obs">OBS: S/ Cebola, C/ Bacon, C/ Borda Catupiry</span>
-				</div>
-			</div>
-			<div class="list pedido-item">
-				<div class="w3-border-bottom header">
-					Pedido 2 - <i class="fa fa-utensils w3-text-red"></i>
-					<span class="w3-right"><i class="fa fa-clock" style="font-size:1em"></i> 11:23</span>
-				</div>
-				<div class="pedido-body">
-					<span>- 1 Frangueto</span><br>
-					<span class="pedido-obs">OBS: S/ Cebola, C/ Bacon, C/ Borda Catupiry</span>
+					<span>- {{p.quantidade}} {{p.nome_produto}}</span><br>
+					<span class="pedido-obs">
+						<span style="display: block" v-for="(obs, index) in p.observacoes" :key="index">- {{obs}}</span>
+					</span>
 				</div>
 			</div>
 			<hr>
@@ -49,11 +42,40 @@ import BottomBar from "../commons/BottomBar.vue"
 		},
 		components:{BottomBar},
 		data(){
-	    return{
-	      produtos:4
-	    }
-	  }
-	}
+		    return{
+		      	url: 'http://localhost/',
+	        	modalProduto:false,
+
+	        	id_comanda:"",
+	        	produtoDetalhes:"",
+	        	produtos:[],
+		    }
+	  	},
+	    methods:{
+	  		buscarProdutosComanda(){
+	  			this.$http.get(this.url + 'comanda-server/admin/api/pedidos-comanda/' + this.id_comanda)
+				.then(response => {
+					this.produtos = response.data;
+				});
+	  		},
+	  		toogleProduto(id){
+	  			this.modalProduto = !this.modalProduto;
+	  			if (id) {
+	  				this.buscarDetalhesProdutoComanda(id);
+	  			}
+	  		}
+	  	},
+
+	    created: function () {
+	        var id = localStorage.getItem("comanda");
+	        if(id != undefined){
+	          this.id_comanda = localStorage.getItem("comanda");
+	          this.buscarProdutosComanda();
+	        }else{
+	          this.$router.push("/");
+	        }
+	      }
+		}
 </script>
 
 <style scoped>

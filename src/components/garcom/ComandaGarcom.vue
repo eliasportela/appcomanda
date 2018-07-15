@@ -8,7 +8,7 @@
 			<div class="w3-cell-row w3-padding-16 list" v-for="c in comandas" @click="abrirComanda(c.id_comanda)">
 				<div class="w3-cell">
 					<div class="comanda-produto">
-						{{c.nome_mesa}}
+						{{c.mesa != null ? 'Mesa: ' + c.mesa : ''}}
 					</div>
 					<div class="obs-comanda">
 						Obs: {{c.observacao}}
@@ -40,53 +40,53 @@
 				<div class="comanda-garcom">
 					<div class="w3-border w3-padding comanda-input-mesa">
 						<span>Mesa:</span>
-						<span>12</span>
+						<span>{{dados.mesa}}</span>
 					</div>
 					<div class="w3-container">
 						<div class="w3-cell-row w3-center comanda-btn" >
 							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">1</button>
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(1)">1</button>
 							</div>
 							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">2</button>
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(2)">2</button>
 							</div>
 							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">3</button>
-							</div>
-						</div>
-						<div class="w3-cell-row w3-center comanda-btn" >
-							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">4</button>
-							</div>
-							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">5</button>
-							</div>
-							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">6</button>
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(3)">3</button>
 							</div>
 						</div>
 						<div class="w3-cell-row w3-center comanda-btn" >
 							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">7</button>
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(4)">4</button>
 							</div>
 							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">8</button>
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(5)">5</button>
 							</div>
 							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">9</button>
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(6)">6</button>
 							</div>
 						</div>
 						<div class="w3-cell-row w3-center comanda-btn" >
 							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(7)">7</button>
+							</div>
+							<div class="w3-cell">
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(8)">8</button>
+							</div>
+							<div class="w3-cell">
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(9)">9</button>
+							</div>
+						</div>
+						<div class="w3-cell-row w3-center comanda-btn" >
+							<div class="w3-cell">
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="eraserNumero(true)">
 									<i class="fa fa-eraser"></i>
 								</button>
 							</div>
 							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">0</button>
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="selNumero(0)">0</button>
 							</div>
 							<div class="w3-cell">
-								<button class="w3-button w3-round w3-border comanda-btn-numero">
+								<button class="w3-button w3-round w3-border comanda-btn-numero" @click="eraserNumero()">
 									<i class="fa fa-arrow-left"></i>
 								</button>
 							</div>
@@ -94,7 +94,7 @@
 					</div>
 					<div class="w3-margin comanda-add-obs">
 						<label>Observações</label>
-						<textarea class="w3-input w3-text w3-border" placeholder="Observações da comanda">
+						<textarea class="w3-input w3-text w3-border" placeholder="Observações da comanda" v-model="dados.observacao">
 						</textarea>
 					</div>
 				</div>
@@ -121,26 +121,53 @@ import ModalProduto from "../commons/Modal.vue"
 		components:{TopBar,ModalProduto},
 		data(){
 		    return{
-		      comandas:'',
-		      modalComanda: false
+		    	url: 'http://localhost/',
+			    comandas:'',
+			    modalComanda: false,
+
+			    dados:{
+			    	mesa:"",
+			    	observacao:"",
+			    }
 		    }
 		},
 	    methods:{
+	    	buscarComandas(){
+	    		this.$http.get(this.url + 'comanda-server/admin/api/comandas/')
+		      	.then(response => {
+			        this.comandas = response.data;
+		      	});
+	    	},
 	    	toogleComanda(){
 	    		this.modalComanda = !this.modalComanda;
+	    		if (this.modalComanda == false) {
+	    			this.buscarComandas();
+	    		}
 	    	},
 	    	novaComanda(){
-	    		this.$router.push("comanda-mesa")
+	    		let options = {emulateJSON: true};
+				this.$http.post(this.url + 'comanda-server/admin/api/comanda/inserir-comanda', this.dados, options)
+				.then(response => {
+					this.$router.push("comanda-detalhes/"+response.data)
+				});
 	    	},
+
 	    	abrirComanda(id){
 	    		this.$router.push("comanda-detalhes/"+id)	
+	    	},
+	    	selNumero(n){
+	    		this.dados.mesa += n;
+	    	},
+	    	eraserNumero(limpar){
+	    		if (limpar) {
+	    			this.dados.mesa = "";
+	    		}else if (this.dados.mesa.length > 0){
+	    			this.dados.mesa = this.dados.mesa.substr(0,(this.dados.mesa.length - 1));
+	    		}
 	    	}
 	    },
 	    created: function () {
-	        this.$http.get('http://localhost/comanda-server/admin/api/comandas/')
-		      .then(response => {
-		        this.comandas = response.data;
-		      });
+	        this.buscarComandas();
       }
 	}
 </script>
