@@ -121,8 +121,7 @@ import ModalProduto from "../commons/Modal.vue"
 		components:{TopBar,ModalProduto},
 		data(){
 		    return{
-		    	url: 'http://localhost/',
-			    comandas:'',
+		    	comandas:'',
 			    modalComanda: false,
 
 			    dados:{
@@ -133,7 +132,7 @@ import ModalProduto from "../commons/Modal.vue"
 		},
 	    methods:{
 	    	buscarComandas(){
-	    		this.$http.get(this.url + 'comanda-server/admin/api/comandas/')
+	    		this.$http.get(base_url + 'admin/api/comandas/')
 		      	.then(response => {
 			        this.comandas = response.data;
 		      	});
@@ -146,7 +145,7 @@ import ModalProduto from "../commons/Modal.vue"
 	    	},
 	    	novaComanda(){
 	    		let options = {emulateJSON: true};
-				this.$http.post(this.url + 'comanda-server/admin/api/comanda/inserir-comanda', this.dados, options)
+				this.$http.post(base_url + 'admin/api/comanda/inserir-comanda', this.dados, options)
 				.then(response => {
 					this.$router.push("comanda-detalhes/"+response.data)
 				});

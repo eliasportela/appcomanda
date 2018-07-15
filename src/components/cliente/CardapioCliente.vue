@@ -87,15 +87,14 @@ export default {
 	components:{BottomBar},
 	data(){
 		return{
-      		url: 'http://localhost/',
-			categorias: [],
+      		categorias: [],
 			cardapio: false,
       		produtos: [],
 		}
 	},
 	methods:{
 		buscarCategorias(){
-			this.$http.get(this.url + 'comanda-server/admin/api/categoria-produtos')
+			this.$http.get(base_url + 'admin/api/categoria-produtos')
 			.then(response => {
 				this.categorias = response.data;
 			});
@@ -103,7 +102,7 @@ export default {
 		buscarProdutosCategoria(id){
 			this.produtos = [];
 			console.log(id);
-			this.$http.get(this.url + 'comanda-server/admin/api/cardapio/' + id)
+			this.$http.get(base_url + 'admin/api/cardapio/' + id)
 			.then(response => {
 				this.produtos = response.data;
 			});

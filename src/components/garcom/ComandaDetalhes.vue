@@ -313,7 +313,6 @@ export default {
 components:{TopBar/*,ModalProduto*/},
 data(){
 	return{
-		url: 'http://localhost/',
 		modalComanda:false,
 		modalInsercao:false,
 		modalProduto:false,
@@ -349,14 +348,14 @@ data(){
 },
 methods:{
 	buscarProdutosComanda(){
-		this.$http.get(this.url + 'comanda-server/admin/api/comanda-prudutos/' + this.comanda.id_comanda)
+		this.$http.get(base_url + 'admin/api/comanda-prudutos/' + this.comanda.id_comanda)
 		.then(response => {
 			this.produtosComanda = response.data;
 			this.avancarModal(0);
 		});
 	},
 	buscarDetalhesProdutoComanda(id){
-		this.$http.get(this.url + 'comanda-server/admin/api/comanda-pruduto/' + id)
+		this.$http.get(base_url + 'admin/api/comanda-pruduto/' + id)
 		.then(response => {
 			this.produtoDetalhes = response.data;
 			this.observacoes = this.produtoDetalhes.observacao.split("||");
@@ -364,26 +363,26 @@ methods:{
 		});
 	},
 	buscarProdutos(id){
-		this.$http.get(this.url + 'comanda-server/admin/api/produtos-categoria-tabela/' + id)
+		this.$http.get(base_url + 'admin/api/produtos-categoria-tabela/' + id)
 		.then(response => {
 			this.produtos = response.data;
 		});
 	},
 	buscarAdicionais(id){
-		this.$http.get(this.url + 'comanda-server/admin/api/produtos-categoria-tabela/' + id)
+		this.$http.get(base_url + 'admin/api/produtos-categoria-tabela/' + id)
 		.then(response => {
 			this.adicionais = response.data;
 		});
 	},
 	buscarItensRemocoes(id){
-		this.$http.get(this.url + 'comanda-server/admin/api/produto/id/' + id)
+		this.$http.get(base_url + 'admin/api/produto/id/' + id)
 		.then(response => {
 			this.itens = response.data.itens;
 		});
 	},
 	inserirProduto(){
       	let options = {emulateJSON: true};
-		this.$http.post(this.url + 'comanda-server/admin/api/comanda/inserir-produto', this.dados, options)
+		this.$http.post(base_url + 'admin/api/comanda/inserir-produto', this.dados, options)
 		.then(response => {
 			this.buscarProdutosComanda();
 		});
@@ -505,7 +504,7 @@ methods:{
 created: function () {
 
 	//getComanda
-	this.$http.get(this.url + 'comanda-server/admin/api/comanda/id/' + this.$route.params.id)
+	this.$http.get(base_url + 'admin/api/comanda/id/' + this.$route.params.id)
 	.then(response => {
 		this.comanda = response.data;
 		this.dados.id_comanda = this.comanda.id_comanda;
@@ -513,7 +512,7 @@ created: function () {
 	});
 
 	//getCategoria
-	this.$http.get(this.url + 'comanda-server/admin/api/categoria-produtos')
+	this.$http.get(base_url + 'admin/api/categoria-produtos')
 	.then(response => {
 		this.categorias = response.data;
 	});

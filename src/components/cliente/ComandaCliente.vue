@@ -67,9 +67,7 @@ import TopBar from "../commons/TopBar.vue"
 		components:{BottomBar,TopBar},
 		data(){
 		    return{
-          		url: 'http://localhost/',
-		    	    modalProduto:false,
-
+          		modalProduto:false,
           		comanda:"",
           		produtoDetalhes:"",
           		observacoes:"",
@@ -80,20 +78,20 @@ import TopBar from "../commons/TopBar.vue"
 	  	methods:{
 	  		buscarComanda(id){
 	  			//getComanda
-				this.$http.get(this.url + 'comanda-server/admin/api/comanda/id/' + id)
+				this.$http.get(base_url + 'admin/api/comanda/id/' + id)
 				.then(response => {
 					this.comanda = response.data;
 					this.buscarProdutosComanda();
 				});
 	  		},
 	  		buscarProdutosComanda(){
-	  			this.$http.get(this.url + 'comanda-server/admin/api/comanda-prudutos/' + this.comanda.id_comanda)
+	  			this.$http.get(base_url + 'admin/api/comanda-prudutos/' + this.comanda.id_comanda)
 				.then(response => {
 					this.produtos = response.data;
 				});
 	  		},
 	  		buscarDetalhesProdutoComanda(id){
-				this.$http.get(this.url + 'comanda-server/admin/api/comanda-pruduto/' + id)
+				this.$http.get(base_url + 'admin/api/comanda-pruduto/' + id)
 				.then(response => {
 					this.produtoDetalhes = response.data;
 					this.observacoes = this.produtoDetalhes.observacao.split("||");

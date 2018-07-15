@@ -43,9 +43,7 @@ import BottomBar from "../commons/BottomBar.vue"
 		components:{BottomBar},
 		data(){
 		    return{
-		      	url: 'http://localhost/',
-	        	modalProduto:false,
-
+		      	modalProduto:false,
 	        	id_comanda:"",
 	        	produtoDetalhes:"",
 	        	produtos:[],
@@ -53,7 +51,7 @@ import BottomBar from "../commons/BottomBar.vue"
 	  	},
 	    methods:{
 	  		buscarProdutosComanda(){
-	  			this.$http.get(this.url + 'comanda-server/admin/api/pedidos-comanda/' + this.id_comanda)
+	  			this.$http.get(base_url + 'admin/api/pedidos-comanda/' + this.id_comanda)
 				.then(response => {
 					this.produtos = response.data;
 				});

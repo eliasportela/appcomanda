@@ -34,26 +34,22 @@ export default {
 	name: 'Home',
 	data () {
 		return {
-      		referencia: "",
-      		url: 'http://localhost/'
+      		referencia: ""
     	}
 	},
 	methods:{
 		selComanda(){
-      if(this.referencia != ""){
-
-        this.$http.get(this.url + 'comanda-server/admin/api/comanda/ref/' + this.referencia)
-          .then(response => {
-            if(response.data != ""){
-              localStorage.setItem("comanda",response.data);
-            	this.$router.push("comanda");
-            }else{
-              alert("Nao encontrado")
-            }
-          });
-      }else{
-
-      }
+	      if(this.referencia != ""){
+	        this.$http.get(base_url + 'comanda-server/admin/api/comanda/ref/' + this.referencia)
+				.then(response => {
+					if(response.data != ""){
+						localStorage.setItem("comanda",response.data);
+						this.$router.push("comanda");
+					}else{
+						alert("Nao encontrado")
+					}
+				});
+	      	}
 		}
 	}
 }
