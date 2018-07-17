@@ -40,7 +40,7 @@ export default {
 	methods:{
 		selComanda(){
 	      if(this.referencia != ""){
-	        this.$http.get(base_url + 'comanda-server/admin/api/comanda/ref/' + this.referencia)
+	        this.$http.get(base_url + 'admin/api/comanda/ref/' + this.referencia)
 				.then(response => {
 					if(response.data != ""){
 						localStorage.setItem("comanda",response.data);
