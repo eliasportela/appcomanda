@@ -329,7 +329,6 @@ data(){
 		adicionais:[],
 		itens:[],
 		categoriaSelecionada:0,
-		remocoes:[],
 		tipoPizza:0,
 		showPizza: false,
 		observacoes:[],
@@ -382,9 +381,21 @@ methods:{
 	},
 	inserirProduto(){
       	let options = {emulateJSON: true};
+      	console.log(this.dados);
 		this.$http.post(base_url + 'admin/api/comanda/inserir-produto', this.dados, options)
 		.then(response => {
+			console.log(response);
 			this.buscarProdutosComanda();
+			this.dados.id_produto = 0;
+			this.dados.id_tabela_produto = 0;
+			this.dados.quantidade = 1;
+			this.dados.gerar_pedido = 0;
+			this.dados.observacao = "";
+			this.dados.adicionais = [];
+			this.dados.remocoes = [];
+			this.categoriaSelecionada = 0;
+			this.tipoPizza = 0;
+			this.showPizza =  false;
 		});
 	},
 

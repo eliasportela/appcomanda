@@ -1,1 +1,1 @@
-var base_url = "http://localhost/comanda-server/";
+var base_url = "http://192.168.1.7/comanda-server/";
