@@ -5,14 +5,15 @@
       <h3><b>LeCARD</b></h3>
     </div>
     <div>
-      <form>
-        <div class="input-form">
-          <input type="text" v-model="referencia" placeholder="Referência" autofocus>
-          <i class="fa fa-qrcode w3-text-white"></i>
-        </div>
-        <p class="w3-left-align"><b>Referência da comanda</b></p>
-        <button class="w3-button w3-border w3-round w3-block btn-comanda"><b>Buscar Comanda</b><i class="fa fa-search" style="float: right; line-height: 22px"></i></button>
-      </form>
+      <div class="input-form">
+        <input type="text" v-model="referencia" placeholder="Referência" autofocus>
+        <i class="fa fa-qrcode w3-text-white"></i>
+      </div>
+      <p class="w3-left-align"><b>Referência da comanda</b></p>
+      <button type="button" class="w3-button w3-border w3-round w3-block btn-comanda"
+              @click="selComanda">
+        <b>Buscar Comanda</b><i class="fa fa-search" style="float: right; line-height: 22px"></i>
+      </button>
     </div>
 
   </div>
@@ -32,14 +33,22 @@
     },
     methods: {
       selComanda() {
-        if (this.referencia != "") {
-          this.$http.get(base_url + 'admin/api/comanda/ref/' + this.referencia)
+        if (this.referencia !== "") {
+          openLoading("Validando a referência");
+          this.$http.get(base_url + 'comandas/1/' + token + '?ref_comanda=' + this.referencia)
             .then(response => {
-              if (response.data != "") {
-                localStorage.setItem("comanda", response.data);
-                this.$router.push("comanda");
+              let dados = response.data[0];
+              console.log(dados);
+              if (dados !== undefined) {
+                localStorage.setItem("comanda", JSON.stringify(dados));
+                console.log(dados);
+                setTimeout(() => {
+                  closeLoading();
+                  this.$router.push("comanda");
+                },2000);
               } else {
-                alert("Nao encontrado")
+                closeLoading();
+                openModalMsg("Referência não Encontrado","Verifique a tente novamente!");
               }
             });
         }
@@ -74,6 +83,9 @@
     right: 16px;
     top: 12px;
     font-size: 20px;
+  }
+  .btn-comanda:hover {
+    background-color: transparent!important;
   }
   .btn-comanda {
     margin-top: 24px;

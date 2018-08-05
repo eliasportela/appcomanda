@@ -55,7 +55,7 @@
 
             } else {
               closeLoading();
-              alert(data.result)
+              openModalMsg("Ops!",data.result);
             }
           });
       }

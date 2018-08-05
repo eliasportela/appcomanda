@@ -5,7 +5,7 @@
       <div class="title">
         <span>COMANDAS ABERTAS</span>
       </div>
-      <div class="w3-cell-row w3-padding-16 list" v-for="c in comandas" @click="abrirComanda(c.id_comanda)">
+      <div class="w3-cell-row w3-padding-16 list w3-card" v-for="c in comandas" @click="abrirComanda(c.id_comanda)">
         <div class="w3-cell">
           <div class="comanda-produto">
             {{c.mesa != null ? 'Mesa: ' + c.mesa : ''}}
@@ -27,12 +27,16 @@
       </div>
     </div>
     <div class="w3-modal" :class="{'show':modalComanda}">
-      <div class="w3-modal-content w3-animate-opacity">
+      <div class="w3-modal-content w3-animate-opacity" style="overflow: auto">
         <div class="w3-top top-bar">
 					<span @click="toogleComanda">
 						<i class="fa fa-chevron-left"></i>
 						Voltar
 					</span>
+          <span class="w3-right" @click="novaComanda">
+            Nova Comanda
+            <i class="fa fa-check"></i>
+          </span>
         </div>
         <div class="title-garcom">
           <span>Selecione o número da mesa</span>
@@ -92,18 +96,11 @@
               </div>
             </div>
           </div>
-          <div class="w3-margin comanda-add-obs">
+          <div class="comanda-add-obs">
             <label>Observações</label>
             <textarea class="w3-input w3-text w3-border" placeholder="Observações da comanda"
                       v-model="dados.observacao">
 						</textarea>
-          </div>
-        </div>
-        <div class="w3-bottom w3-white garcom-container-btn">
-          <div class="w3-margin">
-            <button class="w3-button w3-round w3-red w3-block btn-garcom" @click="novaComanda">
-              CONFIRMAR
-            </button>
           </div>
         </div>
       </div>
@@ -123,9 +120,9 @@
     components: {TopBar, ModalProduto},
     data() {
       return {
+        token: '',
         comandas: '',
         modalComanda: false,
-
         dados: {
           mesa: "",
           observacao: "",
@@ -134,9 +131,11 @@
     },
     methods: {
       buscarComandas() {
-        this.$http.get(base_url + 'admin/api/comandas/')
+        openLoading("Buscando Comandas");
+        this.$http.get(base_url + 'comandas/1/' + this.token + '?status_comanda=1')
           .then(response => {
             this.comandas = response.data;
+            closeLoading();
           });
       },
       toogleComanda() {
@@ -146,11 +145,22 @@
         }
       },
       novaComanda() {
-        let options = {emulateJSON: true};
-        this.$http.post(base_url + 'admin/api/comanda/inserir-comanda', this.dados, options)
-          .then(response => {
-            this.$router.push("comanda-detalhes/" + response.data)
-          });
+        if (this.dados.mesa !== '') {
+          openLoading("Cadastrando comanda..");
+          let options = {emulateJSON: true};
+          this.$http.post(base_url + 'comandas/inserir/' + this.token, this.dados, options)
+            .then(response => {
+              let id_comanda = response.data.id_comanda;
+              if (id_comanda != null) {
+                closeLoading();
+                this.$router.push("comanda-detalhes/" + id_comanda);
+              } else {
+                openModalMsg("Ops!",response.data.result);
+              }
+            });
+        } else {
+          openModalMsg("Ops!", "Selecione uma mesa");
+        }
       },
 
       abrirComanda(id) {
@@ -168,7 +178,13 @@
       }
     },
     created: function () {
-      this.buscarComandas();
+      if (localStorage.getItem('key') !== undefined) {
+        this.token = localStorage.getItem('key');
+        this.buscarComandas();
+
+      } else {
+        this.$router.push("/")
+      }
     }
   }
 </script>
@@ -178,38 +194,31 @@
     width: 25%;
     text-align: center;
   }
-
   .comanda-btn {
     margin-top: 12px
   }
-
+  .comanda-btn-numero:hover {
+    background-color: #FFF!important;
+    color: #000!important;
+  }
   .comanda-btn-numero {
     width: 90%;
     height: 50px
   }
-
   .comanda-input-mesa {
     margin: 0 20px;
     color: #aaa;
     font-weight: 900
   }
-
   .comanda-add-obs {
-
+    margin: 16px 16px 24px 16px;
   }
-
   .w3-text {
     resize: none;
   }
-
-  .garcom-bottom {
-    margin: 16px
-  }
-
   .w3-modal-content {
     height: 110%
   }
-
   .w3-text:focus + div {
     background-color: red
   }
