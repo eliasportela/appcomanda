@@ -11,36 +11,27 @@
   </head>
 
   <style type="text/css">
-    .gray{
-      background: #eee;
-    }
-    .cliente{
-      background-color: #fcfcfc
-    }
-    .login-cliente{
-      background: url("static/imgs/bg1.jpg") no-repeat center top fixed;
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
-    }
-    .login-cliente > #site{
-      background-color: rgba(0,0,0,0.3);
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
-      position: absolute;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
+    .home {
+      background-color: #000000!important;
+      background-image: url("static/imgs/pizzas.jpg");
+      background-repeat: no-repeat;
+      background-size: 67em auto;
     }
   </style>
-  <body>
+  <body id="body" class="w3-light-gray">
     <div id="site">
       <div id="app"></div>
     </div>
-    <!-- built files will be auto injected -->
+
+    <!--modal loading-->
+    <div id="loading" class="w3-modal modal-loading">
+      <div class="w3-modal-content w3-display-container w3-round">
+        <div class="w3-display-left" style="padding-left: 20px">
+          <img src="static/imgs/loading.svg" class="fa-spin" style="width: 35px;height: 35px">
+          <span id="loading-text" class="w3-opacity" style="padding-left: 20px">Teste de texto</span>
+        </div>
+      </div>
+    </div>
+
   </body>
 </html>

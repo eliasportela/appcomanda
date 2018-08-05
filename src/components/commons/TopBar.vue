@@ -7,7 +7,7 @@
 				<i class="fa" :class="fa"></i>
 			</button>
 		</div>
-		<div class="w3-sidebar w3-card w3-bar-block w3-round top-bar-home-sidebar" v-show="menu">
+		<div class="w3-sidebar w3-card w3-round w3-red top-bar-home-sidebar" v-show="menu">
 		  <router-link :to="'/login'" class="w3-bar-item top-bar-link" @click.native="abrirMenu">
 		  	Garçom
 		  </router-link>
@@ -38,32 +38,16 @@
 	}
 </script>
 
-
 <style>
 .top-bar-home{
-	padding: 6px 4px
-}
-.top-bar-home-title {
-	font-weight: bold;
-	font-size: 1.5em
-}
-.top-bar-home-icon {
-	margin: 6px 1px;
+	padding: 6px 4px;
+  margin-bottom: 20px;
 }
 .top-bar-home-sidebar {
 	width:40%;
 	right:1%;
+  top: 5px;
 	height:inherit;
 	padding: 6px 8px;
-}
-.top-bar-home-link {
-	font-size: 1em;
-	font-weight: bold;
-	text-decoration: none;
-	border-color: #fff!important;
-	padding: 12px!important;
-}
-.top-bar-home-link:last-child {
-	border-color: none;
 }
 </style>

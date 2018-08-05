@@ -1,74 +1,93 @@
 <template>
-	<div>
-		<top-bar></top-bar>
-		<div class="w3-center w3-display-middle home-container">
-			<div class="home-title">
-				<span>Login</span>
-			</div>
-			</span>
-			<div class="login-form">
-				<form class="">
-					<div class="w3-cell-row">
-						<div class="w3-cell login-icon">
-							<i class="fa fa-user"></i>
-						</div>
-						<div class="w3-cell">
-							<input type="text" class="w3-input home-input" placeholder="Usuário">
-						</div>
-					</div>
-					<div class="w3-cell-row">
-						<div class="w3-cell login-icon">
-							<i class="fa fa-lock"></i>
-						</div>
-						<div class="w3-cell">
-							<input type="text" class="w3-input home-input" placeholder="Senha">
-						</div>
-					</div>
-					<div class="login-btn">
-						<button type="button" class="w3-button w3-round w3-block w3-red" @click="selComanda">
-							ENTRAR
-						</button>
-					</div>
-				</form>	
-			</div>
-		</div>
-	</div>
+  <div>
+    <top-bar></top-bar>
+    <div class="container-login">
+      <div class="w3-margin-bottom">
+        <img src="/static/imgs/logo.png" class="w3-image"/>
+        <h5>Login</h5>
+      </div>
+      <form>
+        <div class="input-form">
+          <input type="text" class="w3-light-gray" v-model="dados.usuario" placeholder="Informe seu usuário"/>
+          <i class="fa fa-user w3-text-red"></i>
+        </div>
+        <div class="input-form">
+          <input type="password" class="w3-light-gray" v-model="dados.senha" placeholder="Informe sua senha"/>
+          <i class="fa fa-lock w3-text-red"></i>
+        </div>
+        <button type="button" class="w3-button w3-red w3-block w3-round login-btn" :disabled="(dados.usuario === '') || (dados.senha === '')" @click="logar">
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
-import TopBar from "../commons/TopBar.vue"
-export default {
-	components:{TopBar},
-	name: 'Home',
-	data () {
-		return {
-			msg: 'Welcome to Your Vue.js App'
-		}
-	},
-	methods:{
-		selComanda(){
-			this.$router.push("comanda-garcom")
-		}
-	}
-}
+  import TopBar from "../commons/TopBar.vue"
+
+  export default {
+    components: {TopBar},
+    name: 'Home',
+    data() {
+      return {
+        dados: {
+          usuario: '',
+          senha: ''
+        }
+      }
+    },
+    methods: {
+      logar() {
+        openLoading("Validando os dados");
+        let options = {emulateJSON: true};
+        this.$http.post(base_url + 'autenticar', this.dados, options)
+          .then(response => {
+            let data = response.data;
+
+            if (data.chave != null) {
+              localStorage.setItem("key",data.chave);
+
+              setTimeout(() => {
+                closeLoading();
+                this.$router.push("comanda-garcom")
+              },2000);
+
+            } else {
+              closeLoading();
+              alert(data.result)
+            }
+          });
+      }
+    }
+  }
 </script>
 
 <style scoped>
-.home-container{
-	border: 1px solid rgba(255,255,255,0.5);
-	border-radius: 4px;
-	padding: 10% 0 15% 0;
-	margin-top: 4%;
-	background-color: rgba(0,0,0,0.4);
-}
-.home-input{
-	text-align: left;
-}
-.login-btn{
-	margin: 32px 16px 0 16px
-}
-.home-title{
-	margin-bottom: 32px
-}
+  .container-login{
+    margin: 26% 32px 0;
+    text-align: center;
+  }
+  .input-form {
+    margin: 12px 0 16px;
+    border-bottom: 1px solid #f44336;
+    position: relative;
+  }
+  .input-form input{
+    border: none;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+  }
+  .input-form i {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    font-size: 20px;
+  }
+  .login-btn {
+    margin-top: 32px;
+    font-size: 1.1em;
+  }
 </style>
 
