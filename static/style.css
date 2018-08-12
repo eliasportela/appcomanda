@@ -49,6 +49,8 @@
 }
 .w3-modal-content {
   margin: 0;
+  min-height: 100%;
+  color: #888;
 }
 .modal-produtos {
   height: 100%;
@@ -84,7 +86,7 @@
 }
 
 .modal-msg {
-  padding: 35% 24px;
+  padding: 60% 24px;
 }
 
 .w3-container h4 {
@@ -159,6 +161,7 @@
 .cardapio-item {
   padding-top: 4px;
   padding-bottom: 4px;
+  color: #090909;
 }
 
 .cardapio-item:first-child {
@@ -166,7 +169,6 @@
 }
 
 .cardapio-image {
-  /*border: 2px solid #f44336;*/
   border-radius: 10px;
   width: 100%;
   height: 120px;
@@ -283,12 +285,10 @@
 /*GARCOM*/
 .container-garcom {
   margin: 0 16px;
-  border: 2px solid #bbb;
   padding: 16px;
   height: 70vh;
   overflow: auto;
   font-weight: 900;
-  color: #444;
 }
 
 .title-garcom {
@@ -314,27 +314,31 @@
 
 /*Mesa*/
 .mesa-title {
-  margin: 0 24px;
+  padding-left: 12px;
   text-align: left;
-  font-size: 1em
+
 }
 
 .container-garcom {
   height: 65vh
 }
 
+.container-garcom.disabled{
+  opacity: 0.2;
+  overflow: hidden;
+}
 .garcom-produto {
   height: 69vh
 }
 
 .garcom-tipo-produto {
-  height: 37vh
+  height: 37vh;
+  border: 2px solid #bbb;
 }
 
 .comanda-tipo {
   padding: 16px 0 16px 16px;
-  border-bottom: 1px solid #bbb;
-  font-size: 1.2em;
+  border-bottom: 1px solid #ccccccdb;
 }
 
 .comanda-tipo:first-child {
@@ -357,7 +361,6 @@
 .garcom-tipo-container {
   margin: 16px;
   text-align: center;
-  color: #444;
   font-weight: 600
 }
 
@@ -371,7 +374,7 @@
 }
 
 .garcom-hr {
-  margin: 10px 0
+  margin: 20px 0
 }
 
 /*cards pedidos*/

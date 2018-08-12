@@ -5,7 +5,7 @@
       <div class="title">
         <span>COMANDAS ABERTAS</span>
       </div>
-      <div class="w3-cell-row w3-padding-16 list w3-card" v-for="c in comandas" @click="abrirComanda(c.id_comanda)">
+      <div class="w3-cell-row w3-padding-16 list w3-border" v-for="c in comandas" @click="abrirComanda(c.id_comanda)">
         <div class="w3-cell">
           <div class="comanda-produto">
             {{c.mesa != null ? 'Mesa: ' + c.mesa : ''}}
@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="w3-modal" :class="{'show':modalComanda}">
-      <div class="w3-modal-content w3-animate-opacity" style="overflow: auto">
+      <div class="w3-modal-content" style="overflow: auto">
         <div class="w3-top top-bar">
 					<span @click="toogleComanda">
 						<i class="fa fa-chevron-left"></i>

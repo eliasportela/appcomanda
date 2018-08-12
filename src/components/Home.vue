@@ -6,7 +6,7 @@
     </div>
     <div>
       <div class="input-form">
-        <input type="text" v-model="referencia" placeholder="Referência" autofocus>
+        <input type="number" v-model="referencia" placeholder="Referência" autofocus>
         <i class="fa fa-qrcode w3-text-white"></i>
       </div>
       <p class="w3-left-align"><b>Referência da comanda</b></p>
@@ -48,7 +48,7 @@
                 },2000);
               } else {
                 closeLoading();
-                openModalMsg("Referência não Encontrado","Verifique a tente novamente!");
+                openModalMsg("Comanda não encontrada","Verifique e tente novamente!");
               }
             });
         }
@@ -77,6 +77,7 @@
     padding: 12px;
     background-color: transparent;
     color: #fff;
+    font-weight: bold;
   }
   .input-form i {
     position: absolute;

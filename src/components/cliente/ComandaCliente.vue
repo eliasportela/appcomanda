@@ -8,7 +8,7 @@
         PRODUTOS CONSUMIDOS
       </div>
       <hr>
-      <div class="w3-cell-row list w3-card w3-padding-16" v-for="p in produtos" :key="p.id"
+      <div class="w3-cell-row list w3-border w3-padding-16" v-for="p in produtos" :key="p.id"
            @click="buscarDetalhesProdutoComanda(p.id_comanda_produto)">
         <div class="w3-cell">
           <div class="comanda-produto">
