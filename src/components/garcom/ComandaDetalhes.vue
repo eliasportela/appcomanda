@@ -177,15 +177,15 @@
         <div class="title-garcom">
           <div class="w3-cell-row">
             <div class="w3-cell" style="width:50%;padding-right:4px">
-              <button class="w3-button w3-border w3-block" @click="avancarModal(6)">
+              <button class="w3-button w3-border w3-block" @click="confirmAdicionais(false)">
                 <i class="fa fa-chevron-left"></i>
                 Voltar
               </button>
             </div>
             <div class="w3-cell" style="width:50%;padding-left:4px">
-              <button class="w3-button w3-border w3-block" @click="avancarModal(0)">
-                <i class="fa fa-times"></i>
-                Cancelar
+              <button class="w3-button w3-border w3-block" @click="confirmAdicionais(true)">
+                <i class="fa fa-check"></i>
+                Confirmar
               </button>
             </div>
           </div>
@@ -198,7 +198,7 @@
               {{a.nome_produto}}
             </div>
             <div class="w3-cell list-icon">
-              <i class="fa fa-check" v-show="dados.adicionais.includes(a.id_produto+'||'+a.id_tabela_preco)"></i>
+              <i class="fa fa-check" v-show="adicionaisSelecionadosTemp.includes(a.id_produto+'||'+a.id_tabela_preco)"></i>
             </div>
           </div>
         </div>
@@ -360,6 +360,8 @@
         observacoes: [],
 
         produtosSelecionados: [],
+        adicionaisSelecionadosTemp: [],
+
         id_tabela: 0,
 
         dados: {
@@ -468,13 +470,14 @@
       },
 
       selAdicionais(id, tabela) {
-        var ads = id + '||' + tabela;
-        if (!this.dados.adicionais.includes(ads)) {
-          this.dados.adicionais.push(ads);
+        let ads = id + '||' + tabela;
+        if (!this.adicionaisSelecionadosTemp.includes(ads)) {
+          this.adicionaisSelecionadosTemp.push(ads);
         } else {
-          var index = this.dados.adicionais.indexOf(ads);
-          if (index !== -1) this.dados.adicionais.splice(index, 1);
+          let index = this.adicionaisSelecionadosTemp.indexOf(ads);
+          if (index !== -1) this.adicionaisSelecionadosTemp.splice(index, 1);
         }
+        console.log(this.dados.adicionais,this.adicionaisSelecionadosTemp);
       },
 
       selRemocoes(id, nome) {
@@ -493,6 +496,19 @@
           return;
         }
         this.showPizza = false;
+      },
+
+      confirmAdicionais(confirm){
+        if(confirm === true){
+          this.dados.adicionais = [];
+          Object.assign(this.dados.adicionais, this.adicionaisSelecionadosTemp);
+        }else {
+          this.adicionaisSelecionadosTemp = [];
+          Object.assign(this.adicionaisSelecionadosTemp, this.dados.adicionais);
+        }
+
+        console.log(this.dados.adicionais,this.adicionaisSelecionadosTemp);
+        this.avancarModal(6);
       },
 
       selProduto(p) {
