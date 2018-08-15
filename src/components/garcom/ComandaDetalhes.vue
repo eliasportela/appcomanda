@@ -268,39 +268,29 @@
     <div class="w3-modal" :class="{'show':modalFinalizar}">
       <div class="w3-modal-content">
         <div class="w3-top top-bar">
-          <span>
-            LeCard
+          <span @click="avancarModal(0)">
+            <i class="fa fa-times"></i>
+            Cancelar
           </span>
           <span class="w3-right" @click="inserirProduto()">
-            Finalizar Pedido
+            Finalizar
             <i class="fa fa-check"></i>
           </span>
         </div>
-        <div class="title-garcom">
-          <div class="w3-cell-row">
-            <div class="w3-cell">
-              <button class="w3-button w3-border w3-block" @click="avancarModal(0)">
-                <i class="fa fa-times"></i>
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
-        <hr>
-        <div class="w3-container">
+        <div class="w3-container" style="padding-top: 75px">
           Informe a Quantidade
           <div class="w3-cell-row">
             <div class="w3-cel w3-margin-right">
-              <div class="w3-input w3-border" placeholder="Quantidade" style="font-weight: bold">{{dados.quantidade}}
+              <div class="w3-input w3-border" style="font-weight: bold">{{dados.quantidade}}
               </div>
             </div>
             <div class="w3-cell" style="width:25%; padding: 0 6px">
-              <button class="w3-button w3-red w3-block" @click="minusQtd()">
+              <button class="w3-button w3-red w3-block w3-round-small" @click="minusQtd()">
                 <i class="fa fa-minus"></i>
               </button>
             </div>
             <div class="w3-cell" style="width:25%;padding: 0 6px">
-              <button class="w3-button w3-red w3-block" @click="plusQtd()">
+              <button class="w3-button w3-red w3-block w3-round-small" @click="plusQtd()">
                 <i class="fa fa-plus"></i>
               </button>
             </div>
@@ -308,16 +298,16 @@
           <hr>
           <div class="w3-cell-row w3-center">
             <div class="w3-cell" style="width: 50%;padding: 8px">
-              <div class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(2)">
-                <div class="w3-margin-bottom">
+              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px" @click="avancarModal(2)">
+                <div>
                   <i class="fa fa-th fa-2x"></i>
                 </div>
                 <b>Produtos</b>
               </div>
             </div>
             <div class="w3-cell" style="width: 50%;padding: 8px">
-              <div class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(3)">
-                <div class="w3-margin-bottom">
+              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px" @click="avancarModal(3)">
+                <div>
                   <i class="fa fa-th fa-2x"></i>
                 </div>
                 <b>Adicionais</b>
@@ -326,16 +316,16 @@
           </div>
           <div class="w3-cell-row">
             <div class="w3-cell" style="width: 50%;padding: 8px">
-              <div class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(4)">
-                <div class="w3-margin-bottom">
+              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px" @click="avancarModal(4)">
+                <div>
                   <i class="fa fa-th fa-2x"></i>
                 </div>
                 <b>Remoções</b>
               </div>
             </div>
             <div class="w3-cell" style="width: 50%;padding: 8px">
-              <div class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(5)">
-                <div class="w3-margin-bottom">
+              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px" @click="avancarModal(5)">
+                <div>
                   <i class="fa fa-th fa-2x"></i>
                 </div>
                 <b>Observações</b>
@@ -383,6 +373,7 @@
         hideProdutos: false,
         observacoes: [],
 
+        nomeProdutosSelecionado: "",
         produtosSelecionados: [],
         adicionaisSelecionadosTemp: [],
         remocoesSelecionadosTemp: [],
@@ -687,12 +678,12 @@
       if (localStorage.getItem('key') !== undefined) {
         this.token = localStorage.getItem('key');
         this.buscarComanda();
-        //this.buscarCategorias();
+        this.buscarCategorias();
 
       } else {
         this.$router.push("/")
       }
-
+      //this.avancarModal(6);
     }
 
   }
