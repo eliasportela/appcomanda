@@ -211,19 +211,20 @@
         <div class="title-garcom">
           <div class="w3-cell-row">
             <div class="w3-cell" style="width:50%;padding-right:4px">
-              <button class="w3-button w3-border w3-block" @click="avancarModal(6)">
+              <button class="w3-button w3-border w3-block" @click="confirmRemocoes(false)">
                 <i class="fa fa-chevron-left"></i>
                 Voltar
               </button>
             </div>
             <div class="w3-cell" style="width:50%;padding-left:4px">
-              <button class="w3-button w3-border w3-block" @click="avancarModal(0)">
-                <i class="fa fa-times"></i>
-                Cancelar
+              <button class="w3-button w3-border w3-block" @click="confirmRemocoes(true)">
+                <i class="fa fa-check"></i>
+                Confirmar
               </button>
             </div>
           </div>
         </div>
+        <div class="w3-center w3-border-bottom w3-padding-16" style="margin: 0 16px"><b>Selecione a Remoção</b></div>
         <div class="container-garcom">
           <div class="w3-cell-row comanda-tipo" v-for="i in itensRemocoes"
                @click="selRemocoes(i.id_produto,i.nome_produto)">
@@ -231,7 +232,7 @@
               {{i.nome_produto}}
             </div>
             <div class="w3-cell list-icon">
-              <i class="fa fa-check" v-show="dados.remocoes.includes('S/ '+i.nome_produto)"></i>
+              <i class="fa fa-check" v-show="remocoesSelecionadosTemp.includes('S/ '+i.nome_produto)"></i>
             </div>
           </div>
         </div>
@@ -244,15 +245,15 @@
         <div class="title-garcom">
           <div class="w3-cell-row">
             <div class="w3-cell" style="width:50%;padding-right:4px">
-              <button class="w3-button w3-border w3-block" @click="avancarModal(6)">
+              <button class="w3-button w3-border w3-block" @click="confirmObservacao(false)">
                 <i class="fa fa-chevron-left"></i>
                 Voltar
               </button>
             </div>
             <div class="w3-cell" style="width:50%;padding-left:4px">
-              <button class="w3-button w3-border w3-block" @click="avancarModal(0)">
-                <i class="fa fa-times"></i>
-                Cancelar
+              <button class="w3-button w3-border w3-block" @click="confirmObservacao(true)">
+                <i class="fa fa-check"></i>
+                Confirmar
               </button>
             </div>
           </div>
@@ -267,8 +268,10 @@
     <div class="w3-modal" :class="{'show':modalFinalizar}">
       <div class="w3-modal-content">
         <div class="w3-top top-bar">
-          LeCard
-          <span class="w3-right" @click="">
+          <span>
+            LeCard
+          </span>
+          <span class="w3-right" @click="inserirProduto()">
             Finalizar Pedido
             <i class="fa fa-check"></i>
           </span>
@@ -303,21 +306,42 @@
             </div>
           </div>
           <hr>
-          <button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(2)">
-            Produtos
-          </button>
-          <button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(3)">
-            Adicionais
-          </button>
-          <button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(4)">
-            Remoções
-          </button>
-          <button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(5)">
-            Observações
-          </button>
-          <button class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="inserirProduto()">
-            Finalizar
-          </button>
+          <div class="w3-cell-row w3-center">
+            <div class="w3-cell" style="width: 50%;padding: 8px">
+              <div class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(2)">
+                <div class="w3-margin-bottom">
+                  <i class="fa fa-th fa-2x"></i>
+                </div>
+                <b>Produtos</b>
+              </div>
+            </div>
+            <div class="w3-cell" style="width: 50%;padding: 8px">
+              <div class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(3)">
+                <div class="w3-margin-bottom">
+                  <i class="fa fa-th fa-2x"></i>
+                </div>
+                <b>Adicionais</b>
+              </div>
+            </div>
+          </div>
+          <div class="w3-cell-row">
+            <div class="w3-cell" style="width: 50%;padding: 8px">
+              <div class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(4)">
+                <div class="w3-margin-bottom">
+                  <i class="fa fa-th fa-2x"></i>
+                </div>
+                <b>Remoções</b>
+              </div>
+            </div>
+            <div class="w3-cell" style="width: 50%;padding: 8px">
+              <div class="w3-button w3-red w3-block w3-margin-top" style="padding:12px" @click="avancarModal(5)">
+                <div class="w3-margin-bottom">
+                  <i class="fa fa-th fa-2x"></i>
+                </div>
+                <b>Observações</b>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -361,6 +385,7 @@
 
         produtosSelecionados: [],
         adicionaisSelecionadosTemp: [],
+        remocoesSelecionadosTemp: [],
 
         id_tabela: 0,
 
@@ -481,11 +506,11 @@
       },
 
       selRemocoes(id, nome) {
-        if (!this.dados.remocoes.includes('S/ ' + nome)) {
-          this.dados.remocoes.push('S/ ' + nome);
+        if (!this.remocoesSelecionadosTemp.includes('S/ ' + nome)) {
+          this.remocoesSelecionadosTemp.push('S/ ' + nome);
         } else {
-          let index = this.dados.remocoes.indexOf('S/ ' + nome);
-          if (index !== -1) this.dados.remocoes.splice(index, 1);
+          let index = this.remocoesSelecionadosTemp.indexOf('S/ ' + nome);
+          if (index !== -1) this.remocoesSelecionadosTemp.splice(index, 1);
         }
       },
 
@@ -508,6 +533,27 @@
         }
 
         console.log(this.dados.adicionais,this.adicionaisSelecionadosTemp);
+        this.avancarModal(6);
+      },
+
+      confirmRemocoes(confirm){
+        if(confirm === true){
+          this.dados.remocoes = [];
+          Object.assign(this.dados.remocoes, this.remocoesSelecionadosTemp);
+        }else {
+          this.remocoesSelecionadosTemp = [];
+          Object.assign(this.remocoesSelecionadosTemp, this.dados.remocoes);
+        }
+
+        this.avancarModal(6);
+      },
+
+      confirmObservacao(confirm){
+        if(confirm === false){
+          this.dados.observacao = null;
+        }
+
+        console.log(this.dados.observacao)
         this.avancarModal(6);
       },
 
