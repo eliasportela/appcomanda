@@ -1,0 +1,106 @@
+Levantamento de Requisitos
+
+#Requisitos de Usuário
+#Requisitos de Produto
+#Requisitos Externos
+#Requisitos Organizacionais
+#Requisitos Evidentes
+#Requisitos de Dominio
+
+#Atores
+Cliente
+Atendente
+Gerente
+Garçom
+Pizzaiolo
+Forneiro
+Cozinha
+Proprietário
+
+#Receber pedidos na mesa
+-Caso cliente novo, garçom recebe cliente e direciona para alguma mesa vazia, Gerente observa e preenche uma comanda vazia(papel) de acordo com a mesa que o cliente sentou.
+Cliente escolhe o pedido no cardápio que se encontra em cada mesa.
+-Caso for pedidos para preparo, garçom anota a mesa e pedido em um bloco de papel, e leva para o atendente do caixa ou garçom leva o pedido do freezer para o cliente. Se for suco ou porção, o garçom informa ao atendente da cozinha e informa ao atendente do caixa qual o pedido
+Garçom cria uma comanda reserva com os pedidos de cada mesa
+
+#Receber Pedido de cliente no telefone
+Se o cliente tiver o cardapio ela fala qual a pizza, 
+se nao tiver, o cliente pede para o atendente sugestões do cardapío
+Atendente anota em um bloco de pedidos
+Atendente estimula determinado tempo de espera (cada pizza na fila são de 3 a 5 minutos para produzir)
+Não há delivery
+Atendente guarda o papel anotado com a pizza para controle no final do dia
+
+#Receber Pedido de cliente no local
+Atendente oferece o cardapio do balcão
+Atendente anota em um bloco de pedidos
+Atendente estimula determinado tempo de espera (cada pizza na fila são de 3 a 5 minutos para produzir)
+Não é criado comandas, porem se o cliente consumir algo enquanto espera a pizza, é aberto uma comanda para o balcão
+Atendente guarda o papel anotado com a pizza para controle no final do dia
+
+#Produzir Pedidos
+Atendente cola o papel de pedidos em uma parede em fila para o pizzaiolo e o forneiro
+Forneiro abre a massa conforme tamanho e a borda da pizza no pedido 
+Pizzaiolo produz a pizza e a coloca no forno junto com o papel do pedido
+Forneiro assa a pizza, e verifica, se é mesa, a pizza é colocado em uma bandeija, cortada e entregue ao garçom informando os sabores e a mesa. Caso for viagem, é colocado em uma caixa e fixado o papel do pedido em cima da tampa da caixa.
+Se tiver algum item que não é assado, o forneiro coloca após retirar a pizza do forno
+
+#Levar pedidos até a mesa
+Garçom recebe a pizza do forneiro e leva até a mesa designada
+
+#Fechar conta na mesa
+Cliente solicita a conta ao garçom 
+Garçom informa ao atendente, e leva a comanda reserva
+Atendente soma os valores da comanda e compara com a comanda do garçom.
+Atendente entrega papel com as somas individuáis e a comanda para o garçom
+Garçom entrega comanda ao cliente
+Cliente conferi pedido
+-Receber pagamento na mesa
+Pagamento: Caso for cartão, o garçom leva até a mesa do cliente, ou recebe o dinheiro e devolve ao caixa, se houver troco o atendente devolve ao garçom q entrega para o cliente.
+-Receber pagamento no caixa
+Atendente soma os valores, compara a comanda do garçom e informa ao cliente
+Cliente paga por cartão, dinheiro ou cheque, e se houver, atendente devolve o troco ao cliente
+
+#Informar pedido de viagens e telefone 
+Cliente recebe pedido e se quiser escolhe mais algum produto.
+Atendente somo os valores e informa ao cliente
+Cliente paga por cartão, dinheiro ou cheque, e se houver, atendente devolve o troco ao cliente
+
+#Regras das pizzas
+Há três tamanhos de pizzas, Grande, Broto e Esfiha
+Todas as pizzas poderão vir com borda recheada, que será cobrado a parte, exceto para algumas categoria, que a borda já é inclusa;
+Adcionais são cobrados a parte, exceto alguns itens como Cebola
+Há possibilidade do cliente retirar itens da pizza
+Pizzas poderão ser 1/2 e 1/3 de sabores diferentes que serão cobradas pelo valor maior
+Existe possibilidade do cliente criar seu proprio sabor, o gerente irá definir quanto irá custar
+Existe o tamanho mini Broto que não esta no cardapio e o gerente tambem defini o valor
+Todas as pizzas são acompanhadas com oregano, molho de tomate e azeitonas pretas (Exeto para pizzas doces)
+
+#Regra das Porções
+São definidas por preços a cada 100g
+Há possibilidades de houver Porções de itens fora do cardapio, o preço sera estipulado pelo gerente
+
+
+#Pedidos
+Não são cobrado taxa de serviços
+
+#Produtos
+Pizzas
+Pizzas Italianas (inclue borda recheada)
+Pizzas de Época (inclue borda recheada) - Pizzas aceitas somente em determinadas epocas do ano
+Pizzas doces (inclue borda recheada)
+Calzones
+Pão Sirio
+Esfirra Aberta
+Porções
+Sucos
+Vinhos
+Bebidas
+Sorvetes
+Diversos
+
+#Fechar caixa
+Atendente (gerente) somo todos os valores (cartao, dinheiro e cheque) junta com os papéis dos pedidos e as comandas e entrega ao dono do estabelecimento
+
+#Requisitos de domínio
+Serão necessario um computador servidor(caixa), 3 tablets, uma impressora não fiscal, maquina de cartão de crédito
