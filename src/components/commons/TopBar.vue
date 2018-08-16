@@ -8,9 +8,9 @@
 			</button>
 		</div>
 		<div class="w3-sidebar w3-card w3-round w3-red top-bar-home-sidebar" v-show="menu">
-		  <router-link :to="'/login'" class="w3-bar-item top-bar-link" @click.native="abrirMenu">
-		  	Garçom
-		  </router-link>
+		  <div class="w3-bar-item top-bar-link" @click="logoff">
+		  	Sair
+		  </div>
 		</div>
 	</div>
 </template>
@@ -23,18 +23,29 @@
 		data(){
 			return{
 				menu: false,
-				fa: 'fa-ellipsis-v'
+				fa: 'fa-ellipsis-v',
+        btnLogoff: false
 			}
 		},
 		methods:{
 			abrirMenu(){
 				this.menu = !this.menu;
 			},
+      logoff(){
+        localStorage.clear();
+        this.$router.push("login");
+      },
 			linkar(link){
 				this.menu = false;
 				router.push(link);
 			}
-		}
+		},
+    mounted(){
+		  if (localStorage.getItem("key") !== null){
+        //this.btnLogoff = true;
+        //console.log(this.btnLogoff);
+      }
+    }
 	}
 </script>
 
@@ -46,7 +57,7 @@
 .top-bar-home-sidebar {
 	width:40%;
 	right:1%;
-  top: 5px;
+  top: 52px;
 	height:inherit;
 	padding: 6px 8px;
 }

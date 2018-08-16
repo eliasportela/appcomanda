@@ -8,7 +8,7 @@ import ComandaCliente from '@/components/cliente/ComandaCliente'
 import CardapioCliente from '@/components/cliente/CardapioCliente'
 import PedidosCliente from '@/components/cliente/PedidosCliente'
 
-//cliente
+//Garcom
 import LoginGarcom from '@/components/garcom/Login'
 import ComandaGarcom from '@/components/garcom/ComandaGarcom'
 import ComandaDetalhes from '@/components/garcom/ComandaDetalhes'

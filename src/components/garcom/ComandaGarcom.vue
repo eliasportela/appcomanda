@@ -140,7 +140,7 @@
       },
       toogleComanda() {
         this.modalComanda = !this.modalComanda;
-        if (this.modalComanda == false) {
+        if (this.modalComanda === false) {
           this.buscarComandas();
         }
       },
