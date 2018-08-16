@@ -178,12 +178,12 @@
       }
     },
     created: function () {
-      if (localStorage.getItem('key') !== undefined) {
+      if (localStorage.getItem('key') !== null) {
         this.token = localStorage.getItem('key');
         this.buscarComandas();
 
       } else {
-        this.$router.push("/")
+        this.$router.push("/login")
       }
     }
   }

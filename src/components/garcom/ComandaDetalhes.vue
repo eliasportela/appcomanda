@@ -77,7 +77,7 @@
     </div>
 
     <div class="w3-modal" :class="{'show':modalInsercao}">
-      <div class="w3-modal-content w3-animate-opacity">
+      <div class="w3-modal-content">
         <top-bar></top-bar>
         <div class="title-garcom">
           <div class="w3-cell-row">
@@ -139,7 +139,7 @@
               </button>
             </div>
             <div class="w3-cell" style="width:50%;padding-left:4px">
-              <button class="w3-button w3-border w3-block" @click="avancarModal(6)">
+              <button class="w3-button w3-border w3-block" @click="confirmProdutos()" :disabled="!hideProdutos">
                 Avançar
                 <i class="fa fa-chevron-right"></i>
               </button>
@@ -269,7 +269,6 @@
       <div class="w3-modal-content">
         <div class="w3-top top-bar">
           <span @click="avancarModal(0)">
-            <i class="fa fa-times"></i>
             Cancelar
           </span>
           <span class="w3-right" @click="inserirProduto()">
@@ -409,6 +408,7 @@
             this.produtosComanda = response.data;
             this.buscarCategorias();
             this.avancarModal(0);
+            closeLoading();
           });
       },
 
@@ -416,7 +416,6 @@
         this.$http.get(base_url + 'categorias/' + this.token)
           .then(response => {
             this.categorias = response.data;
-            closeLoading();
           });
       },
 
@@ -429,21 +428,35 @@
       },
 
       buscarProdutos(id) {
-        openLoading("Buscando Produtos");
-        this.$http.get(base_url + 'produtos/precos/1/' + this.token + '/?id_categoria=' + id + '&ingrediente=0')
-          .then(response => {
-            this.produtos = response.data;
-            closeLoading();
-          });
+        let nomeStorage = "produtos-categoria-" + id;
+        if (localStorage.getItem(nomeStorage) === null) {
+          openLoading("Buscando Produtos");
+          this.$http.get(base_url + 'produtos/precos/1/' + this.token + '/?id_categoria=' + id + '&ingrediente=0')
+            .then(response => {
+              let produtosLocal = response.data;
+              localStorage.setItem(nomeStorage, JSON.stringify(produtosLocal));
+              this.produtos = produtosLocal;
+              closeLoading();
+            });
+        } else {
+          this.produtos = JSON.parse(localStorage.getItem(nomeStorage));
+        }
       },
 
       buscarAdicionais(id) {
-        openLoading("Buscando Adicionais");
-        this.$http.get(base_url + 'produtos/precos/1/' + this.token + '/?id_categoria=' + id + '&ingrediente=1')
-          .then(response => {
-            this.adicionais = response.data;
-            closeLoading();
-          });
+        let nomeStorage = "adicionais-categoria-" + id;
+        if (localStorage.getItem(nomeStorage) === null) {
+          openLoading("Buscando Adicionais");
+          this.$http.get(base_url + 'produtos/precos/1/' + this.token + '/?id_categoria=' + id + '&ingrediente=1')
+            .then(response => {
+              let local = response.data;
+              localStorage.setItem(nomeStorage, JSON.stringify(local));
+              this.adicionais = local;
+              closeLoading();
+            });
+        } else {
+          this.adicionais = JSON.parse(localStorage.getItem(nomeStorage));
+        }
       },
 
       buscarItensRemocoes() {
@@ -548,6 +561,11 @@
         this.avancarModal(6);
       },
 
+      confirmProdutos(){
+        this.buscarItensRemocoes();
+        this.avancarModal(6);
+      },
+
       selProduto(p) {
         let tamanho = this.tipoPizza === 1 ? 2 : 1;
         if (this.produtosSelecionados.length < tamanho && (p.id_tabela === this.id_tabela || this.id_tabela === 0)) {
@@ -628,7 +646,6 @@
           this.modalFinalizar = false;
         } else if (modal === 4) {
           //modal de Remocao
-          this.buscarItensRemocoes();
           this.modalInsercao = false;
           this.modalProduto = false;
           this.modalAdicionais = false;

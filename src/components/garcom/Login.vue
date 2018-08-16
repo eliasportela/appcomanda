@@ -15,7 +15,7 @@
           <input type="password" class="w3-light-gray" v-model="dados.senha" placeholder="Informe sua senha"/>
           <i class="fa fa-lock w3-text-red"></i>
         </div>
-        <button type="button" class="w3-button w3-red w3-block w3-round login-btn" :disabled="(dados.usuario === '') || (dados.senha === '')" @click="logar">
+        <button type="button" class="w3-button w3-red w3-block w3-round login-btn" :disabled="(dados.usuario === '') || (dados.senha === '')" @click="logar(true)">
           Login
         </button>
       </form>
@@ -38,11 +38,14 @@
       }
     },
     methods: {
-      logar() {
-        openLoading("Validando os dados");
+      logar(p) {
+        openLoading("Por favor aguarde..");
+        let chave = localStorage.getItem("key");
         let options = {emulateJSON: true};
-        this.$http.post(base_url + 'autenticar', this.dados, options)
+
+        this.$http.post(base_url + 'autenticar?chave=' + chave, this.dados, options)
           .then(response => {
+            localStorage.clear();
             let data = response.data;
 
             if (data.chave != null) {
@@ -55,9 +58,16 @@
 
             } else {
               closeLoading();
-              openModalMsg("Ops!",data.result);
+              if (p) {
+                openModalMsg("Ops!", data.result);
+              }
             }
           });
+      }
+    },
+    created() {
+      if (localStorage.getItem("key")) {
+        this.logar();
       }
     }
   }
