@@ -2,6 +2,7 @@
   <div>
     <div class="w3-top top-bar">
       <span>COMANDA: {{comanda.ref_comanda}}</span>
+      <span class="w3-right" @click="sair">Sair <i class="fa fa-sign-out-alt"></i></span>
     </div>
     <div class="container-bottom">
       <div class="title">
@@ -108,6 +109,9 @@
       },
       closeProduto() {
         this.modalProduto = false;
+      },
+      sair() {
+        this.$router.push("/");
       }
 
     },

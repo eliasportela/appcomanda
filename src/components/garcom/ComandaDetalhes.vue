@@ -1,76 +1,119 @@
 <template>
   <div>
-    <top-bar voltar="comanda-garcom"></top-bar>
-    <div class="container-bottom">
-      <div class="w3-cell-row mesa-title">
-        <div class="w3-cell w3-cell-middle" style="width: 80%">
-          <div>
-            <span>COMANDA: {{comanda.ref_comanda}}</span>
+
+    <div>
+      <top-bar voltar="comanda-garcom"></top-bar>
+      <div class="container-bottom">
+        <div class="w3-cell-row mesa-title">
+          <div class="w3-cell w3-cell-middle" style="width: 80%">
+            <div>
+              <span>COMANDA: {{comanda.ref_comanda}}</span><br/>
+              <span>MESA: {{comanda.mesa}}</span><br/>
+              <span>OBS: {{comanda.observacao}}</span>
+            </div>
           </div>
-          <div>
-            <span>OBS: {{comanda.observacao}}</span>
+          <div class="w3-cell w3-center w3-cell-middle" @click="selEditarComanda">
+            <i class="fa fa-edit fa-2x"></i><br>
+            <span class="w3-small">EDITAR</span>
           </div>
         </div>
-        <div class="w3-cell w3-center w3-cell-middle">
-          <i class="fa fa-edit fa-2x"></i><br>
-          <span class="w3-small">EDITAR</span>
+        <hr>
+        <div class="w3-cell-row list w3-border" v-for="p in produtosComanda"
+             @click="selProdutoDetalhes(p)">
+          <div class="w3-cell">
+            <div class="comanda-produto">
+              <span>{{p.nome_categoria}} {{p.nome_tabela}}</span><br>
+              <span>{{p.nome_produto | produto}}</span>
+            </div>
+            <div class="obs-comanda">
+              <span><b>QTD:</b> {{p.quantidade | fixed}}</span>
+            </div>
+          </div>
+          <div class="w3-cell list-icon">
+            <i class="fa fa-chevron-right"></i><br>
+            <span class="w3-small">EDITAR</span>
+          </div>
         </div>
       </div>
-      <hr>
-      <div class="w3-cell-row list w3-border" v-for="p in produtosComanda"
-           @click="selProdutoDetalhes(p.id_comanda_produto)">
-        <div class="w3-cell">
-          <div class="comanda-produto">
-            <span>{{p.nome_produto}}</span><br>
-            <span>{{p.nome_categoria}} {{p.nome_tabela}}</span>
-          </div>
-          <div class="obs-comanda">
-            <span><b>QTD:</b> {{p.quantidade}}</span>
-          </div>
-        </div>
-        <div class="w3-cell list-icon">
-          <i class="fa fa-chevron-right"></i><br>
-          <span class="w3-small">EDITAR</span>
-        </div>
+      <div class="w3-bottom container-btn-garcom w3-white">
+        <button class="w3-button w3-round w3-block w3-red btn-garcom" @click="avancarModal(1)">
+          ADICIONAR
+        </button>
       </div>
-    </div>
-    <div class="w3-bottom container-btn-garcom w3-white">
-      <button class="w3-button w3-round w3-block w3-red btn-garcom" @click="avancarModal(1)">
-        ADICIONAR
-      </button>
     </div>
 
-    <div class="w3-modal" :class="{'show':modalComanda}">
-      <div class="w3-modal-content w3-animate-opacity">
-        <top-bar></top-bar>
-        <div class="title-garcom">
-          <button class="w3-button w3-round w3-block w3-red">
-            <i class="fa fa-trash"></i>
-            DELETAR ITEM
-          </button>
+    <div class="w3-modal" :class="{'show':modalEditarComanda}">
+      <div class="w3-modal-content">
+        <div class="w3-top top-bar">
+          <span @click="avancarModal(0)">
+            Cancelar
+          </span>
+          <span class="w3-right" @click="editarComanda()">
+            Editar Comanda
+            <i class="fa fa-check"></i>
+          </span>
         </div>
-        <div class="container-garcom garcom-produto">
-          <div class="w3-center w3-border-bottom w3-padding">
-            PRODUTO
+        <div class="title-garcom">
+          EDITAR COMANDA
+        </div>
+        <div class="w3-container">
+          <hr>
+          <div class="w3-row">
+            <div class="w3-col s12">
+              <label><b>Mesa</b></label>
+              <input type="number" class="w3-input w3-border" v-model="dadosComanda.mesa"/>
+            </div>
+            <div class="w3-col s12 w3-margin-top">
+              <label><b>Observação</b></label>
+              <textarea class="w3-input w3-border" rows="8" v-model="dadosComanda.observacao"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w3-modal" :class="{'show':modalEditarPedido}">
+      <div class="w3-modal-content">
+        <div class="w3-top top-bar">
+          <span @click="avancarModal(0)">
+            <i class="fa fa-chevron-left"></i>
+            Voltar
+          </span>
+          <span class="w3-right" @click="inserirProduto()">
+            Editar Pedido
+            <i class="fa fa-edit"></i>
+          </span>
+        </div>
+        <div class="title-garcom">
+          DADOS DO PEDIDO
+        </div>
+        <div class="w3-container" style="font-weight: bold">
+          <div class="w3-margin-top w3-center w3-border-bottom w3-padding">
+            PRODUTOS
           </div>
           <ul class="w3-ul comanda-ul">
-            <li>{{produtoDetalhes.quantidade}} - {{produtoDetalhes.nome_produto}}</li>
+            <li v-for="p in nomesprodutosDetalhes">
+              - {{nomesprodutosDetalhes.length !== 1 ? "1/2" : "1"}}
+              {{p}}
+            </li>
           </ul>
           <div class="w3-margin-top w3-center w3-border-bottom w3-padding">
-            ADICIONAIS E OBSERVAÇÕES
+            ADICIONAIS
+          </div>
+          <ul class="w3-ul comanda-ul">
+            <li v-for="ads in adicionaisDetalhes">- {{ads.nome_produto}}</li>
+          </ul>
+          <div class="w3-margin-top w3-center w3-border-bottom w3-padding">
+            OBSERVAÇÕES
           </div>
           <ul class="w3-ul comanda-ul">
             <li v-for="obs in observacoes">- {{obs}}</li>
           </ul>
         </div>
         <div class="w3-bottom container-btn-garcom w3-center">
-          <button class="w3-button w3-round w3-red btn-garcom" style="width:49%" @click="avancarModal(0)">
-            <i class="fa fa-chevron-left"></i>
-            VOLTAR
-          </button>
-          <button class="w3-button w3-round w3-red btn-garcom" style="width:49%">
-            <i class="fa fa-edit"></i>
-            EDITAR
+          <button class="w3-button w3-round w3-red btn-garcom w3-block" @click="">
+            <i class="fa fa-trash"></i>
+            DELETAR ITEM
           </button>
         </div>
       </div>
@@ -198,7 +241,8 @@
               {{a.nome_produto}}
             </div>
             <div class="w3-cell list-icon">
-              <i class="fa fa-check" v-show="adicionaisSelecionadosTemp.includes(a.id_produto+'||'+a.id_tabela_preco)"></i>
+              <i class="fa fa-check"
+                 v-show="adicionaisSelecionadosTemp.includes(a.id_produto+'||'+a.id_tabela_preco)"></i>
             </div>
           </div>
         </div>
@@ -297,7 +341,8 @@
           <hr>
           <div class="w3-cell-row w3-center">
             <div class="w3-cell" style="width: 50%;padding: 8px">
-              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px" @click="avancarModal(2)">
+              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px"
+                   @click="avancarModal(2)">
                 <div>
                   <i class="fa fa-th fa-2x"></i>
                 </div>
@@ -305,7 +350,8 @@
               </div>
             </div>
             <div class="w3-cell" style="width: 50%;padding: 8px">
-              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px" @click="avancarModal(3)">
+              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px"
+                   @click="avancarModal(3)">
                 <div>
                   <i class="fa fa-th fa-2x"></i>
                 </div>
@@ -315,7 +361,8 @@
           </div>
           <div class="w3-cell-row">
             <div class="w3-cell" style="width: 50%;padding: 8px">
-              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px" @click="avancarModal(4)">
+              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px"
+                   @click="avancarModal(4)">
                 <div>
                   <i class="fa fa-th fa-2x"></i>
                 </div>
@@ -323,7 +370,8 @@
               </div>
             </div>
             <div class="w3-cell" style="width: 50%;padding: 8px">
-              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px" @click="avancarModal(5)">
+              <div class="w3-button w3-red w3-block w3-margin-top w3-round-small w3-padding-24" style="padding:12px"
+                   @click="avancarModal(5)">
                 <div>
                   <i class="fa fa-th fa-2x"></i>
                 </div>
@@ -351,7 +399,8 @@
       return {
         token: '',
 
-        modalComanda: false,
+        modalEditarComanda: false,
+        modalEditarPedido: false,
         modalInsercao: false,
         modalProduto: false,
         modalAdicionais: false,
@@ -371,6 +420,8 @@
         showPizza: false,
         hideProdutos: false,
         observacoes: [],
+        nomesprodutosDetalhes: [],
+        adicionaisDetalhes: [],
 
         nomeProdutosSelecionado: "",
         produtosSelecionados: [],
@@ -388,6 +439,12 @@
           observacao: null,
           adicionais: [],
           remocoes: []
+        },
+
+        dadosComanda: {
+          id_comanda: 0,
+          mesa: 0,
+          observacao: null
         }
       }
     },
@@ -416,14 +473,6 @@
         this.$http.get(base_url + 'categorias/' + this.token)
           .then(response => {
             this.categorias = response.data;
-          });
-      },
-
-      buscarDetalhesProdutoComanda(id) {
-        this.$http.get(base_url + 'admin/api/comanda-pruduto/' + id)
-          .then(response => {
-            this.produtoDetalhes = response.data;
-            this.observacoes = this.produtoDetalhes.observacao.split("||");
           });
       },
 
@@ -506,7 +555,7 @@
           let index = this.adicionaisSelecionadosTemp.indexOf(ads);
           if (index !== -1) this.adicionaisSelecionadosTemp.splice(index, 1);
         }
-        console.log(this.dados.adicionais,this.adicionaisSelecionadosTemp);
+        console.log(this.dados.adicionais, this.adicionaisSelecionadosTemp);
       },
 
       selRemocoes(id, nome) {
@@ -527,24 +576,24 @@
         this.showPizza = false;
       },
 
-      confirmAdicionais(confirm){
-        if(confirm === true){
+      confirmAdicionais(confirm) {
+        if (confirm === true) {
           this.dados.adicionais = [];
           Object.assign(this.dados.adicionais, this.adicionaisSelecionadosTemp);
-        }else {
+        } else {
           this.adicionaisSelecionadosTemp = [];
           Object.assign(this.adicionaisSelecionadosTemp, this.dados.adicionais);
         }
 
-        console.log(this.dados.adicionais,this.adicionaisSelecionadosTemp);
+        console.log(this.dados.adicionais, this.adicionaisSelecionadosTemp);
         this.avancarModal(6);
       },
 
-      confirmRemocoes(confirm){
-        if(confirm === true){
+      confirmRemocoes(confirm) {
+        if (confirm === true) {
           this.dados.remocoes = [];
           Object.assign(this.dados.remocoes, this.remocoesSelecionadosTemp);
-        }else {
+        } else {
           this.remocoesSelecionadosTemp = [];
           Object.assign(this.remocoesSelecionadosTemp, this.dados.remocoes);
         }
@@ -552,8 +601,8 @@
         this.avancarModal(6);
       },
 
-      confirmObservacao(confirm){
-        if(confirm === false){
+      confirmObservacao(confirm) {
+        if (confirm === false) {
           this.dados.observacao = null;
         }
 
@@ -561,7 +610,7 @@
         this.avancarModal(6);
       },
 
-      confirmProdutos(){
+      confirmProdutos() {
         this.buscarItensRemocoes();
         this.avancarModal(6);
       },
@@ -590,9 +639,35 @@
 
       },
 
-      selProdutoDetalhes(id) {
-        this.modalComanda = true;
-        this.buscarDetalhesProdutoComanda(id);
+      selProdutoDetalhes(p) {
+        this.modalEditarPedido = true;
+        this.produtoDetalhes = p;
+        this.observacoes = p.observacao !== null ? p.observacao.split("||") : "";
+        this.nomesprodutosDetalhes = p.nome_produto !== null ? p.nome_produto.split("||") : "";
+        this.adicionaisDetalhes = p.adicionais;
+      },
+
+      selEditarComanda() {
+        this.dadosComanda.id_comanda = this.comanda.id_comanda;
+        this.dadosComanda.mesa = this.comanda.mesa;
+        this.dadosComanda.observacao = this.comanda.observacao;
+        this.modalEditarComanda = true;
+      },
+
+      editarComanda() {
+        openLoading("Editando informações");
+        let options = {emulateJSON: true};
+        this.$http.post(base_url + 'comandas/editar/' + this.token, this.dadosComanda, options)
+          .then(response => {
+              closeLoading();
+              this.avancarModal(0);
+              this.buscarComanda();
+            },
+            response => {
+              closeLoading();
+              let dados = response.data.result;
+              openModalMsg("Acesso Negado", dados);
+            });
       },
 
       plusQtd() {
@@ -608,67 +683,49 @@
       avancarModal(modal) {
         if (modal === 0) {
           //tela incial
-          this.modalComanda = false;
-          this.modalInsercao = false;
-          this.modalProduto = false;
-          this.modalAdicionais = false;
-          this.modalRemocoes = false;
-          this.modalObservacoes = false;
-          this.modalFinalizar = false;
+          this.fecharModais();
           //modal de Insercao
         } else if (modal === 1) {
+          this.fecharModais();
           this.modalInsercao = true;
-          this.modalProduto = false;
-          this.modalAdicionais = false;
-          this.modalRemocoes = false;
-          this.modalObservacoes = false;
-          this.modalFinalizar = false;
         } else if (modal === 2) {
           //modal de Produtos
           let tamanho = this.tipoPizza === 1 ? 2 : 1;
           this.hideProdutos = this.produtosSelecionados.length >= tamanho;
           this.buscarProdutos(this.categoriaSelecionada);
 
-          this.modalInsercao = false;
+          this.fecharModais();
           this.modalProduto = true;
-          this.modalAdicionais = false;
-          this.modalRemocoes = false;
-          this.modalObservacoes = false;
-          this.modalFinalizar = false;
         } else if (modal === 3) {
           //modal de Adcionais
           this.buscarAdicionais(this.categoriaSelecionada);
-          this.modalInsercao = false;
-          this.modalProduto = false;
+
+          this.fecharModais();
           this.modalAdicionais = true;
-          this.modalRemocoes = false;
-          this.modalObservacoes = false;
-          this.modalFinalizar = false;
         } else if (modal === 4) {
           //modal de Remocao
-          this.modalInsercao = false;
-          this.modalProduto = false;
-          this.modalAdicionais = false;
+          this.fecharModais();
           this.modalRemocoes = true;
-          this.modalObservacoes = false;
-          this.modalFinalizar = false;
         } else if (modal === 5) {
           //modal de Observacoes
-          this.modalInsercao = false;
-          this.modalProduto = false;
-          this.modalAdicionais = false;
-          this.modalRemocoes = false;
+          this.fecharModais();
           this.modalObservacoes = true;
-          this.modalFinalizar = false;
         } else if (modal === 6) {
           //modal Finalizar
-          this.modalInsercao = false;
-          this.modalProduto = false;
-          this.modalAdicionais = false;
-          this.modalRemocoes = false;
-          this.modalObservacoes = false;
+          this.fecharModais();
           this.modalFinalizar = true;
         }
+      },
+
+      fecharModais() {
+        this.modalEditarPedido = false;
+        this.modalEditarComanda = false;
+        this.modalInsercao = false;
+        this.modalProduto = false;
+        this.modalAdicionais = false;
+        this.modalRemocoes = false;
+        this.modalObservacoes = false;
+        this.modalFinalizar = false;
       },
 
       clearDados() {
@@ -690,6 +747,7 @@
       }
 
     },
+
     created: function () {
 
       if (localStorage.getItem('key') !== undefined) {
@@ -700,7 +758,24 @@
       } else {
         this.$router.push("/")
       }
-      //this.avancarModal(6);
+    },
+
+    filters: {
+      fixed(value) {
+        if (value !== undefined) {
+          let v = parseInt(value);
+          return v.toFixed(0)
+        }
+      },
+      produto(value) {
+        let p = value.split("||");
+        let res = "";
+        let qtd = p.length !== 1 ? "1/2 " : "1 ";
+        p.forEach(function (r) {
+          res += qtd + r + " ";
+        });
+        return res
+      }
     }
 
   }
