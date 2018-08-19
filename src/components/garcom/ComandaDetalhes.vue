@@ -647,6 +647,7 @@
         this.adicionaisDetalhes = p.adicionais;
       },
 
+
       selEditarComanda() {
         this.dadosComanda.id_comanda = this.comanda.id_comanda;
         this.dadosComanda.mesa = this.comanda.mesa;
