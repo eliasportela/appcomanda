@@ -1,0 +1,418 @@
+/*Style commons*/
+.text-primary {
+  color: #aaa !important
+}
+
+.title {
+  margin-bottom: 10px;
+  font-size: 1em;
+  font-weight: 700;
+  color: #aaa;
+  text-align: center;
+}
+
+.title-client {
+  margin-top: 1.2%;
+  margin-bottom: -3%;
+  color: #aaa;
+  font-weight: 900 !important;
+  font-size: 1.2em;
+  padding: 2% 8%;
+}
+
+.container-bottom {
+  margin: 80px 16px;
+  font-weight: 700;
+  color: #444
+}
+.container-cardapio {
+  margin: 67px 12px;
+  padding: 16px;
+  font-weight: 700;
+  color: #444;
+  background-image: url("/static/imgs/cardapio.jpg");
+  box-shadow: 3px 5px 5px -1px rgba(148,148,148,1);
+
+}
+
+.top-bar {
+  box-shadow: 0px 2px 6px -1px #aaa;
+  background-color: #f44336;
+  color: #fff;
+  font-weight: 900;
+  padding: 16px
+}
+
+/*Style modal*/
+.w3-modal{
+  padding: 0;
+}
+.w3-modal-content {
+  margin: 0;
+  min-height: 100%;
+  color: #888;
+}
+.modal-produtos {
+  height: 100%;
+  color: #aaa;
+  font-weight: 900 !important;
+  font-size: 1em;
+
+}
+.modal-cardapio .w3-modal-content {
+  width: 100% !important;
+  margin: 0;
+  overflow: auto;
+}
+
+.modal-cardapio .w3-modal-content::-webkit-scrollbar {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.modal-voltar {
+  margin-bottom: -3%;
+  color: #aaa;
+  font-weight: 900 !important;
+  font-size: 1.4em;
+  padding: 4% 8% 2% 8%;
+}
+
+.modal-loading {
+  padding: 68% 24px;
+}
+
+.modal-msg {
+  padding: 60% 24px;
+}
+
+.w3-container h4 {
+  padding: 0;
+  margin: 0
+}
+
+.w3-container i {
+  font-size: 1.1em
+}
+
+.title-modal {
+  padding-top: 12px;
+}
+
+/*listas*/
+.list {
+  padding: 16px;
+  color: #393939;
+  font-weight: bold;
+  margin: 12px 0;
+  border-radius: 6px;
+}
+.list-cardapio {
+  padding: 16px;
+  border-top: 2px dotted #009246;
+  color: #393939;
+  font-weight: bold;
+}
+.list:first-child {
+  border-bottom: 1px solid #393939;
+}
+
+.list-icon {
+  vertical-align: middle;
+  padding-right: 8px;
+  text-align: right;
+}
+
+.list-text {
+  vertical-align: middle;
+}
+
+.list-img {
+  width: 33%;
+  text-align: left;
+}
+
+.list-img > img {
+  width: 96px;
+  height: 64px;
+  text-align: left;
+}
+
+/*Container*/
+.container {
+  height: 79vh;
+  border: 1.5px solid #aaa;
+  overflow: auto;
+  color: #34373d;
+  font-weight: bold;
+  margin: 10px 16px;
+  padding: 16px;
+}
+
+/*Cardapio Cliente Modal*/
+.cardapio {
+  margin: 16px;
+  font-weight: 700;
+}
+
+.cardapio-item {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  color: #090909;
+}
+
+.cardapio-item:first-child {
+  padding-top: 0
+}
+
+.cardapio-image {
+  border-radius: 10px;
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+.cardapio-preco {
+  width: 25%;
+  text-align: center;
+  padding-left: 4px
+}
+
+.cardapio-ingredientes {
+  font-size: 0.9em;
+  font-weight: 400
+}
+
+.info-list {
+  margin-top: 5%;
+  padding: 4px;
+}
+
+.info-list > ul > li {
+  border: none;
+}
+
+.info-icon {
+  color: #ffff00;
+  font-size: 1.3em
+}
+
+/*Pedido*/
+.pedido-item {
+  padding: 18px !important;
+  background-color: #4CAF50;
+}
+
+.pedido-obs {
+  font-size: 0.8em
+}
+
+/*Comanda-cliente*/
+.obs-comanda {
+  font-size: 0.9em;
+  font-weight: normal;
+}
+
+.comanda-ul {
+  line-height: 15px;
+  margin-top: 12px
+}
+
+.comanda-ul > li {
+  border: inherit;
+  font-size: 0.9em
+}
+
+/*Home e Login*/
+.home-container {
+  font-weight: 900;
+  color: #fff;
+  width: 80%
+}
+
+.home-img-container {
+  margin-top: 8%
+}
+
+.home-title {
+  font-size: 2em;
+  font-family: sans-serif;
+}
+
+.home-img {
+  width: 96px;
+  height: 96px;
+}
+
+.home-form {
+  margin-top: 10%;
+}
+
+.home-input {
+  background-color: rgba(255, 255, 255, 0.0);
+  color: #fff;
+  text-align: center;
+  font-size: 1.2em;
+  display: initial;
+  width: 80%;
+  border-bottom: 3px solid #fff;
+  margin-bottom: 5%
+}
+
+.home-qr-code {
+  margin-top: 15%
+}
+
+.home-btn {
+  width: 80%;
+  border: 2px solid #fff !important;
+  margin-top: 16px
+}
+
+.home-label {
+  font-size: 1.1em;
+}
+
+.login-icon {
+  width: 10%;
+  text-align: right;
+  font-size: 2em;
+  padding-left: 16px
+}
+
+/*GARCOM*/
+.container-garcom {
+  margin: 0 16px;
+  padding: 16px;
+  height: 70vh;
+  overflow: auto;
+  font-weight: 900;
+}
+
+.title-garcom {
+  padding: 70px 0 1.5vh 0;
+  color: #aaa;
+  font-weight: 900 !important;
+  font-size: 1em;
+  text-align: center;
+  margin: 0 16px
+}
+.title-produtos {
+  padding-top: 80px;
+  text-align: center;
+}
+.container-btn-garcom {
+  padding: 16px
+}
+
+.btn-garcom {
+  padding: 12px;
+  font-weight: 900;
+}
+
+/*Mesa*/
+.mesa-title {
+  padding-left: 12px;
+  text-align: left;
+
+}
+
+.container-garcom {
+  height: 65vh
+}
+
+.container-garcom.disabled{
+  opacity: 0.2;
+  overflow: hidden;
+}
+.garcom-produto {
+  height: 69vh
+}
+
+.garcom-tipo-produto {
+  height: 37vh;
+  border: 2px solid #bbb;
+}
+
+.comanda-tipo {
+  padding: 16px 0 16px 16px;
+  border-bottom: 1px solid #ccccccdb;
+}
+
+.comanda-tipo:first-child {
+  padding-top: 4px
+}
+
+.comanda-tipo:last-child {
+  border: none;
+  padding-bottom: 4px
+}
+
+.garcom-label {
+  text-align: center;
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #444
+}
+
+.garcom-tipo-container {
+  margin: 16px;
+  text-align: center;
+  font-weight: 600
+}
+
+.cell-garcom-tipo {
+  width: 33%;
+}
+
+.btn-garcom-tipo {
+  width: 95%;
+  text-align: center;
+}
+
+.garcom-hr {
+  margin: 20px 0
+}
+
+/*cards pedidos*/
+.card {
+  color: #000;
+  box-shadow: 3px 11px 5px 0 rgba(222,222,222,1);
+}
+.card-header{
+  padding: 8px;
+  text-align: center;
+}
+.card-body{
+  min-height: 80px;
+  font-size: 0.92em;
+  padding: 20px 16px 16px;
+  font-weight: bold;
+}
+.card-body .ads{
+  margin-top: 8px
+}
+.card-azul {
+  background-color: #88E3F8;
+  transform: rotate(-2deg);
+}
+.card-palha {
+  transform: rotate(-1deg);
+  background-color: #FEE882;
+}
+.card-verde {
+  transform: rotate(2deg);
+  background-color: #99ECBE;
+}
+.card-azul .card-header {
+  background-color: #6DCCE5;
+}
+.card-palha .card-header {
+  background-color: #EBD367;
+}
+.card-verde .card-header {
+  background-color: #7FD6A4;
+}
