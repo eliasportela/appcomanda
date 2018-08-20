@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div>
       <top-bar voltar="comanda-garcom"></top-bar>
       <div class="container-bottom">
@@ -72,14 +71,14 @@
       </div>
     </div>
 
-    <div class="w3-modal" :class="{'show':modalEditarPedido}">
+    <div class="w3-modal" :class="{'show':modalDetalhesPedido}">
       <div class="w3-modal-content">
         <div class="w3-top top-bar">
           <span @click="avancarModal(0)">
             <i class="fa fa-chevron-left"></i>
             Voltar
           </span>
-          <span class="w3-right" @click="inserirProduto()">
+          <span class="w3-right" @click="selEditarPedido()">
             Editar Pedido
             <i class="fa fa-edit"></i>
           </span>
@@ -271,7 +270,7 @@
         <div class="w3-center w3-border-bottom w3-padding-16" style="margin: 0 16px"><b>Selecione a Remoção</b></div>
         <div class="container-garcom">
           <div class="w3-cell-row comanda-tipo" v-for="i in itensRemocoes"
-               @click="selRemocoes(i.id_produto,i.nome_produto)">
+               @click="selRemocoes('S/ '+ i.nome_produto)">
             <div class="w3-cell list-text">
               {{i.nome_produto}}
             </div>
@@ -315,7 +314,7 @@
           <span @click="avancarModal(0)">
             Cancelar
           </span>
-          <span class="w3-right" @click="inserirProduto()">
+          <span class="w3-right" @click="inserirOrEditarProduto()">
             Finalizar
             <i class="fa fa-check"></i>
           </span>
@@ -394,13 +393,16 @@
     beforeCreate: function () {
       document.body.className = 'cliente';
     },
+
     components: {TopBar/*,ModalProduto*/},
+
     data() {
       return {
         token: '',
 
         modalEditarComanda: false,
         modalEditarPedido: false,
+        modalDetalhesPedido: false,
         modalInsercao: false,
         modalProduto: false,
         modalAdicionais: false,
@@ -422,6 +424,8 @@
         observacoes: [],
         nomesprodutosDetalhes: [],
         adicionaisDetalhes: [],
+
+        editar: false,
 
         nomeProdutosSelecionado: "",
         produtosSelecionados: [],
@@ -448,6 +452,7 @@
         }
       }
     },
+
     methods: {
       buscarComanda() {
         openLoading("Buscando dados da comanda");
@@ -509,24 +514,44 @@
       },
 
       buscarItensRemocoes() {
-        openLoading("Buscando Produtos");
-
+        let nomeStorage = "remocoes-produtos-";
         let par = {
           produtos: []
         };
         this.produtosSelecionados.forEach(p => {
           par.produtos.push(p.id_produto);
+          nomeStorage += p.id_produto;
         });
 
-        this.$http.get(base_url + 'produtos/itens/' + this.token, {params: par})
-          .then(response => {
-            this.itensRemocoes = response.data;
-            closeLoading();
-          });
+        if (localStorage.getItem(nomeStorage) === null) {
+          openLoading("Buscando Produtos");
+          this.$http.get(base_url + 'produtos/itens/' + this.token, {params: par})
+            .then(response => {
+              let local = response.data;
+              localStorage.setItem(nomeStorage, JSON.stringify(local));
+              this.itensRemocoes = local;
+              closeLoading();
+            });
+        } else {
+          this.itensRemocoes = JSON.parse(localStorage.getItem(nomeStorage));
+        }
       },
 
-      inserirProduto() {
-        openLoading("Inserindo as informações");
+      inserirOrEditarProduto(id) {
+
+        let base = base_url;
+
+        //inserir
+        if (!this.editar) {
+          base += "comandas/inserir/produtos/";
+          openLoading("Inserindo as informações");
+
+        } else { //editar
+          base += "comandas/editar/produtos/" + this.produtoDetalhes.id_comanda_produto + "/";
+          openLoading("Editando as informações");
+
+        }
+
         if (this.dados.produtos.length === 0) {
           this.produtosSelecionados.forEach(p => {
             this.dados.produtos.push(p.id_produto);
@@ -536,13 +561,10 @@
         this.dados.id_tabela = this.id_tabela;
 
         let options = {emulateJSON: true};
-
-        this.$http.post(base_url + 'comandas/inserir/produtos/' + this.token, this.dados, options)
+        this.$http.post(base + this.token, this.dados, options)
           .then(response => {
-            this.clearDados();
             this.avancarModal(0);
             this.buscarProdutosComanda();
-
           });
 
       },
@@ -555,14 +577,13 @@
           let index = this.adicionaisSelecionadosTemp.indexOf(ads);
           if (index !== -1) this.adicionaisSelecionadosTemp.splice(index, 1);
         }
-        console.log(this.dados.adicionais, this.adicionaisSelecionadosTemp);
       },
 
-      selRemocoes(id, nome) {
-        if (!this.remocoesSelecionadosTemp.includes('S/ ' + nome)) {
-          this.remocoesSelecionadosTemp.push('S/ ' + nome);
+      selRemocoes(nome) {
+        if (!this.remocoesSelecionadosTemp.includes(nome)) {
+          this.remocoesSelecionadosTemp.push(nome);
         } else {
-          let index = this.remocoesSelecionadosTemp.indexOf('S/ ' + nome);
+          let index = this.remocoesSelecionadosTemp.indexOf(nome);
           if (index !== -1) this.remocoesSelecionadosTemp.splice(index, 1);
         }
       },
@@ -585,7 +606,6 @@
           Object.assign(this.adicionaisSelecionadosTemp, this.dados.adicionais);
         }
 
-        console.log(this.dados.adicionais, this.adicionaisSelecionadosTemp);
         this.avancarModal(6);
       },
 
@@ -606,12 +626,10 @@
           this.dados.observacao = null;
         }
 
-        console.log(this.dados.observacao)
         this.avancarModal(6);
       },
 
       confirmProdutos() {
-        this.buscarItensRemocoes();
         this.avancarModal(6);
       },
 
@@ -630,7 +648,6 @@
 
         if (index !== -1) this.produtosSelecionados.splice(index, 1);
         if (this.produtosSelecionados.length === 0) {
-
           this.id_tabela = 0;
         }
 
@@ -640,13 +657,68 @@
       },
 
       selProdutoDetalhes(p) {
-        this.modalEditarPedido = true;
+        this.modalDetalhesPedido = true;
         this.produtoDetalhes = p;
         this.observacoes = p.observacao !== null ? p.observacao.split("||") : "";
         this.nomesprodutosDetalhes = p.nome_produto !== null ? p.nome_produto.split("||") : "";
         this.adicionaisDetalhes = p.adicionais;
       },
 
+      selEditarPedido() {
+        this.editar = true;
+        let p = this.produtoDetalhes;
+
+        //quantidade
+        this.dados.quantidade = p.quantidade;
+
+        //insercao
+        this.selCategoria(p.id_categoria, p.pizza);
+        let id_produto = p.id_produto.split("||");
+        this.tipoPizza = id_produto.length === 1 ? 2 : 1;
+
+        //produtos
+        this.buscarProdutos(p.id_categoria);
+        let nomeStorage = "produtos-categoria-" + p.id_categoria;
+        let prodLocal = JSON.parse(localStorage.getItem(nomeStorage));
+        prodLocal.forEach(res => {
+          id_produto.forEach(id => {
+            if (res.id_produto === id && res.id_tabela === p.id_tabela) {
+              this.selProduto(res);
+            }
+          });
+        });
+
+        //adicionais
+        let adicionais = p.adicionais;
+        if (adicionais !== null) {
+          adicionais.forEach(ads => {//qauntidade
+            this.selAdicionais(ads.id_produto, ads.id_tabela_preco);
+          });
+          console.log(this.adicionaisSelecionadosTemp);
+          this.confirmAdicionais(true);
+        }
+
+        //remocoes e observacoes
+        let observacao = p.observacao;
+        if (observacao !== null) {
+          observacao = observacao.split("||");
+          observacao.forEach(obs => {
+            //remocoes
+            if (obs.includes("Remoções:")) {
+              obs = obs.replace("Remoções: ", "").split(",");
+              obs.forEach(o => {
+                this.selRemocoes(o.trim());
+              });
+            } else { //observacoes
+              this.dados.observacao = obs.trim();
+            }
+          });
+          console.log(this.remocoesSelecionadosTemp);
+          this.confirmRemocoes(true);
+        }
+
+        this.avancarModal(6);
+      },
 
       selEditarComanda() {
         this.dadosComanda.id_comanda = this.comanda.id_comanda;
@@ -684,6 +756,7 @@
       avancarModal(modal) {
         if (modal === 0) {
           //tela incial
+          this.clearDados();
           this.fecharModais();
           //modal de Insercao
         } else if (modal === 1) {
@@ -714,11 +787,13 @@
         } else if (modal === 6) {
           //modal Finalizar
           this.fecharModais();
+          this.buscarItensRemocoes();
           this.modalFinalizar = true;
         }
       },
 
       fecharModais() {
+        this.modalDetalhesPedido = false;
         this.modalEditarPedido = false;
         this.modalEditarComanda = false;
         this.modalInsercao = false;
@@ -730,12 +805,15 @@
       },
 
       clearDados() {
+        this.editar = false;
         this.categoriaSelecionada = 0;
         this.tipoPizza = 2;
         this.showPizza = false;
         this.produtosSelecionados = [];
+        this.adicionaisSelecionadosTemp = [];
+        this.remocoesSelecionadosTemp = [];
         this.dados = {
-          id_comanda: 0,
+          id_comanda: this.comanda.id_comanda,
           produtos: [],
           id_tabela: null,
           quantidade: 1,

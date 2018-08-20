@@ -1,4 +1,4 @@
-const base_url = "http://localhost/comanda-server/api/";
+const base_url = "http://192.168.1.7/comanda-server/api/";
 //const base_url = "http://192.168.0.31/comanda-server/api/";
 //const base_url = "http://192.168.1.7/comanda-server/api/";
 //const base_url = "http://10.0.6.142/comanda-server/api/";
