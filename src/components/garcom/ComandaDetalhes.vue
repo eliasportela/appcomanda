@@ -110,7 +110,7 @@
           </ul>
         </div>
         <div class="w3-bottom container-btn-garcom w3-center">
-          <button class="w3-button w3-round w3-red btn-garcom w3-block" @click="">
+          <button class="w3-button w3-round w3-red btn-garcom w3-block" @click="removerPedido">
             <i class="fa fa-trash"></i>
             DELETAR ITEM
           </button>
@@ -713,11 +713,33 @@
               this.dados.observacao = obs.trim();
             }
           });
-          console.log(this.remocoesSelecionadosTemp);
           this.confirmRemocoes(true);
         }
 
         this.avancarModal(6);
+      },
+
+      removerPedido(){
+
+        openConfirme("Deseja deletar este pedido?");
+
+        if (r) {
+          let p = this.produtoDetalhes.id_comanda_produto;
+          openLoading("Editando informações");
+          let options = {emulateJSON: true};
+          this.$http.post(base_url + 'comandas/remover/produtos' + this.token, {id_comanda_produto: p}, options)
+            .then(response => {
+                closeLoading();
+                this.avancarModal(0);
+                this.buscarComanda();
+              },
+              response => {
+                closeLoading();
+                let dados = response.data.result;
+                openModalMsg("Acesso Negado", dados);
+              });
+        }
+
       },
 
       selEditarComanda() {

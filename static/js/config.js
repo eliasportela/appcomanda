@@ -1,7 +1,5 @@
-const base_url = "http://192.168.1.7/comanda-server/api/";
-//const base_url = "http://192.168.0.31/comanda-server/api/";
 //const base_url = "http://192.168.1.7/comanda-server/api/";
-//const base_url = "http://10.0.6.142/comanda-server/api/";
+const base_url = "http://localhost/comanda-server/api/";
 const token = "26901dc4fb95fda80f7427b53f4136ca";
 
 function openLoading(text) {
@@ -23,4 +21,9 @@ function closeOnload() {
   document.getElementById("modal-onload").style.display='none';
 }
 
+function openConfirme(text) {
+  document.getElementById("modal-confirm").style.display="block";
+  document.getElementById("confirm-text").innerHTML=text;
 
+  return false;
+}
