@@ -6,37 +6,38 @@
         <div class="w3-cell-row mesa-title">
           <div class="w3-cell w3-cell-middle" style="width: 80%">
             <div>
-              <span>COMANDA: {{comanda.ref_comanda}}</span><br/>
-              <span>MESA: {{comanda.mesa}}</span><br/>
-              <span>OBS: {{comanda.observacao}}</span>
+              <span><b>COMANDA:</b> {{comanda.ref_comanda}}</span><br/>
+              <span><b>MESA:</b> {{comanda.mesa}}</span><br/>
+              <span><b>OBS:</b> {{comanda.observacao}}</span>
             </div>
           </div>
-          <div class="w3-cell w3-center w3-cell-middle" @click="selEditarComanda">
+          <div class="w3-cell w3-center w3-cell-middle w3-text-red" @click="selEditarComanda">
             <i class="fa fa-edit fa-2x"></i><br>
             <span class="w3-small">EDITAR</span>
           </div>
         </div>
         <hr>
-        <div class="w3-cell-row list w3-border" v-for="p in produtosComanda"
+        <div class="w3-text-red w3-center"><b>Produtos</b></div>
+        <div class="w3-cell-row list" v-for="p in produtosComanda"
              @click="selProdutoDetalhes(p)">
           <div class="w3-cell">
             <div class="comanda-produto">
-              <span>{{p.nome_categoria}} {{p.nome_tabela}}</span><br>
+              <span><b>{{p.nome_categoria}} - {{p.nome_tabela}}</b></span><br>
               <span>{{p.nome_produto | produto}}</span>
             </div>
             <div class="obs-comanda">
               <span><b>QTD:</b> {{p.quantidade | fixed}}</span>
             </div>
           </div>
-          <div class="w3-cell list-icon">
+          <div class="w3-cell list-icon w3-text-red">
             <i class="fa fa-chevron-right"></i><br>
             <span class="w3-small">EDITAR</span>
           </div>
         </div>
       </div>
-      <div class="w3-bottom container-btn-garcom w3-white">
-        <button class="w3-button w3-round w3-block w3-red btn-garcom" @click="avancarModal(1)">
-          ADICIONAR
+      <div class="w3-bottom w3-padding w3-red">
+        <button class="w3-button w3-round w3-block btn-garcom" @click="avancarModal(1)">
+          Adicionar Produto
         </button>
       </div>
     </div>
@@ -75,42 +76,58 @@
       <div class="w3-modal-content">
         <div class="w3-top top-bar">
           <span @click="avancarModal(0)">
-            <i class="fa fa-chevron-left"></i>
+						<i class="fa fa-chevron-left"></i>
             Voltar
-          </span>
+					</span>
           <span class="w3-right" @click="selEditarPedido()">
             Editar Pedido
             <i class="fa fa-edit"></i>
           </span>
         </div>
-        <div class="title-garcom">
-          DADOS DO PEDIDO
-        </div>
-        <div class="w3-container" style="font-weight: bold">
-          <div class="w3-margin-top w3-center w3-border-bottom w3-padding">
-            PRODUTOS
+        <div style="padding: 16px 24px 0 24px">
+          <div class="title-produtos w3-text-red">
+            <span><b>Informações do Produto</b></span>
           </div>
           <ul class="w3-ul comanda-ul">
-            <li v-for="p in nomesprodutosDetalhes">
-              - {{nomesprodutosDetalhes.length !== 1 ? "1/2" : "1"}}
-              {{p}}
+            <li>
+              <span class="ul-titile w3-text-red" style="padding-bottom: 0">Quantidade:
+                <span>{{produtoDetalhes.quantidade | fixed}}</span>
+              </span>
+            </li>
+            <li>
+              <span class="ul-titile w3-text-red">Produto</span>
+              <span class="ul-body" v-for="p in nomesprodutosDetalhes" :key="p">
+              - {{nomesprodutosDetalhes.length !== 1 ? "1/2" : ""}} {{p}}
+              </span>
+            </li>
+            <li v-show="produtoDetalhes.pizza === '1'">
+              <span class="ul-titile w3-text-red">Tamanho</span>
+              {{produtoDetalhes.nome_tabela}}
             </li>
           </ul>
-          <div class="w3-margin-top w3-center w3-border-bottom w3-padding">
-            ADICIONAIS
+          <div class="w3-text-red" v-show="observacoes !== ''">
+            <b>Observações</b>
           </div>
           <ul class="w3-ul comanda-ul">
-            <li v-for="ads in adicionaisDetalhes">- {{ads.nome_produto}}</li>
+            <li v-show="observacoes !== ''">
+              <span class="ul-body" v-for="obs in observacoes" :key="obs">
+              - {{obs}}
+              </span>
+            </li>
+            <li v-show="adicionaisDetalhes !== ''">
+              <span class="ul-titile w3-text-red">Adicionais</span>
+              <span v-for="ads in adicionaisDetalhes">- c/ {{ads.nome_produto}}</span>
+            </li>
           </ul>
-          <div class="w3-margin-top w3-center w3-border-bottom w3-padding">
-            OBSERVAÇÕES
+          <div class="w3-margin-top">
+            <div class="w3-padding w3-padding-16 w3-center" v-show="observacoes === '' && adicionaisDetalhes === ''">
+              <img src="/static/imgs/pizza-caixa.svg" style="width: 80px"/>
+              <h5>Nenhuma informação adicional para o produto selecionado</h5>
+            </div>
           </div>
-          <ul class="w3-ul comanda-ul">
-            <li v-for="obs in observacoes">- {{obs}}</li>
-          </ul>
         </div>
-        <div class="w3-bottom container-btn-garcom w3-center">
-          <button class="w3-button w3-round w3-red btn-garcom w3-block" @click="modalConfirm = true">
+        <div class="w3-bottom w3-padding w3-center">
+          <button class="w3-button w3-red btn-garcom w3-block" @click="modalConfirm = true">
             <i class="fa fa-trash"></i>
             DELETAR ITEM
           </button>
@@ -441,7 +458,7 @@
         hideProdutos: false,
         observacoes: [],
         nomesprodutosDetalhes: [],
-        adicionaisDetalhes: [],
+        adicionaisDetalhes: '',
 
         editar: false,
 
@@ -886,13 +903,14 @@
         }
       },
       produto(value) {
-        let p = value.split("||");
-        let res = "";
-        let qtd = p.length !== 1 ? "1/2 " : "1 ";
-        p.forEach(function (r) {
-          res += qtd + r + " ";
-        });
-        return res
+        if (value !== null || value !== undefined) {
+          let p = value.split("||");
+          value = "";
+          p.forEach(obj => {
+            value += (p.length > 1 ? "1/2 " : "") + obj + ", ";
+          });
+        }
+        return value.substring(0, value.length - 2);
       }
     }
 

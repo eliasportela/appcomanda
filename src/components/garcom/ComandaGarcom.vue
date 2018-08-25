@@ -8,21 +8,23 @@
       <div class="w3-cell-row w3-padding-16 list w3-border" v-for="c in comandas" @click="abrirComanda(c.id_comanda)">
         <div class="w3-cell">
           <div class="comanda-produto">
-            {{c.mesa != null ? 'Mesa: ' + c.mesa : ''}}
+            <b>Mesa:</b> {{c.mesa}}
           </div>
           <div class="obs-comanda">
-            Obs: {{c.observacao}}
+            <b>Obs:</b> {{c.observacao}}
           </div>
         </div>
         <div class="w3-cell list-icon">
-          REF<br>{{c.ref_comanda}}
+          <b>REF</b>
+          <br>
+          {{c.ref_comanda}}
         </div>
       </div>
     </div>
     <div class="w3-bottom w3-white">
-      <div class="w3-margin">
+      <div class="w3-padding w3-red">
         <button class="w3-button w3-round w3-red w3-block btn-garcom" @click="toogleComanda">
-          NOVA COMANDA
+          Nova Comanda
         </button>
       </div>
     </div>
@@ -34,7 +36,7 @@
 						Voltar
 					</span>
           <span class="w3-right" @click="novaComanda">
-            Nova Comanda
+            Confirmar
             <i class="fa fa-check"></i>
           </span>
         </div>
