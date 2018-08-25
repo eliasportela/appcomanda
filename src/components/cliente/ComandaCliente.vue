@@ -9,11 +9,11 @@
         PRODUTOS CONSUMIDOS
       </div>
       <hr>
-      <div class="w3-cell-row list w3-border w3-padding-16" v-for="p in produtos" :key="p.id"
+      <div class="w3-cell-row list w3-border w3-padding-16" v-for="(p, index) in pedidos" :key="p.id"
            @click="buscarDetalhesProdutoComanda(p.id_comanda_produto)">
         <div class="w3-cell">
           <div class="comanda-produto">
-            <span>{{p.nome_produto}}</span>
+            <span>{{p.nome_produto | nome}}</span>
           </div>
           <div class="obs-comanda">
             <span><b>QTD:</b> {{p.quantidade}}</span>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="w3-modal" :class="{'show':modalProduto}">
-      <div class="w3-modal-content w3-animate-opacity modal-produtos">
+      <div class="w3-modal-content modal-produtos">
         <div class="w3-top top-bar">
 					<span @click="closeProduto">
 						<i class="fa fa-chevron-left"></i>
@@ -41,19 +41,28 @@
           <hr>
           <div class="w3-margin-top">
             <ul class="w3-ul comanda-ul w3-large">
-              <li>- Produto: {{produtoDetalhes.nome_produto}}</li>
-              <li>- Quantidade: {{produtoDetalhes.quantidade}}</li>
-              <li>- Tamanho: {{produtoDetalhes.nome_tabela}}</li>
+              <li v-for="p in produtos" :key="p">
+                - {{produtos.length !== 1 ? "1/2" : ""}} {{p}}
+              </li>
+              <hr>
+              <li>- Quantidade: {{produtoDetalhes.quantidade | fixed}}</li>
+              <li v-show="produtoDetalhes.pizza === '1'">- Tamanho: {{produtoDetalhes.nome_tabela}}</li>
             </ul>
-            <div class="w3-margin-top w3-center w3-border-bottom w3-padding">
-              ADICIONAIS E OBSERVAÇÕES
+            <div class="w3-margin-top w3-center w3-border-bottom w3-padding" v-show="observacoes !== ''">
+              OBSERVAÇÕES
             </div>
-            <ul class="w3-ul comanda-ul" v-show="observacoes !== ''">
+            <ul class="w3-ul comanda-ul">
               <li v-for="obs in observacoes" :key="obs">- {{obs}}</li>
             </ul>
-            <div class="w3-padding-32 w3-center w3-small" v-show="observacoes === ''">
+            <div class="w3-margin-top w3-center w3-border-bottom w3-padding" v-show="adicionais !== ''">
+              ADICIONAIS
+            </div>
+            <ul class="w3-ul comanda-ul">
+              <li v-for="ads in adicionais">- {{ads.nome_produto}}</li>
+            </ul>
+            <div class="w3-padding w3-padding-32 w3-center w3-small" v-show="observacoes === ''">
               <img src="/static/imgs/pizza-caixa.svg" style="width: 80px"/>
-              <h5>Nenhuma informação para o produto selecionado</h5>
+              <h5>Nenhuma informação adicional para o produto selecionado</h5>
             </div>
           </div>
         </div>
@@ -81,6 +90,8 @@
         comanda: "",
         produtoDetalhes: "",
         observacoes: "",
+        adicionais: [],
+        pedidos: [],
         produtos: [],
 
       }
@@ -90,7 +101,7 @@
         openLoading("Buscando os produtos")
         this.$http.get(base_url + 'comandas/prudutos/'+ token +'/' + this.comanda.id_comanda)
           .then(response => {
-            this.produtos = response.data;
+            this.pedidos = response.data;
             closeLoading()
           });
       },
@@ -99,9 +110,18 @@
         openLoading("Buscando detalhes");
         this.$http.get(base_url + 'comandas/prudutos/'+ token +'/' + this.comanda.id_comanda + '/?id_pedido=' + id)
           .then(response => {
+            this.observacoes = "";
+            this.adicionais = "";
             this.produtoDetalhes = response.data[0];
+
+            if (this.produtoDetalhes.nome_produto != null) {
+              this.produtos = this.produtoDetalhes.nome_produto.split("||");
+            }
             if (this.produtoDetalhes.observacao != null) {
               this.observacoes = this.produtoDetalhes.observacao.split("||");
+            }
+            if (this.produtoDetalhes.adicionais != null) {
+              this.adicionais = this.produtoDetalhes.adicionais;
             }
             this.modalProduto = true;
             closeLoading();
@@ -126,7 +146,27 @@
         this.$router.push("/");
 
       }
+    },
+
+    filters: {
+      fixed(value) {
+        if (value !== undefined) {
+          let v = parseInt(value);
+          return v.toFixed(0)
+        }
+      },
+      nome(value) {
+        if (value !== null || value !== undefined) {
+          let p = value.split("||");
+          value = "";
+          p.forEach(obj => {
+            value += (p.length > 1 ? "1/2 " : "") + obj + ", ";
+          });
+        }
+        return value.substring(0, value.length - 2);
+      }
     }
+
   }
 </script>
 

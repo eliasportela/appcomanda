@@ -397,14 +397,11 @@
 }
 .card-azul {
   background-color: #88E3F8;
-  transform: rotate(-2deg);
 }
 .card-palha {
-  transform: rotate(-1deg);
   background-color: #FEE882;
 }
 .card-verde {
-  transform: rotate(2deg);
   background-color: #99ECBE;
 }
 .card-azul .card-header {

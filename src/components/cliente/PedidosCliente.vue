@@ -14,15 +14,18 @@
       <div v-for="(p, index) in pedidos" :key="p.id_produto_comanda" style="margin-top: 24px">
         <div class="card" :class="'card-' + (p.id_categoria === '1' ? 'palha' : 'verde') ">
           <div class="card-header">
-            <i class="fa fa-utensils w3-text-red" v-show="p.status_pedido === '1'"></i>
-            <i class="fa fa-check w3-text-green" v-show="p.status_pedido === '2'"></i>
+            <i class="fa fa-utensils w3-text-red" v-show="p.status_pedido === '0'"></i>
+            <i class="fa fa-check w3-text-green" v-show="p.status_pedido === '1'"></i>
             - Pedido {{index + 1}} - {{p.nome_categoria}}
             <span class="w3-right"><i class="fa fa-clock" style="font-size:1em"></i> {{p.horas}}</span>
           </div>
           <div class="card-body" style="min-height: 30px">
-            <span>- {{p.quantidade}} {{p.nome_produto}}</span><br>
+            <span>- {{p.nome_produto | nome}}</span><br>
+            <span>- Quantidade:  {{p.quantidade | fixed}}</span><br>
             <span class="pedido-obs">
-              <span style="display: block" v-for="(obs, index) in p.observacoes" :key="index">- {{obs}}</span>
+              <span style="display: block" v-for="(obs, index) in p.observacoes" :key="index">
+                - {{obs}}
+              </span>
             </span>
           </div>
         </div>
@@ -52,6 +55,7 @@
         openLoading("Carregadno os pedidos..");
         this.$http.get(base_url + 'pedidos/1/' + token + '/?comanda=' + this.comanda.id_comanda)
           .then(response => {
+            console.log(response);
             this.pedidos = response.data;
             closeLoading();
           });
@@ -64,6 +68,24 @@
         this.buscarPedidosComanda();
       } else {
         this.$router.push("/");
+      }
+    },
+    filters: {
+      fixed(value) {
+        if (value !== undefined) {
+          let v = parseInt(value);
+          return v.toFixed(0)
+        }
+      },
+      nome(value) {
+        if (value !== null || value !== undefined) {
+          let p = value.split("||");
+          value = "";
+          p.forEach(obj => {
+            value += (p.length > 1 ? "1/2 " : "") + obj + ", ";
+          });
+        }
+        return value.substring(0, value.length - 2);
       }
     }
   }

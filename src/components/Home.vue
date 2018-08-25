@@ -38,10 +38,8 @@
           this.$http.get(base_url + 'comandas/1/' + token + '?ref_comanda=' + this.referencia)
             .then(response => {
               let dados = response.data[0];
-              console.log(dados);
               if (dados !== undefined) {
                 localStorage.setItem("comanda", JSON.stringify(dados));
-                console.log(dados);
                 setTimeout(() => {
                   closeLoading();
                   this.$router.push("comanda");

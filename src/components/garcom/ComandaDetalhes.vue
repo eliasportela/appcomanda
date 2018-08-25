@@ -110,7 +110,7 @@
           </ul>
         </div>
         <div class="w3-bottom container-btn-garcom w3-center">
-          <button class="w3-button w3-round w3-red btn-garcom w3-block" @click="removerPedido">
+          <button class="w3-button w3-round w3-red btn-garcom w3-block" @click="modalConfirm = true">
             <i class="fa fa-trash"></i>
             DELETAR ITEM
           </button>
@@ -382,6 +382,23 @@
       </div>
     </div>
 
+    <!--modal confirm-->
+    <div class="w3-modal modal-msg" :class="{'show':modalConfirm}">
+      <div class="w3-modal-content w3-center w3-round w3-padding-16" style="min-height: inherit">
+        <div style="padding: 20px 20px;color: #353535">
+          <b id="confirm-text" class="w3-large">Deseja remover o produto?</b><br>
+        </div>
+        <div class="w3-cell-row w3-margin-top w3-padding">
+          <div class="w3-cell">
+            <button class="w3-button w3-block w3-text-red" @click="modalConfirm = false">Não</button>
+          </div>
+          <div class="w3-cell">
+            <button class="w3-button w3-block w3-red w3-round" @click="removerPedido">Sim</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -409,6 +426,7 @@
         modalFinalizar: false,
         modalRemocoes: false,
         modalObservacoes: false,
+        modalConfirm: false,
 
         comanda: "",
         produtosComanda: [],
@@ -482,6 +500,7 @@
       },
 
       buscarProdutos(id) {
+        console.log(base_url + 'produtos/precos/1/' + this.token + '/?id_categoria=' + id + '&ingrediente=0');
         let nomeStorage = "produtos-categoria-" + id;
         if (localStorage.getItem(nomeStorage) === null) {
           openLoading("Buscando Produtos");
@@ -721,25 +740,23 @@
 
       removerPedido(){
 
-        openConfirme("Deseja deletar este pedido?");
+        this.modalConfirm = false;
 
-        if (r) {
-          let p = this.produtoDetalhes.id_comanda_produto;
-          openLoading("Editando informações");
-          let options = {emulateJSON: true};
-          this.$http.post(base_url + 'comandas/remover/produtos' + this.token, {id_comanda_produto: p}, options)
-            .then(response => {
-                closeLoading();
-                this.avancarModal(0);
-                this.buscarComanda();
-              },
-              response => {
-                closeLoading();
-                let dados = response.data.result;
-                openModalMsg("Acesso Negado", dados);
-              });
-        }
+        let p = this.produtoDetalhes.id_comanda_produto;
+        openLoading("Removendo o produto");
 
+        let options = {emulateJSON: true};
+        this.$http.post(base_url + 'comandas/remover/produtos/' + this.token, {id_comanda_produto: p}, options)
+          .then(response => {
+              closeLoading();
+              this.avancarModal(0);
+              this.buscarComanda();
+            },
+            response => {
+              let dados = response.data.result;
+              console.log(response);
+              openModalMsg("Acesso Negado", dados);
+            });
       },
 
       selEditarComanda() {
@@ -891,5 +908,10 @@
   .w3-button:hover {
     background-color: #fff !important;
     color: #aaa !important;
+  }
+
+  .w3-red:hover {
+    background-color: #F44336 !important;
+    color: #fff !important;
   }
 </style>
