@@ -1,10 +1,4 @@
-#Colocar os botoes de criação da comanda em cima
-
-#Melhorar o cardapio (Desprender a Header e colcar o "sair X" como fixed)
-
-
-==========================
-#BD
+﻿==========================
 
 #Cliente
 #Comanda
