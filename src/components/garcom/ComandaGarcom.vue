@@ -1,44 +1,50 @@
 <template>
   <div>
-    <top-bar></top-bar>
-    <div class="container-bottom">
-      <div class="title">
-        <span>COMANDAS ABERTAS</span>
-      </div>
-      <div class="w3-cell-row w3-padding-16 list w3-border" v-for="c in comandas" @click="abrirComanda(c.id_comanda)">
-        <div class="w3-cell">
-          <div class="comanda-produto">
-            <b>Mesa:</b> {{c.mesa}}
+    <top-bar/>
+    <menu-dash/>
+    <div class="w3-main" style="margin-left:300px;margin-top:50px;">
+
+    <header class="w3-container" style="padding-top:14px">
+      <h6><b>Comandas Abertas</b></h6>
+    </header>
+      <div class="w3-row-padding">
+        <div class="w3-col l3" v-for="c in comandas">
+          <div class="w3-card-2 w3-padding w3-red pointer comanda">
+            <div class="comanda-list" @click="abrirComanda(c.id_comanda)">
+              <div class="w3-right">
+                <span class="w3-small"><b>REF:</b> {{c.ref_comanda}}</span>
+              </div>
+              <div class="comanda-produto">
+                <b>MESA:</b> 0{{c.mesa}}
+              </div>
+              <div>
+                <b class="w3-small">Obs:</b> {{c.observacao}}
+              </div>
+            </div>
           </div>
-          <div class="obs-comanda">
-            <b>Obs:</b> {{c.observacao}}
-          </div>
-        </div>
-        <div class="w3-cell list-icon">
-          <b>REF</b>
-          <br>
-          {{c.ref_comanda}}
         </div>
       </div>
     </div>
-    <div class="w3-bottom w3-white">
-      <div class="w3-padding w3-red">
-        <button class="w3-button w3-round w3-red w3-block btn-garcom" @click="toogleComanda">
-          Nova Comanda
-        </button>
-      </div>
+
+
+    <div class="w3-bottom w3-red">
+      <button class="w3-button w3-padding-16 w3-round w3-red w3-block btn-garcom" @click="toogleComanda">
+        Nova Comanda
+      </button>
     </div>
+
+
     <div class="w3-modal" :class="{'show':modalComanda}">
       <div class="w3-modal-content" style="overflow: auto">
-        <div class="w3-top top-bar">
-					<span @click="toogleComanda">
+        <div class="top-bar">
+					<button class="w3-button" style="margin:8px" @click="toogleComanda">
 						<i class="fa fa-chevron-left"></i>
 						Voltar
-					</span>
-          <span class="w3-right" @click="novaComanda">
+					</button>
+          <button class="w3-button w3-right" style="margin:8px" @click="novaComanda">
             Confirmar
             <i class="fa fa-check"></i>
-          </span>
+          </button>
         </div>
         <div class="title-garcom">
           <span>Selecione o número da mesa</span>
@@ -111,15 +117,12 @@
 </template>
 
 <script>
-
   import TopBar from "../commons/TopBar.vue"
+  import MenuDash from "../commons/MenuDash.vue"
   import ModalProduto from "../commons/Modal.vue"
 
   export default {
-    beforeCreate: function () {
-      document.body.className = 'cliente';
-    },
-    components: {TopBar, ModalProduto},
+    components: {TopBar, ModalProduto, MenuDash},
     data() {
       return {
         token: '',
@@ -192,9 +195,11 @@
 </script>
 
 <style scoped>
-  .list-icon {
-    width: 25%;
-    text-align: center;
+  .comanda {
+    margin: 8px 0;
+  }
+  .comanda-list {
+    height: 60px;
   }
   .comanda-btn {
     margin-top: 12px
@@ -219,10 +224,24 @@
     resize: none;
   }
   .w3-modal-content {
-    height: 110%
+    max-width: 40%
   }
   .w3-text:focus + div {
     background-color: red
+  }
+
+  @media all and (max-width: 600px) {
+    .comanda-list {
+      height: auto;
+    }
+    .w3-modal {
+      padding: 0;
+    }
+    .w3-modal-content {
+      margin: 0;
+      min-height: 100%;
+      max-width: 100%!important;
+    }
   }
 
 </style>

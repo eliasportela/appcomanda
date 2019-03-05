@@ -10,8 +10,12 @@ import PedidosCliente from '@/components/cliente/PedidosCliente'
 
 //Garcom
 import LoginGarcom from '@/components/garcom/Login'
+import Dashboard from '@/components/garcom/Dashboard'
 import ComandaGarcom from '@/components/garcom/ComandaGarcom'
 import ComandaDetalhes from '@/components/garcom/ComandaDetalhes'
+import Produtos from '@/components/garcom/Produtos'
+import ProdutosCadastro from '@/components/garcom/ProdutosCadastro'
+import ProdutosDetalhes from '@/components/garcom/ProdutosDetalhes'
 
 Vue.use(Router)
 
@@ -38,10 +42,17 @@ export default new Router({
       name: 'PedidosCliente',
       component: PedidosCliente
     },
+
+    //Admin
     {
       path: '/login',
       name: 'LoginGarcom',
       component: LoginGarcom
+    },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: Dashboard
     },
     {
       path: '/comanda-garcom',
@@ -52,6 +63,21 @@ export default new Router({
       path: '/comanda-detalhes/:id',
       name: 'ComandaDetalhes',
       component: ComandaDetalhes
-    }
+    },
+    {
+      path: '/produtos',
+      name: 'Produtos',
+      component: Produtos
+    },
+    {
+      path: '/produtos/cadastrar',
+      name: 'ProdutosCadastrar',
+      component: ProdutosCadastro
+    },
+    {
+      path: '/produtos/editar/:id',
+      name: 'ProdutosEditar',
+      component: ProdutosCadastro
+    },
   ]
 })

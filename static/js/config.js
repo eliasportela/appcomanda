@@ -1,5 +1,5 @@
-const base_url = "http://192.168.0.11/comanda-server/admin/api/";
-//const base_url = "http://localhost/comanda-server/api/";
+//const base_url = "http://192.168.0.11/comanda-server/admin/api/";
+const base_url = "http://localhost/comanda-server/api/";
 const token = "26901dc4fb95fda80f7427b53f4136ca";
 
 function openLoading(text) {

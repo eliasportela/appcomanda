@@ -21,10 +21,9 @@
 
 <script>
   import TopBar from "./commons/TopBar.vue"
-  import Container from "./commons/Container.vue"
 
   export default {
-    components: {Container, TopBar},
+    components: {TopBar},
     name: 'Home',
     data() {
       return {

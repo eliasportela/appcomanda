@@ -37,17 +37,11 @@
   background-color: #f44336;
   color: #fff;
   font-weight: 900;
-  padding: 16px
 }
 
 /*Style modal*/
-.w3-modal{
-  padding: 0;
-}
-.w3-modal-content {
-  margin: 0;
-  min-height: 100%;
-  color: #888;
+.w3-modal {
+  padding-top: 60px;
 }
 .modal-produtos {
   height: 100%;
@@ -301,7 +295,7 @@
 }
 
 .title-garcom {
-  padding: 70px 0 1.5vh 0;
+  padding: 20px 0;
   color: #aaa;
   font-weight: 900 !important;
   font-size: 1em;
@@ -417,3 +411,6 @@
 .card-verde .card-header {
   background-color: #7FD6A4;
 }
+
+
+/*mobile*/

@@ -41,10 +41,10 @@
 }
 
 /*Style modal*/
-.w3-modal{
+.w3-modal.full{
   padding: 0;
 }
-.w3-modal-content {
+.w3-modal-content.full {
   margin: 0;
   min-height: 100%;
   color: #888;
