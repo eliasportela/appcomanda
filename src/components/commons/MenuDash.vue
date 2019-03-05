@@ -12,7 +12,7 @@
         <router-link to="dashboard" class="w3-bar-item w3-button row-menu" active-class="w3-red"><i class="fa fa-home fa-fw"></i>  Home</router-link>
         <router-link to="/produtos" class="w3-bar-item w3-button row-menu" active-class="w3-red"><i class="fa fa-edit fa-fw"></i>  Produtos</router-link>
         <router-link to="/comanda-garcom" class="w3-bar-item w3-button row-menu" active-class="w3-red"><i class="fa fa-shopping-basket fa-fw"></i>  Comandas</router-link>
-        <router-link to="/pedidos" class="w3-bar-item w3-button row-menu" active-class="w3-red"><i class="fas fa-tasks fa-fw"></i>  Cozinha</router-link>
+        <router-link to="/cozinha" class="w3-bar-item w3-button row-menu" active-class="w3-red"><i class="fas fa-tasks fa-fw"></i>  Cozinha</router-link>
         <router-link to="a" class="w3-bar-item w3-button row-menu" active-class="w3-red"><i class="fa fa-print fa-fw"></i>  Relatórios</router-link>
         <router-link to="a" class="w3-bar-item w3-button row-menu" active-class="w3-red"><i class="fa fa-users fa-fw"></i>  Usuários</router-link>
         <router-link to="a" class="w3-bar-item w3-button row-menu" active-class="w3-red"><i class="fa fa-cog fa-fw"></i>  Configurações</router-link><br><br>

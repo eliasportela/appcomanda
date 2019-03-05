@@ -3,13 +3,12 @@
     <top-bar/>
     <menu-dash/>
     <div class="w3-main" style="margin-left:300px;margin-top:50px;">
-
-    <header class="w3-container" style="padding-top:14px">
-      <h6><b>Comandas Abertas</b></h6>
-    </header>
+      <header class="w3-container" style="padding-top:14px">
+        <h6><b>Comandas Abertas</b></h6>
+      </header>
       <div class="w3-row-padding">
         <div class="w3-col l3" v-for="c in comandas">
-          <div class="w3-card-2 w3-padding w3-red pointer comanda">
+          <div class="w3-padding w3-padding w3-white pointer" style="margin-bottom: 8px">
             <div class="comanda-list" @click="abrirComanda(c.id_comanda)">
               <div class="w3-right">
                 <span class="w3-small"><b>REF:</b> {{c.ref_comanda}}</span>
@@ -25,14 +24,11 @@
         </div>
       </div>
     </div>
-
-
     <div class="w3-bottom w3-red">
       <button class="w3-button w3-padding-16 w3-round w3-red w3-block btn-garcom" @click="toogleComanda">
         Nova Comanda
       </button>
     </div>
-
 
     <div class="w3-modal" :class="{'show':modalComanda}">
       <div class="w3-modal-content" style="overflow: auto">
@@ -187,6 +183,10 @@
         this.token = localStorage.getItem('key');
         this.buscarComandas();
 
+        setInterval(() => {
+          this.buscarComandas();
+        }, 1000 * 60);
+
       } else {
         this.$router.push("/login")
       }
@@ -223,9 +223,6 @@
   .w3-text {
     resize: none;
   }
-  .w3-modal-content {
-    max-width: 40%
-  }
   .w3-text:focus + div {
     background-color: red
   }
@@ -233,14 +230,6 @@
   @media all and (max-width: 600px) {
     .comanda-list {
       height: auto;
-    }
-    .w3-modal {
-      padding: 0;
-    }
-    .w3-modal-content {
-      margin: 0;
-      min-height: 100%;
-      max-width: 100%!important;
     }
   }
 

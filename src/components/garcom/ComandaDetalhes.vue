@@ -1,25 +1,20 @@
 <template>
   <div>
-    <div>
-      <top-bar voltar="comanda-garcom"></top-bar>
-      <div class="container-bottom">
-        <div class="w3-cell-row mesa-title">
-          <div class="w3-cell w3-cell-middle" style="width: 80%">
-            <div>
-              <span><b>COMANDA:</b> {{comanda.ref_comanda}}</span><br/>
-              <span><b>MESA:</b> {{comanda.mesa}}</span><br/>
-              <span><b>OBS:</b> {{comanda.observacao}}</span>
-            </div>
-          </div>
-          <div class="w3-cell w3-center w3-cell-middle w3-text-red" @click="selEditarComanda">
-            <i class="fa fa-edit fa-2x"></i><br>
-            <span class="w3-small">EDITAR</span>
-          </div>
-        </div>
-        <hr>
-        <div class="w3-text-red w3-center"><b>Produtos</b></div>
-        <div class="w3-cell-row list" v-for="p in produtosComanda"
-             @click="selProdutoDetalhes(p)">
+    <top-bar voltar="comanda-garcom"/>
+    <menu-dash/>
+    <div class="w3-main" style="margin-left:300px;margin-top:50px;">
+      <header class="w3-container" style="padding-top:24px">
+        <button class="w3-button w3-center w3-text-red w3-right" @click="selEditarComanda">
+          <i class="fa fa-edit fa-2x"></i><br>
+          <span class="w3-small">EDITAR</span>
+        </button>
+        <span><b>COMANDA: </b>{{comanda.ref_comanda}}</span><br/>
+        <span><b>MESA:</b> {{comanda.mesa}}</span><br/>
+        <span><b>OBS:</b> {{comanda.observacao}}</span>
+      </header>
+      <div class="w3-container">
+        <h6 class="w3-center"><b>Produtos</b></h6>
+        <div class="w3-cell-row w3-padding w3-white pointer comanda" v-for="p in produtosComanda" @click="selProdutoDetalhes(p)">
           <div class="w3-cell">
             <div class="comanda-produto">
               <span><b>{{p.nome_categoria}} - {{p.nome_tabela}}</b></span><br>
@@ -34,38 +29,39 @@
             <span class="w3-small">EDITAR</span>
           </div>
         </div>
+
       </div>
-      <div class="w3-bottom w3-padding w3-red">
-        <button class="w3-button w3-round w3-block btn-garcom" @click="avancarModal(1)">
-          Adicionar Produto
-        </button>
-      </div>
+    </div>
+
+    <div class="w3-bottom w3-red">
+      <button class="w3-button w3-padding-16 w3-round w3-red w3-block btn-garcom" @click="avancarModal(1)">
+        Adicionar Produto
+      </button>
     </div>
 
     <div class="w3-modal" :class="{'show':modalEditarComanda}">
       <div class="w3-modal-content">
-        <div class="w3-top top-bar">
-          <span @click="avancarModal(0)">
+        <div class="top-bar">
+          <button class="w3-button" style="margin:6px" @click="avancarModal(0)">
             Cancelar
-          </span>
-          <span class="w3-right" @click="editarComanda()">
+          </button>
+          <button class="w3-button w3-right" style="margin:6px" @click="editarComanda()">
             Editar Comanda
             <i class="fa fa-check"></i>
-          </span>
+          </button>
         </div>
         <div class="title-garcom">
           EDITAR COMANDA
         </div>
         <div class="w3-container">
-          <hr>
           <div class="w3-row">
             <div class="w3-col s12">
-              <label><b>Mesa</b></label>
-              <input type="number" class="w3-input w3-border" v-model="dadosComanda.mesa"/>
+              <label for="mesa"><b>Mesa</b></label>
+              <input id="mesa" type="number" class="w3-input w3-border" v-model="dadosComanda.mesa"/>
             </div>
-            <div class="w3-col s12 w3-margin-top">
-              <label><b>Observação</b></label>
-              <textarea class="w3-input w3-border" rows="8" v-model="dadosComanda.observacao"></textarea>
+            <div class="w3-col s12 w3-margin-top w3-margin-bottom">
+              <label for="observacao"><b>Observação</b></label>
+              <textarea id="observacao" placeholder="Observações da comanda" class="w3-input w3-border" rows="5" v-model="dadosComanda.observacao"></textarea>
             </div>
           </div>
         </div>
@@ -74,24 +70,22 @@
 
     <div class="w3-modal" :class="{'show':modalDetalhesPedido}">
       <div class="w3-modal-content">
-        <div class="w3-top top-bar">
-          <span @click="avancarModal(0)">
+        <div class="top-bar">
+          <button class="w3-button" style="margin:6px 2px" @click="avancarModal(0)">
 						<i class="fa fa-chevron-left"></i>
             Voltar
-					</span>
-          <span class="w3-right" @click="selEditarPedido()">
+					</button>
+          <button class="w3-button w3-right" style="margin:6px 0" @click="selEditarPedido()">
             Editar Pedido
             <i class="fa fa-edit"></i>
-          </span>
+          </button>
         </div>
         <div style="padding: 16px 24px 0 24px">
-          <div class="title-produtos w3-text-red">
-            <span><b>Informações do Produto</b></span>
-          </div>
+          <span><b>Informações do Produto</b></span>
           <ul class="w3-ul comanda-ul">
             <li>
-              <span class="ul-titile w3-text-red" style="padding-bottom: 0">Quantidade:
-                <span>{{produtoDetalhes.quantidade | fixed}}</span>
+              <span class="ul-titile w3-text-red" style="padding-bottom: 0">
+                Quantidade: <span>{{produtoDetalhes.quantidade | fixed}}</span>
               </span>
             </li>
             <li>
@@ -126,10 +120,9 @@
             </div>
           </div>
         </div>
-        <div class="w3-bottom w3-padding w3-center">
-          <button class="w3-button w3-red btn-garcom w3-block" @click="modalConfirm = true">
-            <i class="fa fa-trash"></i>
-            DELETAR ITEM
+        <div class="bottom-bar w3-red">
+          <button class="w3-button w3-padding-16 w3-round w3-red w3-block btn-garcom" @click="modalConfirm = true">
+            Deletar Pedido
           </button>
         </div>
       </div>
@@ -137,7 +130,6 @@
 
     <div class="w3-modal" :class="{'show':modalInsercao}">
       <div class="w3-modal-content">
-        <top-bar></top-bar>
         <div class="title-garcom">
           <div class="w3-cell-row">
             <div class="w3-cell" style="width:50%;padding-right:4px">
@@ -183,12 +175,12 @@
             </div>
           </div>
         </div>
+        <br>
       </div>
     </div>
 
     <div class="w3-modal" :class="{'show':modalProduto}">
       <div class="w3-modal-content">
-        <top-bar></top-bar>
         <div class="title-garcom">
           <div class="w3-cell-row">
             <div class="w3-cell" style="width:50%;padding-right:4px">
@@ -232,7 +224,6 @@
 
     <div class="w3-modal" :class="{'show':modalAdicionais}">
       <div class="w3-modal-content">
-        <top-bar></top-bar>
         <div class="title-garcom">
           <div class="w3-cell-row">
             <div class="w3-cell" style="width:50%;padding-right:4px">
@@ -267,7 +258,6 @@
 
     <div class="w3-modal" :class="{'show':modalRemocoes}">
       <div class="w3-modal-content">
-        <top-bar></top-bar>
         <div class="title-garcom">
           <div class="w3-cell-row">
             <div class="w3-cell" style="width:50%;padding-right:4px">
@@ -301,7 +291,6 @@
 
     <div class="w3-modal" :class="{'show':modalObservacoes}">
       <div class="w3-modal-content">
-        <top-bar></top-bar>
         <div class="title-garcom">
           <div class="w3-cell-row">
             <div class="w3-cell" style="width:50%;padding-right:4px">
@@ -328,13 +317,13 @@
     <div class="w3-modal" :class="{'show':modalFinalizar}">
       <div class="w3-modal-content">
         <div class="w3-top top-bar">
-          <span @click="avancarModal(0)">
+          <button class="w3-button" style="margin: 6px" @click="avancarModal(0)">
             Cancelar
-          </span>
-          <span class="w3-right" @click="inserirOrEditarProduto()">
+          </button>
+          <button class="w3-button w3-right" style="margin: 6px" @click="inserirOrEditarProduto()">
             Finalizar
             <i class="fa fa-check"></i>
-          </span>
+          </button>
         </div>
         <div class="w3-container" style="padding-top: 75px">
           Informe a Quantidade
@@ -422,14 +411,10 @@
 <script>
 
   import TopBar from "../commons/TopBar.vue"
-  //import ModalProduto from "../commons/Modal.vue"
+  import MenuDash from "../commons/MenuDash.vue"
+
   export default {
-    beforeCreate: function () {
-      document.body.className = 'cliente';
-    },
-
-    components: {TopBar/*,ModalProduto*/},
-
+    components: {TopBar,MenuDash},
     data() {
       return {
         token: '',
@@ -918,6 +903,9 @@
 </script>
 
 <style scoped>
+  .comanda {
+    margin: 8px 0;
+  }
   .list-icon {
     width: 20%;
     text-align: center;

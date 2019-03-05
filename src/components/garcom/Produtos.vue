@@ -55,7 +55,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="p in produtos" @click="$router.push('produtos/editar/' + p.id_produto)">
-                    <td>{{p.ref_produto}}</td>
+                    <td><i class="fa fa-tag"></i></td>
                     <td>{{p.ref_produto}}</td>
                     <td>{{p.nome_produto}}</td>
                     <td>{{p.ingrediente === "1" ? "Sim" : "Não"}}</td>

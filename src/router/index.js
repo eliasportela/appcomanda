@@ -15,7 +15,7 @@ import ComandaGarcom from '@/components/garcom/ComandaGarcom'
 import ComandaDetalhes from '@/components/garcom/ComandaDetalhes'
 import Produtos from '@/components/garcom/Produtos'
 import ProdutosCadastro from '@/components/garcom/ProdutosCadastro'
-import ProdutosDetalhes from '@/components/garcom/ProdutosDetalhes'
+import Cozinha from '@/components/cozinha/Pedidos'
 
 Vue.use(Router)
 
@@ -78,6 +78,11 @@ export default new Router({
       path: '/produtos/editar/:id',
       name: 'ProdutosEditar',
       component: ProdutosCadastro
+    },
+    {
+      path: '/cozinha',
+      name: 'Cozinha',
+      component: Cozinha
     },
   ]
 })
