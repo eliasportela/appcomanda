@@ -35,7 +35,7 @@
                 <div class="w3-col m2 w3-margin-top">
                   <label for="referencia">Referência</label>
                   <input type="text" class="w3-input w3-border" placeholder="Ref do Produto"
-                         id="referencia" name="referencia" :disabled="true">
+                         id="referencia" name="referencia" v-model="dados.ref_produto" :disabled="!editar">
                 </div>
                 <div class="w3-col m2 w3-margin-top">
                   <label for="gerar_pedido">Gerar Pedido</label>
@@ -68,14 +68,14 @@
               </div>
               <div class="w3-col m8">
                 <label>Selecione o produto a ser inserido</label>
-                <select class="w3-select w3-border w3-white" id="produtos">
-                  <option value=""></option>
+                <select class="w3-select w3-border w3-white" id="produtos" v-model="ingredienteProduto.bd">
+                  <option v-for="i in ingredientes" :value="i">{{i.nome_produto}}</option>
                 </select>
               </div>
               <div class="w3-col m4">
                 <label>Inserir Produto</label>
-                <button class="w3-button w3-black w3-dark-gray w3-block" type="button"
-                        onclick="addItemTabela()"><i class="fa fa-plus"></i> Adicionar Produto
+                <button class="w3-button w3-black w3-dark-gray w3-block" type="button" @click="addIngrediente">
+                  <i class="fa fa-plus"></i> Adicionar Produto
                 </button>
               </div>
             </div>
@@ -88,7 +88,11 @@
                   <th style="width: 30%">Remover</th>
                 </tr>
                 </thead>
-                <tbody id="itens">
+                <tbody>
+                  <tr v-for="i in itens">
+                    <td>{{i.nome_produto}}</td>
+                    <td><button class="w3-button w3-dark-gray w3-round">Remover</button></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -105,20 +109,18 @@
               </div>
               <div class="w3-col m4">
                 <label>Escolha a tabela</label>
-                <select class="w3-select w3-border w3-white" id="precos">
-                  <?php foreach ($tabela as $t) { ?>
-                  <option value="<?= $t->id_tabela ?>"><?= $t->nome_tabela ?></option>
-                  <?php } ?>
+                <select class="w3-select w3-border w3-white" id="precos" v-model="tabela.bd">
+                  <option v-for="t in tabelasProdutos" :value="t">{{t.nome_tabela}}</option>
                 </select>
               </div>
               <div class="w3-col m4">
                 <label>Insira o valor</label>
-                <input class="w3-input w3-border" id="precosValor" type="number" placeholder="Ex: 25.20">
+                <input class="w3-input w3-border" id="precosValor" type="number" placeholder="Ex: 25.20" v-model="tabela.valor">
               </div>
               <div class="w3-col m4">
                 <label>Inserir Tabela de Preços</label>
-                <button class="w3-button w3-black w3-dark-gray w3-block" type="button"
-                        onclick="addPrecoTabela()"><i class="fa fa-plus"></i> Adicionar Tabela
+                <button class="w3-button w3-black w3-dark-gray w3-block" type="button" @click="addTabela">
+                  <i class="fa fa-plus"></i> Adicionar Tabela
                 </button>
               </div>
             </div>
@@ -126,13 +128,18 @@
             <div class="w3-responsive" style="min-height: 150px">
               <table class="w3-table w3-bordered w3-centered" id="tablePreco">
                 <thead>
-                <tr class="w3-red">
-                  <th style="width: 30%">Tabela</th>
-                  <th style="width: 40%">Valor</th>
-                  <th style="width: 30%">Remover</th>
-                </tr>
+                  <tr class="w3-red">
+                    <th style="width: 30%">Tabela</th>
+                    <th style="width: 40%">Valor</th>
+                    <th style="width: 30%">Remover</th>
+                  </tr>
                 </thead>
-                <tbody id="valores">
+                <tbody>
+                  <tr v-for="t in tabelas">
+                    <td>{{t.nome_tabela}}</td>
+                    <td>R$ {{t.valor}}</td>
+                    <td><button class="w3-button w3-dark-gray w3-round">Remover</button></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -165,9 +172,18 @@
     data() {
       return {
         editar: false,
-        categorias: [],
+        categorias: {},
+        ingredientes: {},
+        tabelasProdutos: {},
 
-        //pesquisa
+        tabela: {
+          valor: '',
+          bd: {}
+        },
+        ingredienteProduto: {
+          bd: {}
+        },
+
         id_produto: '',
         nomeProduto: '',
         tipo: 1,
@@ -175,26 +191,47 @@
         ingrediente: 'false',
 
         dados: {
+          id_produto: false,
           id_categoria: 1,
+          ref_produto: '',
           nome_produto: '',
           gerar_pedido: 1,
           ingrediente: 0,
+          ref: 0,
         },
 
-        dadosEditar: {
-          id_produto: 1,
-          id_categoria: 1,
-          nome_produto: '',
-          gerar_pedido: 1,
-          ingrediente: 0,
-        }
+        itens: {},
+        tabelas: {},
       }
     },
+
     methods: {
       buscarCategorias() {
         this.$http.get(base_url + 'categorias/' + localStorage.getItem('key'))
           .then(response => {
             this.categorias = response.data;
+
+            if (this.dados.id_produto) {
+              this.getProduto(this.dados.id_produto);
+            }
+          });
+      },
+
+      buscarIngredientes(id) {
+        this.$http.get(base_url + 'ingredientes/' + localStorage.getItem('key') + '/' + id)
+          .then(response => {
+            this.ingredientes = response.data;
+            this.ingredienteProduto.bd = this.ingredientes[0];
+            this.buscarTabelas();
+          });
+      },
+
+      buscarTabelas() {
+        this.$http.get(base_url + 'tabelas/' + localStorage.getItem('key'))
+          .then(response => {
+            this.tabelasProdutos = response.data;
+            this.tabela.bd = this.tabelasProdutos[0];
+            closeLoading();
           });
       },
 
@@ -206,6 +243,37 @@
           res => {
             alert(res.data.result);
           });
+      },
+
+      getProduto(id) {
+
+        this.$http.get(base_url + 'produto/id/' + localStorage.getItem('key') + '?produtos=' + id)
+          .then(response => {
+
+            this.dados = response.data.produto;
+            this.itens = response.data.itens;
+            this.tabelas = response.data.valores;
+
+            this.buscarIngredientes(this.dados.id_produto);
+
+          });
+      },
+
+      addTabela() {
+        let tabela = {
+          'id_tabela': this.tabela.bd.id_tabela,
+          'nome_tabela': this.tabela.bd.nome_tabela,
+          'valor': this.tabela.valor,
+        };
+        this.tabelas.push(tabela);
+      },
+
+      addIngrediente() {
+        let ingrediente = {
+          'id_produto': this.ingredienteProduto.bd.id_produto,
+          'nome_produto': this.ingredienteProduto.bd.nome_produto,
+        };
+        this.itens.push(ingrediente);
       }
     },
 
@@ -213,7 +281,7 @@
       this.buscarCategorias();
 
       if (this.$route.params.id) {
-        console.log(this.$route.params.id);
+        openLoading("Buscando os dados");
         this.editar = true;
         this.dados.id_produto = this.$route.params.id;
       }
@@ -222,5 +290,11 @@
 </script>
 
 <style scoped>
+  .w3-centered tr td {
+    padding: 13px;
+  }
 
+  .w3-table td {
+    vertical-align: middle;
+  }
 </style>

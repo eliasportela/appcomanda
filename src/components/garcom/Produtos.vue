@@ -120,6 +120,7 @@
             this.produtos = response.data.result;
             this.anterior = response.data.page > 1;
             this.posterior = response.data.page < response.data.pages;
+            this.naoEcontrado = false;
           } else {
             this.produtos = [];
             this.naoEcontrado = true;
